@@ -141,6 +141,17 @@ process.pfChargedHadronAnalyzer = cms.EDAnalyzer(
 #process.load("RecoMET.Configuration.RecoGenMET_cff")
 process.load("RecoParticleFlow.PFProducer.particleFlowSimParticle_cfi")
 #process.load("RecoParticleFlow.Configuration.HepMCCopy_cfi")
+
+process.particleFlowSimParticle.ParticleFilter = cms.PSet(
+        # Allow *ALL* protons with energy > protonEMin
+        protonEMin = cms.double(5000.0),
+        # Particles must have abs(eta) < etaMax (if close enough to 0,0,0)
+        etaMax = cms.double(5.3),
+        # Charged particles with pT < pTMin (GeV/c) are not simulated
+        chargedPtMin = cms.double(0.0),
+        # Particles must have energy greater than EMin [GeV]
+        EMin = cms.double(0.0))
+
 process.genReReco = cms.Sequence(#process.generator+
                                  #process.genParticles+
                                  #process.genJetParticles+
