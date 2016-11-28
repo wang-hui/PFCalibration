@@ -1,9 +1,9 @@
 # PFCalibration
 For Single Pion sample Generation:
 
-#For tcsh
+(For tcsh)
 $ setenv SCRAM_ARCH slc6_amd64_gcc530
-#For bash
+(For bash)
 $ export SCRAM_ARCH=slc6_amd64_gcc530
 $ cmsrel CMSSW_8_1_0_pre16
 $ cd CMSSW_8_1_0_pre16/src
