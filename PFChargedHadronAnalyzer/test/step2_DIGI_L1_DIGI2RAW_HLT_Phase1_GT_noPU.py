@@ -33,7 +33,7 @@ process.maxEvents = cms.untracked.PSet(
 process.source = cms.Source("PoolSource",
     dropDescendantsOfDroppedBranches = cms.untracked.bool(False),
     fileNames = cms.untracked.vstring(
-        'file:step1.root'
+        'file:PGun_step1_GEN_SIM.root'
     ),
 
     inputCommands = cms.untracked.vstring('keep *', 

@@ -69,11 +69,11 @@ from Configuration.AlCa.GlobalTag import GlobalTag
 process.GlobalTag = GlobalTag(process.GlobalTag, '81X_upgrade2017_realistic_v26', '')
 
 # Save HBHEChannelInfo
-process.hbheprereco.saveInfos = cms.bool(True)
+#process.hbheprereco.saveInfos = cms.bool(True)
 
-process.hbheprerecoM3 = process.hbheprereco.clone()
-process.hbheprerecoM3.algorithm.__setattr__('useM2',cms.bool(False))
-process.hbheprerecoM3.algorithm.__setattr__('useM3',cms.bool(True))
+#process.hbheprerecoM3 = process.hbheprereco.clone()
+#process.hbheprerecoM3.algorithm.__setattr__('useM2',cms.bool(False))
+#process.hbheprerecoM3.algorithm.__setattr__('useM3',cms.bool(True))
 
 
 
@@ -143,8 +143,8 @@ process.blo = cms.EndPath(process.genReReco)
 process.schedule = cms.Schedule(process.raw2digi_step,process.L1Reco_step,process.reconstruction_step,process.eventinterpretaion_step,process.endjob_step,process.blo,process.bla)
 
 #Setup FWK for multithreaded
-process.options.numberOfThreads=cms.untracked.uint32(16)
-process.options.numberOfStreams=cms.untracked.uint32(0)
+#process.options.numberOfThreads=cms.untracked.uint32(16)
+#process.options.numberOfStreams=cms.untracked.uint32(0)
 
 #do not add changes to your config after this point (unless you know what you are doing)
 from FWCore.ParameterSet.Utilities import convertToUnscheduled
