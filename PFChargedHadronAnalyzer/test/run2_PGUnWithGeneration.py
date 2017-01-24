@@ -61,7 +61,7 @@ process.RECOSIMoutput = cms.OutputModule("PoolOutputModule",
         dataTier = cms.untracked.string('')
     ),
     eventAutoFlushCompressedSize = cms.untracked.int32(5242880),
-    fileName = cms.untracked.string('test_run2.root'),
+    fileName = cms.untracked.string('SinglePionGun_Reco.root'),
     #outputCommands = cms.untracked.vstring("keep *"),
     outputCommands = process.RECOSIMEventContent.outputCommands,
     splitLevel = cms.untracked.int32(0)
@@ -73,7 +73,7 @@ process.RECOSIMoutput = cms.OutputModule("PoolOutputModule",
 process.genstepfilter.triggerConditions=cms.vstring("generation_step")
 from Configuration.AlCa.GlobalTag import GlobalTag
 #process.GlobalTag = GlobalTag(process.GlobalTag, 'auto:mc', '')
-process.GlobalTag = GlobalTag(process.GlobalTag, '80X_mcRun2_asymptotic_v11', '')
+process.GlobalTag = GlobalTag(process.GlobalTag, '81X_mcRun2_asymptotic_v11', '')
 #process.GlobalTag = GlobalTag(process.GlobalTag, '81X_upgrade2017_realistic_v22', '')
 
 
@@ -131,7 +131,7 @@ process.pfChargedHadronAnalyzer = cms.EDAnalyzer(
     hcalMin = cms.double(0.5),                   # Minimum hcal energy
     ecalMax = cms.double(1E9),                  # Maximum ecal energy 
     verbose = cms.untracked.bool(True),         # not used.
-    rootOutputFile = cms.string("PGun_8_1_0_pre16.root"),# the root tree
+    rootOutputFile = cms.string("PGun_EDAnalyzer_810_pre16.root"),# the root tree
 #    IsMinBias = cms.untracked.bool(False)
 )
 
