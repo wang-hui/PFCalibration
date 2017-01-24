@@ -179,7 +179,8 @@ process.RECOSIMoutput_step = cms.EndPath(process.RECOSIMoutput)
 process.bla = cms.EndPath(process.pfChargedHadronAnalyzer)
 process.blo = cms.EndPath(process.genReReco)
 # Schedule definition
-process.schedule = cms.Schedule(process.generation_step,process.genfiltersummary_step,process.simulation_step,process.digitisation_step,process.L1simulation_step,process.digi2raw_step,process.raw2digi_step,process.reconstruction_step,process.RECOSIMoutput_step,process.endjob_step,process.blo,process.bla)
+#process.schedule = cms.Schedule(process.generation_step,process.genfiltersummary_step,process.simulation_step,process.digitisation_step,process.L1simulation_step,process.digi2raw_step,process.raw2digi_step,process.reconstruction_step,process.RECOSIMoutput_step,process.endjob_step,process.blo,process.bla)
+process.schedule = cms.Schedule(process.generation_step,process.genfiltersummary_step,process.simulation_step,process.digitisation_step,process.L1simulation_step,process.digi2raw_step,process.raw2digi_step,process.reconstruction_step,process.endjob_step,process.blo,process.bla)
 # filter all path with the production filter sequence
 for path in process.paths:
 	getattr(process,path)._seq = process.generator * getattr(process,path)._seq 
