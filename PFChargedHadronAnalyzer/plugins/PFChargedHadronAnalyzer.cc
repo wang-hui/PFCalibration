@@ -269,9 +269,20 @@ PFChargedHadronAnalyzer::analyze(const Event& iEvent,
   //  cout<<isSimu<<"    "<<isMBMC_<<endl;
 
   if ( isSimu ) { 
-    nEv[0]++;//  cout<<" True part size "<<(*trueParticles).size()<<"    "
-// 		  <<(*trueParticles)[0].pdgCode()<<"   "<<(*trueParticles)[1].pdgCode()<<endl;
-    if ( (*trueParticles).size() != 1 ) return;
+    nEv[0]++;
+    cout<<" True part size "<<(*trueParticles).size()<<endl;//<<"    " <<(*trueParticles)[0].pdgCode()<<"   "<<(*trueParticles)[1].pdgCode()<<endl;
+    for (unsigned int ii_ = 0; ii_ < (*trueParticles).size(); ii_++) {
+
+      //cout<<" True part #"<<(ii_+1)<<", part pdgCode:"<<(*trueParticles)[ii_].pdgCode()<<",  motherID: "<<(*trueParticles)[ii_].motherId()
+      //  <<", # of daughters:"<<(*trueParticles)[ii_].daughterIds().size()<<endl;
+      /*if(((*trueParticles)[ii_].daughterIds_().size()) != 0) {
+	  for(int jj_ = 0; jj_ < (*trueParticles)[ii_].daughterIds_().size(); jj_) {
+	    cout<<"   daughter #"<<(jj_+1)<<", ID:"<<(*trueParticles)[ii_].daughterIds_()[jj_]<<endl;
+	  }
+	}
+      */
+    }
+      if ( (*trueParticles).size() != 1 ) return;
     nEv[1]++;
     
     
@@ -282,7 +293,7 @@ PFChargedHadronAnalyzer::analyze(const Event& iEvent,
       const reco::PFCandidate& pfc = *ci;
       //if ( pfc.particleId() == 5 )
 	pfcsID.push_back( pfc.particleId() );
-      // std::cout << "Id = " << pfc.particleId() << std::endl;
+	//std::cout << "Id = " << pfc.particleId() << std::endl;
       if ( pfc.particleId() < 4 ) { 
 	isCharged = true;
 	break;
@@ -294,11 +305,14 @@ PFChargedHadronAnalyzer::analyze(const Event& iEvent,
 
     //std::cout << "isCharged ? " << isCharged << std::endl;
     //cout<<" =============================> "<<ecal_<<"     "<<hcal_<<endl;
+    //cout<<" =============================> "<<eta_<<"     "<<phi_<<endl;
     //SaveSimHit(iEvent, eta_, phi_ );
     // Case of no reconstructed tracks (and neutral single particles)
     //isCharged=true;//manual bypass
     if ( !isCharged ) { // || fabs((*trueParticles)[0].charge()) < 1E-10 ) {
       //cout<<"=====>"<<(*trueParticles)[0].energy()<<"   "<<(*trueParticles)[0].eta()<<"   "<<(*trueParticles)[0].phi()<<endl;
+
+      double rawEcal_ = 0.0, rawHcal_ = 0.0;
       reco::PFTrajectoryPoint::LayerType ecalEntrance = reco::PFTrajectoryPoint::ECALEntrance;
       const reco::PFTrajectoryPoint& tpatecal = ((*trueParticles)[0]).extrapolatedPoint( ecalEntrance );
       eta_ = tpatecal.positionREP().Eta();
@@ -309,16 +323,26 @@ PFChargedHadronAnalyzer::analyze(const Event& iEvent,
       charge_=0;
       ecal_ = 0.;
       hcal_ = 0.;
+
+      cout<<"  =============================> Neutral Hadrons"<<endl;
       for( CI ci  = pfCandidates->begin(); 
 	   ci!=pfCandidates->end(); ++ci)  {
 	const reco::PFCandidate& pfc = *ci;
 	double deta = eta_ - pfc.eta();
 	double dphi = dPhi(phi_, pfc.phi() );
 	double dR = std::sqrt(deta*deta+dphi*dphi);
-	if ( pfc.particleId() == 4 && dR < 0.2 ) ecal_ += pfc.rawEcalEnergy();
+	rawEcal_ += pfc.rawEcalEnergy();
+	rawHcal_ += pfc.rawHcalEnergy();
+	std::cout << "PFId " << pfc.particleId() << " , dR " << dR << " :(eta,phi,rawEcal,rawHcal) " << pfc.eta() << " " << pfc.phi() << " " << pfc.rawEcalEnergy() << " " << pfc.rawHcalEnergy() << std::endl;
+	//std::cout << "dR PFId==4, " << dR << std::endl;
+	if ( pfc.particleId() == 4 && dR < 0.2 ) {ecal_ += pfc.rawEcalEnergy(); std::cout << "** pfEcalEne " << pfc.rawEcalEnergy() << ", ecal_ " << ecal_ << std::endl;}
 	if ( pfc.particleId() == 5 && dR < 0.4 ) hcal_ += pfc.rawHcalEnergy();
       }
-            
+      
+      cout<<"pf candidates size: "<<pfCandidates->size()<<", eta:"<<eta_<<"    phi: "<<phi_<<"    true_:"<<true_<<"   p_:"<<p_<<"   charge_"<<charge_<<"   ecal_:"<<ecal_<<"   hcal_:"<<hcal_<<endl;
+      cout<<"  Neutral Hadrons  <============================="<<endl;
+      if(ecal_+hcal_ == 0) { cout<<"*****Neutral : Zero reco Energy!!,true_:"<<true_<<",  eta_:"<<eta_<<",  phi_"<<phi_<<",  p:"<<p_
+				 <<", rawEcal:"<<rawEcal_<<", rawHcal:"<<rawHcal_<<endl; }
       s->Fill();
       return;
     }
@@ -328,6 +352,9 @@ PFChargedHadronAnalyzer::analyze(const Event& iEvent,
 
   }
   
+  if (!isSimu) {
+    cout<<"Not Simu" <<endl;
+  }
   //cout<<" Track case !!! "<<endl;
 
   // Case of a reconstructed track.
@@ -742,7 +769,7 @@ PFChargedHadronAnalyzer::analyze(const Event& iEvent,
 //       }
 
 
-
+    if(ecal_+hcal_ == 0) { cout<<"Zero reco Energy!!,true_:"<<true_<<",  eta_:"<<eta_<<",  phi_"<<phi_<<",  p:"<<p_<<endl; }
 
     s->Fill();
 
