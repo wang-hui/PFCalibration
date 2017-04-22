@@ -1959,13 +1959,11 @@ void drawGausFit(TH2F* inHisto, TGraph& response, TGraph& resolution)
    float rebin = 1.;
    TCanvas* canvas;
    TCanvas* temp = new TCanvas();
-   //TLine *line = new TLine(0.0,0.0,200,0.0);
-   TLine *line = new TLine(0.0,0.0,25,0.0);
+   TLine *line = new TLine(0.0,0.0,200,0.0);
 
-   //TH2F* respHisto = new TH2F("respHisto", "", 200, 0, 200, 100, -0.5, 0.5);
+   TH2F* respHisto = new TH2F("respHisto", "", 200, 0, 200, 100, -0.5, 0.5);
    //TH2F* resoHisto = new TH2F("resoHisto", "", 200, 0, 200, 100, 0.0, 0.5);
-   TH2F* respHisto = new TH2F("respHisto", "", 25, 0, 25, 120, -0.6, 0.6);
-   TH2F* resoHisto = new TH2F("resoHisto", "", 25, 0, 25, 200, 0.0, 1.0);
+   TH2F* resoHisto = new TH2F("resoHisto", "", 200, 0, 200, 200, 0.0, 1.0);
 
    TGraph averages;
    TGraph rmss;
@@ -2063,8 +2061,7 @@ void drawGausFit(TH2F* inHisto, TGraph& response, TGraph& resolution)
 	  // cccc->SaveAs( ("tmp/"+name+".png").c_str() );
 	  // cccc->SaveAs( ("tmp/"+name+".C").c_str() );
 
-	  //ETrue.push_back(bin + 2.0*rebin);
-	  ETrue.push_back((bin + 2.0*rebin));  //cosh(2.8) = 8.25
+            ETrue.push_back(bin + 2.0*rebin);
 	    //cout<<"bin:"<<bin<<", rebin:"<<rebin<<", bin + 2*rebin:"<<(bin + 2*rebin)<<endl;
 	    //cout<<ETrue.back()<<", "<<gausMean.back()<<endl;
 	    //shubham
@@ -2162,15 +2159,12 @@ void drawGausFit(TH2F* inHisto, TGraph& response, TGraph& resolution)
 
 
    respHisto->GetYaxis()->SetTitle("(E_{cor}-E_{true})/E_{true}");
-   //respHisto->GetXaxis()->SetTitle("E_{true} [GeV]");
-   respHisto->GetXaxis()->SetTitle("p_{T} [GeV]");
+   respHisto->GetXaxis()->SetTitle("E_{true} [GeV]");
 
    resoHisto->GetYaxis()->SetTitle("#sigma(E)/E_{true}");
-   //resoHisto->GetXaxis()->SetTitle("E_{true} [GeV]");
-   resoHisto->GetXaxis()->SetTitle("p_{T} [GeV]");
+   resoHisto->GetXaxis()->SetTitle("E_{true} [GeV]");
 
    //MM Fit Resolution
-   
    TF1* f=new TF1( ("ResoFit"+ (string)(inHisto->GetName())).c_str(),"sqrt([0]*[0]+[1]*[1]/x+[2]*[2]/(x*x))",20,1000);// 3.5*4
    f->SetParameters(0.06,1.20,0.);
    f->SetParLimits(0,0,10);
@@ -2194,7 +2188,7 @@ void drawGausFit(TH2F* inHisto, TGraph& response, TGraph& resolution)
    text+=(int)fres0;
    text+=".";
    text+=(int)fres1;
-   f->Delete(); // delete me spandey
+
   legend += text;
   TLegend *leg=new TLegend(0.30,0.75,0.85,0.85);
   leg->AddEntry((&resolution),legend.c_str(),"lp");
@@ -2204,275 +2198,6 @@ void drawGausFit(TH2F* inHisto, TGraph& response, TGraph& resolution)
 
 
 }
-
-
-//Takes apart a TH2 and creates response and resolution plots from it. Note: 
-//the TGraphs will not draw correctly without passing the TGraphs as references
-//to the function.
-
-void drawGausFitpT(TH2F* inHisto, TGraph& response, TGraph& resolution)
-{
-  cout<<"check point 1"<<endl;
-   if(inHisto->GetEntries() == 0) return;
-   
-   vector<TH1F*> pTBin;
-   TF1* gaus; 
-   string name;
-   char num[4];
-   float rebin = 1.;
-   TCanvas* canvas;
-   TCanvas* temp = new TCanvas();
-   //TLine *line = new TLine(0.0,0.0,200,0.0);
-   TLine *line = new TLine(0.0,0.0,40,0.0);
-
-   //TH2F* respHisto = new TH2F("respHisto", "", 200, 0, 200, 100, -0.5, 0.5);
-   //TH2F* resoHisto = new TH2F("resoHisto", "", 200, 0, 200, 100, 0.0, 0.5);
-   TH2F* respHisto = new TH2F("respHisto", "", 40, 0, 40, 120, -0.6, 0.6);
-   TH2F* resoHisto = new TH2F("resoHisto", "", 40, 0, 40, 200, 0.0, 1.0);
-
-   TGraph averages;
-   TGraph rmss;
-
-   vector<double> pT;
-   vector<double> gausMean; 
-   vector<double> gausSigma;
-   vector<double> average;
-   vector<double> rms;
-   
-   TFile* file1=new TFile("projectionspT.root","recreate");
-
-   
-   temp->cd();//This TCanvas is only used since when we do the fit down below 
-              //it creates an unwanted TCanvas. We will get rid of it later on 
-              //in the function.
-
-   // TCanvas* cccc=new TCanvas("balda","bacla");
-   //cout<<"ETrue.back(), gausMean[0].back()"<<endl;
-   for(unsigned bin = 2; bin < 200; )
-   {
-      name = "histcorhybrid";
-      sprintf(num, "%i", bin);
-      name += num;
-      //Split up the TH2 into many TH1's for each ETrue bin.
-     
-      pTBin.push_back((TH1F*)inHisto->ProjectionY(name.c_str(),bin, 
-                                                     bin + 4*rebin));
-      //cout <<"bin to  bin + 4*rebin: "<<bin<<" to "<<(bin + 4*rebin)<<endl;//"   "<<ETrueBin.back()->GetEntries()<<endl;
-      if(pTBin.back()->GetEntries() > 0)
-	{
-	  //Fit each pT bin to a gaus (iteratively done to get better fit)
-
-	  if(bin > 0) {
-	  
-	    gaus =new TF1("gaus","gaus(0)",-3,3);
-	    gaus->SetParameters(500.,0.,0.2);
-	    pTBin.back()->Fit("gaus", "Q", "", -1.0, 1.0);
-	    gaus = pTBin.back()->GetFunction("gaus");
-            
-	    pTBin.back()->Fit("gaus", "Q", "",
-				 gaus->GetParameter(1) - 2*gaus->
-				 GetParameter(2), 1.0);  
-	    gaus = pTBin.back()->GetFunction("gaus");
-
-            pTBin.back()->Fit("gaus", "Q", "",
-                                 gaus->GetParameter(1) - 2*gaus->
-                                 GetParameter(2), 1.0);
-            gaus = pTBin.back()->GetFunction("gaus");
-
-	    // if(bin<=16)
-	    // gausMean.push_back(pTBin.back()->GetMean());
-	    // else
-
-	    // cout<<pTBin.back()->GetMean()<<"   "<<gaus->GetParameter(1)<<endl;
-            //gausSigma.push_back(gaus->GetParameter(2)/(1.0 + min(0.0, gaus->GetParameter(1))));
-
-	    gausMean.push_back(pTBin.back()->GetMean());
-	    gausSigma.push_back(pTBin.back()->GetRMS());
-	    //gausMean.push_back(gaus->GetParameter(1));
-	    // if (bin > 24 || bin == 2) {
-	    //   gausMean.push_back(gaus->GetParameter(1));
-	    // }
-	    // else {
-	    //   gausMean.push_back(pTBin.back()->GetMean());
-	    //   gaus->Delete();
-	    // }
-
-	   }
-	   else {
-	   
-	     gaus =new TF1("gaus","gaus",-3,3);
-	     gaus->SetParameters( 500, 10, 5, 0, 0.20 );
-	     gaus->FixParameter(2,5);
-	     pTBin.back()->Fit("gaus", "QN0", "", -1.0, 1.0);
-	     pTBin.back()->Fit("gaus", "QN0", "", -1.0, 1.0);
-	     pTBin.back()->Fit("gaus", "Q", "", -1.0, 1.0);
-
-	     gausMean.push_back(gaus->GetParameter(3));
-	     gausSigma.push_back(gaus->GetParameter(4)/
-				 (1.0 + min(0.0, gaus->GetParameter(3))));
-	   }
-
-
-	  // cout<<bin<<"   "<<median1(pTBin.back())<<endl;
-
-	  // TFile oFile( ("tmp/"+name+".root").c_str() ,"RECREATE");
-	  // pTBin.back()->Write();
-	  // gaus->Write();
-	  // oFile.Close();
-
-	  // cccc->cd();
-	  // pTBin.back()->Draw();
-	  // // //   gaus->Draw("same");
-	  // cccc->SaveAs( ("tmp/"+name+".png").c_str() );
-	  // cccc->SaveAs( ("tmp/"+name+".C").c_str() );
-
-	  //pT.push_back(bin + 2.0*rebin);
-	  pT.push_back((bin + 2*rebin));  //cosh(2.8) = 8.25
-	    //cout<<"bin:"<<bin<<", rebin:"<<rebin<<", bin + 2*rebin:"<<(bin + 2*rebin)<<endl;
-	    //cout<<pT.back()<<", "<<gausMean.back()<<endl;
-	    //shubham
-	    //cout<<pT.back()<<" ";
-	    //  if(bin<=16)
-	    //  gausMean.push_back(pTBin.back()->GetMean());
-	    // else
-	    //   gausMean.push_back(gaus->GetParameter(1));
-
-	    
-	   
-            average.push_back(pTBin.back()->GetMean());
-            rms.push_back(pTBin.back()->GetRMS());
-	    
-
-	    cout<<bin<<"   "<<pT.back()<<"   "<<pTBin.back()->GetMean()<<" <> "<<gausMean.back()<<"   "<<pTBin.back()->GetMeanError()<<"   "<<gaus->GetParError(1)<<endl;
-	    //cout<<bin<<"   "<<pT.back()<<"   "<<pTBin.back()->GetMean()<<" <> "<<gausMean.back()<<"   "<<pTBin.back()->GetMeanError()<<endl;
-
-	    if (false)
-	      gaus->Delete();
-
-	    (pTBin.back())->Write();
-
-
-	}
-      
-       bin += 2*rebin;
-      
-      // //Increase bin size with increasing pT since there are fewer high 
-      // //energy events than low energy ones.
-       // if(bin > 10) rebin = 2.0;
-       // if(bin > 100) rebin = 5.0; //20
-       // if(bin > 1000) rebin = 20.0; //50
-
-       if(bin > 10) rebin = 2.0;
-       if(bin > 100) rebin = 5.0; //20
-       if(bin > 1000) rebin = 20.0; //50
-
-   }
-
-   file1->Close();
-   // delete cccc;
-
-   response = TGraph(pT.size(), &pT[0], &gausMean[0]); //Fill the graphs
-   //response = TGraph(pT.size(), &pT[0], &average[0]); //Fill the graphs
-   resolution = TGraph(pT.size(),&pT[0], &gausSigma[0]);
-   averages =  TGraph(pT.size(), &pT[0], &average[0]);
-   rmss = TGraph(pT.size(), &pT[0], &rms[0]);
-
-   //Set up the graphs to look how you want them to.
-   response.SetMarkerStyle(22);
-   response.SetMarkerSize(0.8);
-   response.SetMarkerColor(4);
-
-   resolution.SetMarkerStyle(22);
-   resolution.SetMarkerSize(0.8);
-   resolution.SetMarkerColor(4);
-
-   averages.SetMarkerStyle(22);
-   averages.SetMarkerSize(0.8);
-   averages.SetMarkerColor(4);
-
-   rmss.SetMarkerStyle(22);
-   rmss.SetMarkerSize(0.8);
-   rmss.SetMarkerColor(4);
-
-   line->SetLineStyle(1);
-   line->SetLineWidth(2);
-   line->SetLineColor(2);
-
-
-   //  gStyle->SetOptStat(0); 
-   //gStyle->SetOptFit(0);
-   //canvas = new TCanvas(("canvas "+ (string)(inHisto->GetName()) ).c_str(), ("Response and Resolution "+ (string)(inHisto->GetName())).c_str(), 1000, 500);
-   //spandey
-   //canvas = new TCanvas(("canvas "+ (string)(inHisto->GetName()) ).c_str(), ("Response and Resolution "+ (string)(inHisto->GetName())).c_str(), 800, 400);
-   canvas = new TCanvas(("canvas "+ (string)(inHisto->GetName()) ).c_str(), ("Response and Resolution "+ (string)(inHisto->GetName())).c_str(), 500, 300);
-
-
- 
-   canvas->Divide(2, 1);
-   temp->~TCanvas();  //destroy the TCanvas 
-
-   canvas->cd(1);
-   gPad->SetGridx();
-   gPad->SetGridy();
-   respHisto->SetStats(0);
-   respHisto->SetTitle("Response");
-   respHisto->Draw();
-   response.Draw("P");
-   line->Draw();
-
-   canvas->cd(2);
-   gPad->SetGridx();
-   gPad->SetGridy();
-   resoHisto->SetStats(0);
-   resoHisto->SetTitle("Resolution");
-   resoHisto->Draw();
-   resolution.Draw("P");
-
-
-   respHisto->GetYaxis()->SetTitle("(E_{cor}-E_{true})/E_{true}");
-   //respHisto->GetXaxis()->SetTitle("E_{true} [GeV]");
-   respHisto->GetXaxis()->SetTitle("p_{T} [GeV]");
-
-   resoHisto->GetYaxis()->SetTitle("#sigma(E)/E_{true}");
-   //resoHisto->GetXaxis()->SetTitle("E_{true} [GeV]");
-   resoHisto->GetXaxis()->SetTitle("p_{T} [GeV]");
-
-   //MM Fit Resolution
-   
-   TF1* f=new TF1( ("ResoFit"+ (string)(inHisto->GetName())).c_str(),"sqrt([0]*[0]+[1]*[1]/x+[2]*[2]/(x*x))",20,1000);// 3.5*4
-   f->SetParameters(0.06,1.20,0.);
-   f->SetParLimits(0,0,10);
-   f->SetParLimits(1,0,10);
-   f->SetParLimits(2,0,10);
-   resolution.Fit(("ResoFit"+ (string)(inHisto->GetName())).c_str(),"QR");
-   resolution.Fit(("ResoFit"+ (string)(inHisto->GetName())).c_str(),"QR");
-   resolution.Fit(("ResoFit"+ (string)(inHisto->GetName())).c_str(),"R");
-
-   
-
-   string legend;
-   int fres0 = (int)(f->GetParameter(0)*100.);
-   int fres1 = (int)(10.*(f->GetParameter(0)*100.-fres0));
-   int fres2 = (int)(f->GetParameter(1)*100.);
-   // char text[100];
-   // sprintf(text,"#sigma/E = %i%/#sqrt{E} + %i.%i%",fres2,fres0,fres1);
-   TString text = "#sigma/E = ";
-   text+=(int)fres2;
-   text+="%/#sqrt{E} + ";
-   text+=(int)fres0;
-   text+=".";
-   text+=(int)fres1;
-   f->Delete(); // delete me spandey
-  legend += text;
-  TLegend *leg=new TLegend(0.30,0.75,0.85,0.85);
-  leg->AddEntry((&resolution),legend.c_str(),"lp");
-  leg->SetTextSize(0.04);
-  leg->Draw();
-
-
-
-}
-
 
 void drawEtaDependence(TH2F* inHisto, TGraph& responseEta)
 {
@@ -2673,7 +2398,7 @@ void drawCompare(TGraph& response1, TGraph& response2, TGraph& resolution1, TGra
 void getValuesFromTree(TTree* tree, vector<double>& ETrueEnergies, 
                        vector<double>& ecalEnergies, 
                        vector<double>& hcalEnergies, vector<double>& etas, 
-                       vector<double>& phis, vector<double>& momentum_)
+                       vector<double>& phis)
 {
    Float_t         true_;
    Float_t         p_;
@@ -2719,7 +2444,7 @@ void getValuesFromTree(TTree* tree, vector<double>& ETrueEnergies,
        hcalEnergies.push_back(hcal_);
        etas.push_back(eta_);
        phis.push_back(phi_);
-       momentum_.push_back(p_);
+
 
        if(fabs(eta_)<1.5) 
 	 sigmaEcalHcal = sqrt(0.08*0.08 + 1.04*1.04*(std::max((double)(ecal_ + hcal_), 1.0)));
@@ -2812,7 +2537,6 @@ vector<double> ecalEnergies;
 vector<double> hcalEnergies;
 vector<double> etas;
 vector<double> phis;
-vector<double> momentum_;
 
 
 vector<ABC*> barrelABCEcalHcal; //Vectors of the ABC objects
@@ -3019,7 +2743,7 @@ void calibChris()
    sTree = (TTree*)chain;
 
    getValuesFromTree(sTree, ETrueEnergies, ecalEnergies, 
-                     hcalEnergies, etas, phis, momentum_);
+                     hcalEnergies, etas, phis);
 
    
    //Create all the ABC objects you need with increasing bin size
@@ -3730,13 +3454,11 @@ void calibChris()
       hcal = hcalEnergies[entry];
       eta = abs(etas[entry]);
       double phi = phis[entry];
-      double mom =  momentum_[entry];
-      double pT = etrue/cosh(eta);
       if((ecal + hcal) < 0.5) continue;
       if( etrue < 1.0) continue;
       if( hcal == 0) continue;
       // if( ecal > 0) continue;
-      //if(fabs(eta) < 2.5) continue; // delete me
+      if(fabs(eta) < 2.5) continue; // delete me
 
       if(fabs(eta) < 1.5) //alpha beta fit range for barrel
       {     
@@ -3868,8 +3590,7 @@ void calibChris()
 
             corrEta->Fill(etrue, (correctedEta - etrue)/etrue);
             corrEtaEndcap->Fill(etrue, (correctedEta - etrue)/etrue);
-            //corrEtaEndcapEcalHcal->Fill(etrue, (correctedEta - etrue)/etrue);
-	    corrEtaEndcapEcalHcal->Fill(pT, (correctedEta - etrue)/etrue);
+            corrEtaEndcapEcalHcal->Fill(etrue, (correctedEta - etrue)/etrue);
 
 	    rawEtaDependenceEH->Fill(eta, (ecal + hcal - etrue)/etrue);
 	    //if (etrue > 20) {
@@ -3892,8 +3613,7 @@ void calibChris()
 
             corrEta->Fill(etrue, (correctedEta - etrue)/etrue);            
             corrEtaEndcap->Fill(etrue, (correctedEta - etrue)/etrue);
-            //corrEtaEndcapHcal->Fill(etrue, (correctedEta - etrue)/etrue);
-	    corrEtaEndcapHcal->Fill(pT, (correctedEta - etrue)/etrue);
+            corrEtaEndcapHcal->Fill(etrue, (correctedEta - etrue)/etrue);
 
 	    rawEtaDependenceH->Fill(eta, (ecal + hcal - etrue)/etrue);
 	    corrEtaDependenceH->Fill(eta, (correctedEta - etrue)/etrue);
@@ -3915,11 +3635,9 @@ void calibChris()
                correctedE = endcapWithEcalHcalCalib->
                   getCalibratedEnergy(etrue_proxy, ecal, hcal);
 
-	       //rawEndcapEcalHcal->Fill(etrue, (ecal + hcal - etrue)/etrue);
-	       rawEndcapEcalHcal->Fill(pT, (ecal + hcal - etrue)/etrue);
+	       rawEndcapEcalHcal->Fill(etrue, (ecal + hcal - etrue)/etrue);
 	       corrEndcap->Fill(etrue, (correctedE - etrue)/etrue);
-	       //corrEndcapEcalHcal->Fill(etrue, (correctedE - etrue)/etrue);
-	       corrEndcapEcalHcal->Fill(pT, (correctedE - etrue)/etrue);
+	       corrEndcapEcalHcal->Fill(etrue, (correctedE - etrue)/etrue);
 
 	   
 
@@ -3939,11 +3657,9 @@ void calibChris()
                correctedE = endcapWithHcalCalib->
                   getCalibratedEnergy(etrue, ecal, hcal);
                
-               //rawEndcapHcal->Fill(etrue, (ecal + hcal - etrue)/etrue);
-	       rawEndcapHcal->Fill(pT, (ecal + hcal - etrue)/etrue);
+               rawEndcapHcal->Fill(etrue, (ecal + hcal - etrue)/etrue);
                corrEndcap->Fill(etrue, (correctedE - etrue)/etrue);
-               //corrEndcapHcal->Fill(etrue, (correctedE - etrue)/etrue);
-	       corrEndcapHcal->Fill(pT, (correctedE - etrue)/etrue);
+               corrEndcapHcal->Fill(etrue, (correctedE - etrue)/etrue);
 
 	       if(etas[entry] > 0)
 		 h_response_vs_phi_EndCap_H_posZ->Fill(phi,(correctedE - etrue)/etrue);
@@ -3988,23 +3704,16 @@ void calibChris()
 
    //// raw endcap response for EH-hdarons 
    //drawGausFit(rawEndcapEcalHcal,responseRaw,resolutionRaw);
-   //drawGausFitpT(rawEndcapEcalHcal,responseRaw,resolutionRaw);
-   //rawEndcapEcalHcal->Draw("colz");
    //// E-corrected endcap response for EH-hdarons
    //drawGausFit(corrEndcapEcalHcal,responseCor,resolutionCor);
-   //drawGausFitpT(corrEndcapEcalHcal,responseCor,resolutionCor);
    //// Eta-corrected endcap response for EH-hdarons
    //drawGausFit(corrEtaEndcapEcalHcal,responseCor,resolutionCor);
-   //drawGausFitpT(corrEtaEndcapEcalHcal,responseCor,resolutionCor);
    //// raw endcap response for H-hdarons
    //drawGausFit(rawEndcapHcal,responseRaw,resolutionRaw);
-   //drawGausFitpT(rawEndcapHcal,responseRaw,resolutionRaw);
    //// E-corrected endcap response for H-hdarons
    //drawGausFit(corrEndcapHcal,responseCor,resolutionCor);
-   //drawGausFitpT(corrEndcapHcal,responseCor,resolutionCor);
    //// Eta-corrected endcap response for H-hdarons
    //drawGausFit(corrEtaEndcapHcal, responseEta, resolutionEta);   
-   drawGausFitpT(corrEtaEndcapHcal, responseEta, resolutionEta);   
 
    // something for overall
    //drawGausFit(rawBarrel,responseRaw,resolutionRaw);
@@ -4054,8 +3763,8 @@ void calibChris()
    file->Close();
 
    //drawEtaDependence(rawEtaDependenceEH, responseEtaEtaEH);
-   //drawEtaDependence(hcorrEtaDependenceEH, responseEtaHCorrEtaEH);
-   //drawEtaDependence(corrEtaDependenceEH, responseEtaEtaEH);
+   drawEtaDependence(hcorrEtaDependenceEH, responseEtaHCorrEtaEH);
+   drawEtaDependence(corrEtaDependenceEH, responseEtaEtaEH);
    
    //drawEtaDependence(rawEtaDependenceH, responseEtaEtaH);
    //drawEtaDependence(hcorrEtaDependenceH, responseEtaHCorrEtaH);
