@@ -14,5 +14,5 @@ git clone -b 902_generation_and_calibration git@github.com:spandeyehep/PFCalibra
 scram b -j 40
 cd PFCalibration/PFChargedHadronAnalyzer/test/
 cmsenv
-cmsRun PGUnWithGeneration.py
+cmsRun QCDForPF_14TeV_TuneCUETP8M1_cfi_GEN_SIM.py
 ```
