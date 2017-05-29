@@ -57,11 +57,14 @@ void ProducePFCalibrationObject::beginRun(const edm::Run& run, const edm::EventS
   functType["PFfb_ENDCAP"] = PerformanceResult::PFfb_ENDCAP;
   functType["PFfc_BARREL"] = PerformanceResult::PFfc_BARREL;
   functType["PFfc_ENDCAP"] = PerformanceResult::PFfc_ENDCAP;
-  functType["PFfaEta_BARREL"] = PerformanceResult::PFfaEta_BARREL;
-  functType["PFfaEta_ENDCAP"] = PerformanceResult::PFfaEta_ENDCAP;
-  functType["PFfbEta_BARREL"] = PerformanceResult::PFfbEta_BARREL;
-  functType["PFfbEta_ENDCAP"] = PerformanceResult::PFfbEta_ENDCAP;
-
+  functType["PFfaEta_BARRELH"] = PerformanceResult::PFfaEta_BARRELH;
+  functType["PFfaEta_ENDCAPH"] = PerformanceResult::PFfaEta_ENDCAPH;
+  functType["PFfbEta_BARRELH"] = PerformanceResult::PFfbEta_BARRELH;
+  functType["PFfbEta_ENDCAPH"] = PerformanceResult::PFfbEta_ENDCAPH;
+  functType["PFfaEta_BARRELEH"] = PerformanceResult::PFfaEta_BARRELEH;
+  functType["PFfaEta_ENDCAPEH"] = PerformanceResult::PFfaEta_ENDCAPEH;
+  functType["PFfbEta_BARRELEH"] = PerformanceResult::PFfbEta_BARRELEH;
+  functType["PFfbEta_ENDCAPEH"] = PerformanceResult::PFfbEta_ENDCAPEH;
   // ---------------------------------------------------------------------------------
   // Write the payload
 
