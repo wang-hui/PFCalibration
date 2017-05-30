@@ -94,7 +94,7 @@ PFEnergyCalibration::initializeCalibrationFunctions() {
   faEndcap->SetParameter(2,-27.7088);
   faEndcap->SetParameter(3,0.755474);
   faEndcap->SetParameter(4,0.0791012);
-  faEndcap->SetParameter(5,0.0459082);
+  faEndcap->SetParameter(5,0.0011082);
   faEndcap->SetParameter(6,0.158734);
   faEndcap->SetParameter(7,-2.1);
   fbEndcap = new TF1("fbEndcap","[0]+((([1]+([2]/sqrt(x)))*exp(-(x^[6]/[3])))-([4]*exp(-(x^[7]/[5]))))",1.,1000.);
