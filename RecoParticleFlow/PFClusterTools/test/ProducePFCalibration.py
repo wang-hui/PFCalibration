@@ -1,9 +1,9 @@
 import FWCore.ParameterSet.Config as cms
 
 process = cms.Process("myprocess")
-process.load("CondCore.DBCommon.CondDBCommon_cfi")
-
-process.CondDBCommon.connect = 'sqlite_file:PhysicsPerformance.db'
+#process.load("CondCore.DBCommon.CondDBCommon_cfi")
+process.load("CondCore.CondDB.CondDB_cfi")
+#process.CondDBCommon.connect = 'sqlite_file:PhysicsPerformance.db'
 
 
 process.maxEvents = cms.untracked.PSet(
@@ -18,7 +18,7 @@ process.source = cms.Source("EmptySource",
 
 process.mywriter = cms.EDAnalyzer(
   "ProducePFCalibrationObject",
-  write = cms.untracked.bool(True),
+  write = cms.untracked.bool(False),
   toWrite = cms.VPSet(
             cms.PSet(fType      = cms.untracked.string("PFfa_BARREL"),
                      formula    = cms.untracked.string("[0]+((([1]+([2]/sqrt(x)))*exp(-(x^[6]/[3])))-([4]*exp(-(x^[7]/[5]))))"),
@@ -59,7 +59,7 @@ process.mywriter = cms.EDAnalyzer(
             cms.PSet(fType      = cms.untracked.string("PFfa_ENDCAP"),
                      formula    = cms.untracked.string("[0]+((([1]+([2]/sqrt(x)))*exp(-(x^[6]/[3])))-([4]*exp(-(x^[7]/[5]))))"),
                      limits     = cms.untracked.vdouble(1., 1000.),
-                     parameters = cms.untracked.vdouble(0.962468, 11.9536, -27.7088, 0.755474, 0.0791012, 0.0459082, 0.158734, -2.1, )
+                     parameters = cms.untracked.vdouble(0.962468, 11.9536, -27.7088, 0.755474, 0.0791012, 0.0011082, 0.158734, -2.1, )
                     ),
             cms.PSet(fType      = cms.untracked.string("PFfb_ENDCAP"),
                      formula    = cms.untracked.string("[0]+((([1]+([2]/sqrt(x)))*exp(-(x^[6]/[3])))-([4]*exp(-(x^[7]/[5]))))"),
@@ -94,21 +94,22 @@ process.mywriter = cms.EDAnalyzer(
                     ),
             ),
 
-  read = cms.untracked.bool(False),
+
+  read = cms.untracked.bool(True),
   toRead = cms.untracked.vstring("PFfa_BARREL",
                                  "PFfb_BARREL",
                                  "PFfc_BARREL",
-                                 "PFfaEta_BARRELEH",
-                                 "PFfbEta_BARRELEH",
                                  "PFfaEta_BARRELH",
                                  "PFfbEta_BARRELH",
+                                 "PFfaEta_BARRELEH",
+                                 "PFfbEta_BARRELEH",
                                  "PFfa_ENDCAP",
                                  "PFfb_ENDCAP",
                                  "PFfc_ENDCAP",
-                                 "PFfaEta_ENDCAPEH",
-                                 "PFfbEta_ENDCAPEH",
                                  "PFfaEta_ENDCAPH",
-                                 "PFfbEta_ENDCAPH") # same strings as fType
+                                 "PFfaEta_ENDCAPEH",
+                                 "PFfbEta_ENDCAPH",
+                                 "PFfbEta_ENDCAPEH") # same strings as fType
 )
 
 
@@ -130,15 +131,15 @@ process.PoolDBOutputService = cms.Service("PoolDBOutputService",
                                   )
 
 process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_cff')
-process.GlobalTag.globaltag = 'START311_V1A::All'
-#process.GlobalTag.globaltag = 'START311_V15A::All'
-#process.GlobalTag.globaltag = '90X_upgrade2017_realistic_v20'
+#process.GlobalTag.globaltag = 'START311_V1A::All'
+process.GlobalTag.globaltag = '90X_upgrade2017_realistic_v20'
 #process.GlobalTag.connect   = 'sqlite_file:/afs/cern.ch/user/c/cerminar/public/Alca/GlobalTag/GR_R_311_V2.db'
-
-process.GlobalTag.toGet = cms.VPSet(
-  cms.PSet(record = cms.string("PFCalibrationRcd"),
-           tag = cms.string("PFCalibration"),
-           #connect = cms.untracked.string("sqlite_file:PFCalibration.db")
-           connect = cms.string("sqlite_file:PFCalibration.db")  #spandey May_29
-          )
-)
+##ss##  
+##ss##  process.GlobalTag.toGet = cms.VPSet(
+##ss##    cms.PSet(record = cms.string("PFCalibrationRcd"),
+##ss##             tag = cms.string("PFCalibration"),
+##ss##             #connect = cms.untracked.string("sqlite_file:PFCalibration.db")
+##ss##             connect = cms.string("sqlite_file:PFCalibration.db")
+##ss##             #connect = cms.untracked.string("sqlite_file:PFCalibration.db")
+##ss##            )
+##ss##  )
