@@ -21,21 +21,6 @@ PFEnergyCalibration::PFEnergyCalibration() : pfCalibrations(0), esEEInterCalib_(
 PFEnergyCalibration::~PFEnergyCalibration() 
 {
 
-  // delete faBarrel;
-  // delete fbBarrel;
-  // delete fcBarrel;
-  // delete faEtaBarrelEH;
-  // delete fbEtaBarrelEH;
-  // delete faEtaBarrelH;
-  // delete fbEtaBarrelH;
-  // delete faEndcap;
-  // delete fbEndcap;
-  // delete fcEndcap;
-  // delete faEtaEndcapEH;
-  // delete fbEtaEndcapEH;
-  // delete faEtaEndcapH;
-  // delete fbEtaEndcapH;
-
 }
 
 void
