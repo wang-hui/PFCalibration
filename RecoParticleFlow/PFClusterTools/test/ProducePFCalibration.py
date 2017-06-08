@@ -103,14 +103,14 @@ process.mywriter = cms.EDAnalyzer(
                                  "PFfb_ENDCAP",
                                  "PFfc_ENDCAP",
                                  #### New Functions
-                                 "PFfaEta_BARRELH",
-                                 "PFfbEta_BARRELH",
                                  "PFfaEta_BARRELEH",
                                  "PFfbEta_BARRELEH",
-                                 "PFfaEta_ENDCAPH",
                                  "PFfaEta_ENDCAPEH",
-                                 "PFfbEta_ENDCAPH",
                                  "PFfbEta_ENDCAPEH"
+                                 "PFfaEta_BARRELH",
+                                 "PFfbEta_BARRELH",
+                                 "PFfaEta_ENDCAPH",
+                                 "PFfbEta_ENDCAPH",
                                  #### Left older functions untouched for backward compatibility
                                  "PFfaEta_BARREL",
                                  "PFfbEta_BARREL",

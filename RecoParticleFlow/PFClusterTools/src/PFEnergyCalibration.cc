@@ -546,12 +546,17 @@ std::ostream& operator<<(std::ostream& out,
     calib.fbBarrel->Print();
     calib.fcBarrel->Print();
     calib.faEtaBarrelEH->Print();
+    calib.fbEtaBarrelEH->Print();
+    calib.faEtaBarrelH->Print();
     calib.fbEtaBarrelH->Print();
     calib.faEndcap->Print();
     calib.fbEndcap->Print();
     calib.fcEndcap->Print();
     calib.faEtaEndcapEH->Print();
+    calib.fbEtaEndcapEH->Print();
+    calib.faEtaEndcapH->Print();
     calib.fbEtaEndcapH->Print();
+
   }
     
   return out;
