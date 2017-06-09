@@ -33,11 +33,11 @@ bool changeRange =false;
 bool old_logic = false;
 bool drawpT = false;
 bool drawResoFit = true;
-bool saveCanvas = true;
-char* _region_ = "EC_outside_tracker";
+bool saveCanvas = false;
+//char* _region_ = "EC_outside_tracker";
 //char* _region_ = "EC_within_tracker";
 //char* _region_ = "barrel";
-//char* _region_ = "Full";
+char* _region_ = "Full";
 
 float _etaMin_ = 0.0;
 float _etaMax_ = 0.0;
@@ -2908,7 +2908,7 @@ void calibChris()
    //chain->Add("/home/work/spandey/public/PF_Cal/samples/PGun_902_Phase1_15_Apr_2017/PGun_902_Phase1_15_Apr_2017.root");
    //chain->Add("/home/work/spandey/public/PF_Cal/samples/PGun_step3_RECO_902_2_200_Apr_27_Correct_tree/PGun_step3_RECO_902_2_200_Apr_27_Correct_tree.root");
 
-   chain->Add("/home/work/spandey/public/PF_Cal/samples/PGun_step3_RECO_902_2_500_Apr_30_Correct_tree/PGun_step3_RECO_902_2_500_Apr_30_Correct_tree.root");
+   chain->Add("/home/shubham/work/PFCalibration/CERN/PFCalibration/PFChargedHadronAnalyzer/test/calibration_code/PGun_step3_RECO_902_2_500_Apr_30_Correct_tree.root");
 
 
    //chain->Add("/home/work/spandey/public/PF_Cal/samples/PGun_condor_2_200GeV_upgrade2017_Jan-12/myHist_PF_upgrade2017_step3_RECO.root");
@@ -2939,7 +2939,7 @@ void calibChris()
      _etaMin_ = 1.55;
      _etaMax_ = 3.0;
    }
-
+ 
    cout<< " _region_: " << _region_<< " , (_region_ == EC_outside_tracker): " 
        << (_region_ == "EC_outside_tracker") << " _etaMax_: " 
        << _etaMax_ << " ,_etaMin:_ " << _etaMin_ << endl;
@@ -3300,9 +3300,11 @@ void calibChris()
    functionBarrelEcalHcalB->FixParameter(2, 5.38578);
    functionBarrelEcalHcalB->FixParameter(3, 0.861981);
    functionBarrelEcalHcalB->FixParameter(4, -0.00759275);
-   functionBarrelEcalHcalB->FixParameter(5, 3.73563e-23);
+   //functionBarrelEcalHcalB->FixParameter(5, 3.73563e-23);
+   functionBarrelEcalHcalB->FixParameter(5, 0.00373563);
    functionBarrelEcalHcalB->FixParameter(6, -1.17946);
-   functionBarrelEcalHcalB->FixParameter(7, -13.3644);
+   //functionBarrelEcalHcalB->FixParameter(7, -13.3644);
+   functionBarrelEcalHcalB->FixParameter(7, -1.69561);
    //** end modified by seema
    
 
@@ -3319,10 +3321,12 @@ void calibChris()
      functionBarrelEcalHcalC->FixParameter(0,2.18802);
      functionBarrelEcalHcalC->FixParameter(1,0.522053);
      functionBarrelEcalHcalC->FixParameter(2,-4.67354);
-     functionBarrelEcalHcalC->FixParameter(3,1.2109e+06);
+     //functionBarrelEcalHcalC->FixParameter(3,1.2109e+06);
+     functionBarrelEcalHcalC->FixParameter(3,12.109);
      functionBarrelEcalHcalC->FixParameter(4,1.75318);
      functionBarrelEcalHcalC->FixParameter(5,0.187919);
-     functionBarrelEcalHcalC->FixParameter(6,-9241.43);
+     //functionBarrelEcalHcalC->FixParameter(6,-9241.43);
+     functionBarrelEcalHcalC->FixParameter(6,-6.26234);
      functionBarrelEcalHcalC->FixParameter(7,-0.607392);
 
 
@@ -3394,9 +3398,13 @@ void calibChris()
      functionEndcapEcalHcalB->FixParameter(2,-27.7088);
      functionEndcapEcalHcalB->FixParameter(3,0.755474);
      functionEndcapEcalHcalB->FixParameter(4,0.0791012);
-     functionEndcapEcalHcalB->FixParameter(5,2.6901e-11);
+     //functionEndcapEcalHcalB->FixParameter(5,2.6901e-11);
+     //functionEndcapEcalHcalB->FixParameter(5,0.0459082);
+     //functionEndcapEcalHcalB->FixParameter(5,0.0459082);
+     functionEndcapEcalHcalB->FixParameter(5,0.0011082);
      functionEndcapEcalHcalB->FixParameter(6,0.158734);
-     functionEndcapEcalHcalB->FixParameter(7,-6.92163);
+     //functionEndcapEcalHcalB->FixParameter(7,-6.92163);
+     functionEndcapEcalHcalB->FixParameter(7,-2.1);
 
 
    functionEndcapEcalHcalC->SetParameters(-0.436687,2.73698,-3.1509,1.20536,
@@ -3520,9 +3528,11 @@ void calibChris()
    //functionEndcapEcalHcalB->FixParameter(4, 0.0776373);
    functionEndcapEcalHcalB->FixParameter(4, 0.0791012);
    //functionEndcapEcalHcalB->FixParameter(5, 7.3809e-10);
-   functionEndcapEcalHcalB->FixParameter(5, 2.6901e-11);
+   //functionEndcapEcalHcalB->FixParameter(5, 2.6901e-11);
+   functionEndcapEcalHcalB->FixParameter(5, 2.6901e-3);
    functionEndcapEcalHcalB->FixParameter(6, 0.158734);
-   functionEndcapEcalHcalB->FixParameter(7, -6.92163);
+   //functionEndcapEcalHcalB->FixParameter(7, -6.92163);
+   functionEndcapEcalHcalB->FixParameter(7, -0.92163);
    //** end modified by seema  
 
    functionEndcapEcalHcalC->SetParameters(-0.436687,2.73698,-3.1509,1.20536,
@@ -4271,7 +4281,7 @@ void calibChris()
    //// E-corrected barrel response for H-hdarons
    //drawGausFit(corrBarrelHcal,responseCor,resolutionCor);
    //// Eta-corrected barrel response for H-hdarons
-   drawGausFit(corrEtaBarrelHcal,responseCor,resolutionCor);
+   //drawGausFit(corrEtaBarrelHcal,responseCor,resolutionCor);
 
    //// raw endcap response for EH-hdarons 
    //drawGausFit(rawEndcapEcalHcal,responseRaw,resolutionRaw);
@@ -4297,11 +4307,11 @@ void calibChris()
 
    //drawEtaDependence(rawEtaDependenceEH, responseEtaEtaEH);
    // drawEtaDependence(hcorrEtaDependenceEH, responseEtaHCorrEtaEH);
-   // drawEtaDependence(corrEtaDependenceEH, responseEtaEtaEH);
+   drawEtaDependence(corrEtaDependenceEH, responseEtaEtaEH);
 
    //drawEtaDependence(rawEtaDependenceH, responseEtaEtaH);
    // drawEtaDependence(hcorrEtaDependenceH, responseEtaHCorrEtaH);
-   // drawEtaDependence(corrEtaDependenceH, responseEtaEtaH);
+   drawEtaDependence(corrEtaDependenceH, responseEtaEtaH);
    
    //drawGausFit(corrEta,response, resolution);
    //drawCompare(responseRaw, response, resolutionRaw, resolution);
@@ -4312,9 +4322,9 @@ void calibChris()
 
 
    // barrel H calibration coefficient
-   barrelWithHcalCalib->drawCoeffGraph("C", "H_barrel");
-   barrelWithHcalCalib->drawCoeffGraph("Alpha","H_barrel");
-   barrelWithHcalCalib->drawCoeffGraph("Beta", "H_barrel");
+   // barrelWithHcalCalib->drawCoeffGraph("C", "H_barrel");
+   // barrelWithHcalCalib->drawCoeffGraph("Alpha","H_barrel");
+   // barrelWithHcalCalib->drawCoeffGraph("Beta", "H_barrel");
 
    // endcap H calibration coefficient
    // endcapWithHcalCalib->drawCoeffGraph("C", "H_endcap");
