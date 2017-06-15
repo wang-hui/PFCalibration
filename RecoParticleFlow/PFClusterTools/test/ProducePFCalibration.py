@@ -106,7 +106,7 @@ process.mywriter = cms.EDAnalyzer(
                                  "PFfaEta_BARRELEH",
                                  "PFfbEta_BARRELEH",
                                  "PFfaEta_ENDCAPEH",
-                                 "PFfbEta_ENDCAPEH"
+                                 "PFfbEta_ENDCAPEH",
                                  "PFfaEta_BARRELH",
                                  "PFfbEta_BARRELH",
                                  "PFfaEta_ENDCAPH",
@@ -129,7 +129,7 @@ CondDBCommon.connect = "sqlite_file:PFCalibration.db"
 process.PoolDBOutputService = cms.Service("PoolDBOutputService",
                                   CondDBCommon,
                                   toPut = cms.VPSet(cms.PSet(record = cms.string('PFCalibrationRcd'),
-                                                             tag = cms.string('PFCalibration'),
+                                                             tag = cms.string('PFCalibration_v6_mc'),
                                                              timetype   = cms.untracked.string('runnumber')
                                                              )
                                                              ),
@@ -144,7 +144,7 @@ process.GlobalTag.globaltag = '90X_upgrade2017_realistic_v20'
 
 process.GlobalTag.toGet = cms.VPSet(
     cms.PSet(record = cms.string("PFCalibrationRcd"),
-             tag = cms.string("PFCalibration"),
+             tag = cms.string("PFCalibration_v6_mc"),
              connect = cms.string("sqlite_file:PFCalibration.db")
              #connect = cms.untracked.string("sqlite_file:PFCalibration.db")
              )
