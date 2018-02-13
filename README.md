@@ -3,7 +3,7 @@ For Single Pion sample Generation:
 
 (For tcsh)  
 ```
-setenv SCRAM_ARCH slc6_amd64_gcc630 </br>
+setenv SCRAM_ARCH slc6_amd64_gcc630
 ```
 (For bash)
 ```
