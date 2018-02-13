@@ -12,7 +12,8 @@
 #include "DataFormats/EcalRecHit/interface/EcalRecHitCollections.h" 
 #include "DataFormats/EcalRecHit/interface/EcalUncalibratedRecHit.h" 
 #include "DataFormats/HcalRecHit/interface/HcalRecHitCollections.h" 
-#include "DataFormats/HcalRecHit/interface/HcalRecHitFwd.h"
+//#include "DataFormats/HcalRecHit/interface/HcalRecHitFwd.h"
+#include "DataFormats/HcalRecHit/interface/HcalRecHitDefs.h"
 
 #include "FWCore/Framework/interface/ESHandle.h"
 
@@ -95,7 +96,11 @@ PFChargedHadronAnalyzer::PFChargedHadronAnalyzer(const edm::ParameterSet& iConfi
   s->Branch("eta",&eta_,"eta/F");  
   s->Branch("phi",&phi_,"phi/F");
   s->Branch("charge",&charge_,"charge/I");
-  
+
+  s->Branch("dr",&dr_);  //spandey Apr_27 dR
+  s->Branch("Eecal",&Eecal_);  //spandey Apr_27 dR
+  s->Branch("Ehcal",&Ehcal_);  //spandey Apr_27 dR
+  s->Branch("pfcID",&pfcID_);  //spandey Apr_27 dR
 
   s->Branch("pfcs",&pfcsID);
 
@@ -262,6 +267,10 @@ PFChargedHadronAnalyzer::analyze(const Event& iEvent,
   pfcsID.clear();
 
   charge_=0;
+  dr_.clear();
+  Eecal_.clear();
+  Ehcal_.clear();  
+  pfcID_.clear();
 
   if(isMBMC_)
     isSimu=false;
@@ -309,14 +318,33 @@ PFChargedHadronAnalyzer::analyze(const Event& iEvent,
       charge_=0;
       ecal_ = 0.;
       hcal_ = 0.;
+      dr_.clear();  //spandey Apr_27 dR
+      Eecal_.clear();
+      Ehcal_.clear();  
+      pfcID_.clear();
+      
+      //cout<<"***********************"<<endl;
       for( CI ci  = pfCandidates->begin(); 
 	   ci!=pfCandidates->end(); ++ci)  {
 	const reco::PFCandidate& pfc = *ci;
 	double deta = eta_ - pfc.eta();
 	double dphi = dPhi(phi_, pfc.phi() );
 	double dR = std::sqrt(deta*deta+dphi*dphi);
+	if ( dR < 1.2 ) {
+	  dr_.push_back(dR);   //spandey Apr_27 dR
+	  pfcID_.push_back(pfc.particleId());   //spandey Apr_27 dR
+	  Eecal_.push_back(pfc.rawEcalEnergy());  //spandey Apr_27 dR
+	  Ehcal_.push_back(pfc.rawHcalEnergy());  //spandey Apr_27 dR
+	}
+	  //cout<<"pID:" << pfcID_.back() << " ,|eta|:" << fabs(eta_) << " ,dR:" << dr_.back() << " ,Eecal:" << Eecal_.back() << " ,Ehcal:" << Ehcal_.back() <<endl;
+	//   if (pfc.particleId() == 5 && pfc.rawEcalEnergy() != 0)
+	//     cout<<"pID:" << pfcID_.back() << " ,|eta|:" << fabs(eta_) << " ,dR:" << dr_.back() << " ,Eecal:" << Eecal_.back() << " ,Ehcal:" << Ehcal_.back() <<endl;
+	// }
 	if ( pfc.particleId() == 4 && dR < 0.2 ) ecal_ += pfc.rawEcalEnergy();
 	if ( pfc.particleId() == 5 && dR < 0.4 ) hcal_ += pfc.rawHcalEnergy();
+	// if ( pfc.particleId() == 4  ) {  Eecal.push_back(pfc.rawEcalEnergy()); }
+	// if ( pfc.particleId() == 5  ) { Ehcal.push_back(pfc.rawHcalEnergy()); }
+
       }
             
       s->Fill();
@@ -370,6 +398,10 @@ PFChargedHadronAnalyzer::analyze(const Event& iEvent,
     double ecalRaw = pfc.rawEcalEnergy();
     double hcalRaw = pfc.rawHcalEnergy();
     double hoRaw = pfc.rawHoEnergy();
+    // if(hcalRaw > 0)
+    //   cout<<"Non Zero Hcal ="<<hcalRaw<<endl;
+
+
     if ( ecalRaw + hcalRaw < hcalMin_ ) continue;
     nCh[3]++;
 

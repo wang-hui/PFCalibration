@@ -115,7 +115,7 @@ class PFChargedHadronAnalyzer : public edm::EDAnalyzer {
   float true_,p_,ecal_,hcal_,eta_,phi_,ho_;
   float etaEcal_,phiEcal_;
   int charge_;
-
+  std::vector<float> dr_,Eecal_,Ehcal_,pfcID_;
   size_t orun,oevt,olumiBlock,otime;
   
   edm::RunNumber_t run;
