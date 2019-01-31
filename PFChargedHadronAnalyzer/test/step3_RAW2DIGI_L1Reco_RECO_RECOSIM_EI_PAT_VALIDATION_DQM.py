@@ -29,14 +29,13 @@ process.load('DQMOffline.Configuration.DQMOfflineMC_cff')
 process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_cff')
 
 process.maxEvents = cms.untracked.PSet(
-    input = cms.untracked.int32(10)
+    input = cms.untracked.int32(-1)
 )
 
 
 
 # Input source
 process.source = cms.Source("PoolSource",
-    # fileNames = cms.untracked.vstring('file:/afs/cern.ch/user/b/bkansal/work/PF_cal_test_2_august/test/CMSSW_10_4_0_pre4/src/PFCalibration/PFChargedHadronAnalyzer/test/step2_test.root'),
     fileNames = cms.untracked.vstring('file:step2.root'),
     secondaryFileNames = cms.untracked.vstring()
 )
@@ -153,19 +152,11 @@ process.RandomNumberGeneratorService.restoreStateLabel=cms.untracked.string("ran
 from Configuration.AlCa.GlobalTag import GlobalTag
 #process.GlobalTag = GlobalTag(process.GlobalTag, 'auto:run1_mc', '')
 
-#process.GlobalTag = GlobalTag(process.GlobalTag, '103X_upgrade2018_realistic_v8', '')
+process.GlobalTag = GlobalTag(process.GlobalTag, '103X_upgrade2018_realistic_v8', '')
 # process.GlobalTag = GlobalTag(process.GlobalTag, '101X_upgrade2018_realistic_v2', '')
 
-# process.particleFlowTmp.useCalibrationsFromDB = False
-process.GlobalTag.globaltag = '103X_upgrade2018_realistic_v8'
+process.particleFlowTmp.useCalibrationsFromDB = False
 
-process.GlobalTag.toGet = cms.VPSet(
-    cms.PSet(record = cms.string("PFCalibrationRcd"),
-             tag = cms.string("PFCalibration_v10_mc"),
-             connect = cms.string("sqlite_file:PFCalibration.db")
-             #connect = cms.untracked.string("sqlite_file:PFCalibration.db")                         
-             )
-    )
 
 
 
@@ -184,7 +175,7 @@ process.pfChargedHadronAnalyzer = cms.EDAnalyzer(
     ecalMax = cms.double(1E9),                  # Maximum ecal energy                                                                
     verbose = cms.untracked.bool(True),         # not used.                                                                          
     #rootOutputFile = cms.string("PGun__2_200GeV__81X_upgrade2017_realistic_v22.root"),# the root tree                               
-    rootOutputFile = cms.string("step3_test.root"),# the root tree                                                       
+    rootOutputFile = cms.string("step3.root"),# the root tree                                                       
 #    IsMinBias = cms.untracked.bool(False)                                                                                           
 )
 
@@ -277,13 +268,6 @@ process.DQMoutput_step = cms.EndPath(process.DQMoutput)
 # process.schedule = cms.Schedule(process.raw2digi_step,process.L1Reco_step,process.reconstruction_step,process.eventinterpretaion_step,process.RECOSIMoutput_step)
 process.schedule = cms.Schedule(process.raw2digi_step,process.L1Reco_step,process.reconstruction_step,process.eventinterpretaion_step,process.gRR,process.EDA)
 
-# process.GlobalTag.toGet = cms.VPSet(
-#     cms.PSet(record = cms.string("PFCalibrationRcd"),
-#              tag = cms.string("PFCalibration_v10_mc"),
-#              connect = cms.string("sqlite_file:PFCalibration.db")
-#              #connect = cms.untracked.string("sqlite_file:PFCalibration.db")                                                                   
-#              )
-#     )
 
 
 
