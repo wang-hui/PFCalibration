@@ -29,13 +29,15 @@ process.load('DQMOffline.Configuration.DQMOfflineMC_cff')
 process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_cff')
 
 process.maxEvents = cms.untracked.PSet(
-    input = cms.untracked.int32(-1)
+    input = cms.untracked.int32(10)
 )
+
+
 
 # Input source
 process.source = cms.Source("PoolSource",
-    #fileNames = cms.untracked.vstring('root://se01.indiacms.res.in//store/user/spandey/step2/PGun_step2_DIGI_1002_2_200_Feb_12/CRAB_UserFiles/crab_PGun_step2_DIGI_1002_2_200_Feb_12/180212_110432/0000/step2_2.root'),
-    fileNames = cms.untracked.vstring(),
+    # fileNames = cms.untracked.vstring('file:/afs/cern.ch/user/b/bkansal/work/PF_cal_test_2_august/test/CMSSW_10_4_0_pre4/src/PFCalibration/PFChargedHadronAnalyzer/test/step2_test.root'),
+    fileNames = cms.untracked.vstring('file:step2.root'),
     secondaryFileNames = cms.untracked.vstring()
 )
 
@@ -145,11 +147,25 @@ process.mix.playback = True
 process.mix.digitizers = cms.PSet()
 for a in process.aliases: delattr(process, a)
 process.RandomNumberGeneratorService.restoreStateLabel=cms.untracked.string("randomEngineStateProducer")
+
+
+
 from Configuration.AlCa.GlobalTag import GlobalTag
 #process.GlobalTag = GlobalTag(process.GlobalTag, 'auto:run1_mc', '')
-process.GlobalTag = GlobalTag(process.GlobalTag, '100X_upgrade2018_realistic_v10', '')
 
+#process.GlobalTag = GlobalTag(process.GlobalTag, '103X_upgrade2018_realistic_v8', '')
+# process.GlobalTag = GlobalTag(process.GlobalTag, '101X_upgrade2018_realistic_v2', '')
 
+# process.particleFlowTmp.useCalibrationsFromDB = False
+process.GlobalTag.globaltag = '103X_upgrade2018_realistic_v8'
+
+process.GlobalTag.toGet = cms.VPSet(
+    cms.PSet(record = cms.string("PFCalibrationRcd"),
+             tag = cms.string("PFCalibration_v10_mc"),
+             connect = cms.string("sqlite_file:PFCalibration.db")
+             #connect = cms.untracked.string("sqlite_file:PFCalibration.db")                         
+             )
+    )
 
 
 
@@ -168,7 +184,7 @@ process.pfChargedHadronAnalyzer = cms.EDAnalyzer(
     ecalMax = cms.double(1E9),                  # Maximum ecal energy                                                                
     verbose = cms.untracked.bool(True),         # not used.                                                                          
     #rootOutputFile = cms.string("PGun__2_200GeV__81X_upgrade2017_realistic_v22.root"),# the root tree                               
-    rootOutputFile = cms.string("step3.root"),# the root tree                                                       
+    rootOutputFile = cms.string("step3_test.root"),# the root tree                                                       
 #    IsMinBias = cms.untracked.bool(False)                                                                                           
 )
 
@@ -185,8 +201,14 @@ process.particleFlowSimParticle.ParticleFilter = cms.PSet(
         etaMax = cms.double(5.3),
         # Charged particles with pT < pTMin (GeV/c) are not simulated                                                                
         chargedPtMin = cms.double(0.0),
-        # Particles must have energy greater than EMin [GeV]                                                                         
-        EMin = cms.double(0.0))
+        # Particles must have energy greater than EMin [GeV]
+        EMin = cms.double(0.0),
+        rMax = cms.double(129.),
+        # half-length of the ECAL endcap inner surface
+        zMax = cms.double(317.),
+        # List of invisible particles (abs of pdgid)
+        invisibleParticles = cms.vint32()
+        )
 
 process.genReReco = cms.Sequence(#process.generator+                                                                                 
                                  #process.genParticles+                                                                              
@@ -252,8 +274,16 @@ process.DQMoutput_step = cms.EndPath(process.DQMoutput)
 # Schedule definition
 #process.schedule = cms.Schedule(process.raw2digi_step,process.L1Reco_step,process.reconstruction_step,process.recosim_step,process.eventinterpretaion_step,process.Flag_HBHENoiseFilter,process.Flag_HBHENoiseIsoFilter,process.Flag_CSCTightHaloFilter,process.Flag_CSCTightHaloTrkMuUnvetoFilter,process.Flag_CSCTightHalo2015Filter,process.Flag_globalTightHalo2016Filter,process.Flag_globalSuperTightHalo2016Filter,process.Flag_HcalStripHaloFilter,process.Flag_hcalLaserEventFilter,process.Flag_EcalDeadCellTriggerPrimitiveFilter,process.Flag_EcalDeadCellBoundaryEnergyFilter,process.Flag_ecalBadCalibFilter,process.Flag_goodVertices,process.Flag_eeBadScFilter,process.Flag_ecalLaserCorrFilter,process.Flag_trkPOGFilters,process.Flag_chargedHadronTrackResolutionFilter,process.Flag_muonBadTrackFilter,process.Flag_BadChargedCandidateFilter,process.Flag_BadPFMuonFilter,process.Flag_BadChargedCandidateSummer16Filter,process.Flag_BadPFMuonSummer16Filter,process.Flag_trkPOG_manystripclus53X,process.Flag_trkPOG_toomanystripclus53X,process.Flag_trkPOG_logErrorTooManyClusters,process.Flag_METFilters,process.prevalidation_step,process.prevalidation_step1,process.validation_step,process.validation_step1,process.dqmoffline_step,process.dqmoffline_1_step,process.dqmofflineOnPAT_step,process.dqmofflineOnPAT_1_step,process.RECOSIMoutput_step,process.MINIAODSIMoutput_step,process.DQMoutput_step)
 
+# process.schedule = cms.Schedule(process.raw2digi_step,process.L1Reco_step,process.reconstruction_step,process.eventinterpretaion_step,process.RECOSIMoutput_step)
 process.schedule = cms.Schedule(process.raw2digi_step,process.L1Reco_step,process.reconstruction_step,process.eventinterpretaion_step,process.gRR,process.EDA)
 
+# process.GlobalTag.toGet = cms.VPSet(
+#     cms.PSet(record = cms.string("PFCalibrationRcd"),
+#              tag = cms.string("PFCalibration_v10_mc"),
+#              connect = cms.string("sqlite_file:PFCalibration.db")
+#              #connect = cms.untracked.string("sqlite_file:PFCalibration.db")                                                                   
+#              )
+#     )
 
 
 
