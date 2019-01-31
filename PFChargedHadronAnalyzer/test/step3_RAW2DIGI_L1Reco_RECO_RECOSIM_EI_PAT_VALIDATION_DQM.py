@@ -162,7 +162,7 @@ process.GlobalTag.globaltag = '103X_upgrade2018_realistic_v8'
 process.GlobalTag.toGet = cms.VPSet(
     cms.PSet(record = cms.string("PFCalibrationRcd"),
              tag = cms.string("PFCalibration_v10_mc"),
-             connect = cms.string("sqlite_file:PFCalibration.db")
+             connect = cms.string("sqlite_file:/afs/cern.ch/work/s/spandey/public/PF_cal/PF_code_eta_dependency_removal/CMSSW_10_4_0_pre4/src/PFCalibration.db")
              #connect = cms.untracked.string("sqlite_file:PFCalibration.db")                         
              )
     )
