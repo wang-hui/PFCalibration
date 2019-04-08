@@ -186,7 +186,13 @@ process.particleFlowSimParticle.ParticleFilter = cms.PSet(
         # Charged particles with pT < pTMin (GeV/c) are not simulated                                                                
         chargedPtMin = cms.double(0.0),
         # Particles must have energy greater than EMin [GeV]                                                                         
-        EMin = cms.double(0.0))
+        EMin = cms.double(0.0),
+        rMax = cms.double(129.),
+        # half-length of the ECAL endcap inner surface                                                
+        zMax = cms.double(317.),
+        # List of invisible particles (abs of pdgid)                                                  
+        invisibleParticles = cms.vint32()
+)
 
 process.genReReco = cms.Sequence(#process.generator+                                                                                 
                                  #process.genParticles+                                                                              
