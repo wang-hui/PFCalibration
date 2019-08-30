@@ -22,50 +22,38 @@ void overlay_script_responsevsE()
   char* rootfile2 = new char[200];
 
 
-  sprintf(legendname,"EH endcap (inside tracker)");
-  sprintf(plot_name, "EH_ec_in");
-   // sprintf(legendname,"EH barrel");
-   // sprintf(plot_name, "EH_barrel");
+  // sprintf(legendname,"H endcap (inside tracker)");
+  // sprintf(plot_name, "H_ec_in");
+   sprintf(legendname,"H barrel");
+   sprintf(plot_name, "H_barrel");
+  // sprintf(path_root1,"/home/work/bhumika/work/calibration/Ultra_legacy/for_UL2017/trial_oldparam/response_plots_root");
+  // sprintf(path_root2,"/home/work/bhumika/work/calibration/Ultra_legacy/for_UL2017/trial1/response_plots_root/after15may");
+  // sprintf(rootfile1,"correta");
+  // sprintf(rootfile2,"correta");
+
+  // sprintf(hname1,"/home/work/bhumika/work/calibration/Ultra_legacy/for_UL2018/trial1/response_plots_root/Pt_correta_%s_10_6_0.root",plot_name);
+  // sprintf(hname,"/home/work/bhumika/work/calibration/Ultra_legacy/for_UL2018/for_10_0_3/response_plots_root/Pt_correta_%s_10_0_3.root",plot_name);
+  // sprintf(path,"/home/work/bhumika/work/calibration/Ultra_legacy/for_UL2018/trial1/overlay_plots_with_10_0_3/response_plots/Pt_%s.gif",plot_name);
+  // sprintf(path1,"/home/work/bhumika/work/calibration/Ultra_legacy/for_UL2018/trial1/pdf/overlay_plots_with_10_0_3/response_plots/Pt%s.pdf",plot_name);
+  // sprintf(path2,"/home/work/bhumika/work/calibration/Ultra_legacy/for_UL2018/trial1/png/overlay_plots_with_10_0_3/response_plots/Pt_%s.png",plot_name);
+
+  sprintf(hname1,"/home/work/bhumika/work/calibration/Ultra_legacy/for_UL2017/trial1/response_plots_root/after15may/correta_%s_10_6_0_pre2.root",plot_name);
+  sprintf(hname,"/home/work/bhumika/work/calibration/Ultra_legacy/for_UL2017/raw/response_plots_root/Raw_%s_10_6_0_pre2.root",plot_name);
+  sprintf(path,"/home/work/bhumika/work/calibration/Ultra_legacy/for_UL2017/trial1/overlay_plots_with_raw/response_plots/correta_vs_raw_%s.gif",plot_name);
+  sprintf(path1,"/home/work/bhumika/work/calibration/Ultra_legacy/for_UL2017/trial1/overlay_plots_raw/response_plots/correta_vs_raw_%s.pdf",plot_name);
+  sprintf(path2,"/home/work/bhumika/work/calibration/Ultra_legacy/for_UL2017/trial1/overlay_plots_raw/response_plots/correta_vs_raw_%s.png",plot_name);
+  sprintf(new_rel,"After Energy correction");
+  sprintf(old_rel,"Without calibration");
 
 
-  //---------- PT comparision for old calib and new calib------------------------
-  // sprintf(hname1,"/home/work/bhumika/work/calibration/Ultra_legacy/for_UL2016/trial3/response_plots_root/Pt_correta_%s_10_6_0.root",plot_name);
-  // sprintf(hname,"/home/work/bhumika/work/calibration/Ultra_legacy/for_UL2016/for_10_0_3_calib/response_plots_root/Pt_correta_%s_10_0_3.root",plot_name);
-  // sprintf(path,"/home/work/bhumika/work/calibration/Ultra_legacy/for_UL2016/trial3/overlay_plots_with_10_0_3/response_plots/gif/Pt_correta_%s.gif",plot_name);
-  // sprintf(path1,"/home/work/bhumika/work/calibration/Ultra_legacy/for_UL2016/trial3/overlay_plots_with_10_0_3/response_plots/pdf/Pt_correta_%s.pdf",plot_name);
-  // sprintf(path2,"/home/work/bhumika/work/calibration/Ultra_legacy/for_UL2016/trial3/overlay_plots_with_10_0_3/response_plots/png/Pt_correta_%s.png",plot_name);
-  // sprintf(new_rel,"new calib (10_6_0)");
-  // sprintf(old_rel,"old calib (10_0_3)");
 
-
-  //---------- E comparision for old calib and new calib------------------------
-
-  sprintf(hname1,"/home/work/bhumika/work/calibration/Ultra_legacy/for_UL2016/trial3/response_plots_root/correta_%s_10_6_0.root",plot_name);
-  sprintf(hname,"/home/work/bhumika/work/calibration/Ultra_legacy/for_UL2016/for_10_0_3_calib/response_plots_root/correta_%s_10_0_3.root",plot_name);
-  sprintf(path,"/home/work/bhumika/work/calibration/Ultra_legacy/for_UL2016/trial3/overlay_plots_with_10_0_3/response_plots/gif/correta_%s.gif",plot_name);
-  sprintf(path1,"/home/work/bhumika/work/calibration/Ultra_legacy/for_UL2016/trial3/overlay_plots_with_10_0_3/response_plots/pdf/correta_%s.pdf",plot_name);
-  sprintf(path2,"/home/work/bhumika/work/calibration/Ultra_legacy/for_UL2016/trial3/overlay_plots_with_10_0_3/response_plots/png/correta_%s.png",plot_name);
-  sprintf(new_rel,"new calib (10_6_0)");
-  sprintf(old_rel,"old calib (10_0_3)");
-
-
-  // sprintf(hname1,"/home/work/bhumika/work/calibration/Ultra_legacy/for_UL2016/trial3/response_plots_root/correta_%s_10_6_0.root",plot_name);
-  // sprintf(hname,"/home/work/bhumika/work/calibration/Ultra_legacy/for_UL2016/raw/response_plots_root/Raw_%s_10_6_0_pre2_response.root",plot_name);
-  // sprintf(path,"/home/work/bhumika/work/calibration/Ultra_legacy/for_UL2016/trial3/overlay_plots_with_raw/response_plots/gif/correta_%s.gif",plot_name);
-  // sprintf(path1,"/home/work/bhumika/work/calibration/Ultra_legacy/for_UL2016/trial3/overlay_plots_with_raw/response_plots/pdf/correta_%s.pdf",plot_name);
-  // sprintf(path2,"/home/work/bhumika/work/calibration/Ultra_legacy/for_UL2016/trial3/overlay_plots_with_raw/response_plots/png/correta_%s.png",plot_name);
-  // sprintf(new_rel,"After Calibration");
-  // sprintf(old_rel,"Without Calibration");
-
-  //========= Raw E comparision for UL2016 and UL2017=====================
-
-  // sprintf(hname1,"/home/work/bhumika/work/calibration/Ultra_legacy/for_UL2016/raw/response_plots_root/Raw_%s_10_6_0_pre2_response.root",plot_name);
-  // sprintf(hname,"/home/work/bhumika/work/calibration/Ultra_legacy/for_UL2017/raw/response_plots_root/Raw_%s_10_6_0_pre2.root",plot_name);
-  // sprintf(path,"/home/work/bhumika/work/calibration/Ultra_legacy/for_UL2016/raw/gif/overlay_plots_with_UL2017/response_plots/Raw_%s.gif",plot_name);
-  // sprintf(path1,"/home/work/bhumika/work/calibration/Ultra_legacy/for_UL2016/raw/pdf/overlay_plots_with_UL2017/response_plots/Raw_%s.pdf",plot_name);
-  // sprintf(path2,"/home/work/bhumika/work/calibration/Ultra_legacy/for_UL2016/raw/png/overlay_plots_with_UL2017/response_plots/Raw_%s.png",plot_name);
-  // sprintf(new_rel,"for UL2016");
-  // sprintf(old_rel,"for UL2017");
+  // sprintf(hname,"%s/%s_%s.root",path_root1,rootfile1,plot_name);
+  // sprintf(hname1,"%s/%s_%s.root",path_root2,rootfile2,plot_name);
+  // sprintf(plot_name,"%s",plot);
+  //  sprintf(hist_name,"%s",hist);
+  // sprintf(path,"../../overlay_response_plots/witholdparam_pdf/%s_%s.pdf",rootfile1,plot_name);
+  // sprintf(old_rel,"%s",old_release);
+  // sprintf(new_rel,"%s",new_release);
 
 
    TCanvas *Canvas_1_n2 = new TCanvas("Canvas_1_n2", "Canvas_1_n2",65,52,525,527);

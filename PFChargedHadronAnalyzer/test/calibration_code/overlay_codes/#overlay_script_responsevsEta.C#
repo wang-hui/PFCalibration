@@ -16,8 +16,8 @@ void overlay_script_responsevsEta()
   char* old_release = new char[50];
   char* new_release = new char[50];
   char* hist = new char[200];
-  char* path1 = new char[200];
-  char* path2 = new char[200];
+  char* path_root1 = new char[200];
+  char* path_root2 = new char[200];
   char* rootfile1 = new char[200];
   char* rootfile2 = new char[200];
 
@@ -28,8 +28,6 @@ void overlay_script_responsevsEta()
   sprintf(hname1,"/home/work/bhumika/work/calibration/Ultra_legacy/for_UL2018/trial1/response_plots_root/Eta_correta_%s_10_6_0.root",plot_name);
   sprintf(hname,"/home/work/bhumika/work/calibration/Ultra_legacy/for_UL2018/for_10_0_3_calib/response_plots_root/Eta_correta_%s_10_0_3.root",plot_name);
   sprintf(path,"/home/work/bhumika/work/calibration/Ultra_legacy/for_UL2018/trial1/pdf/overlay_plots_with_10_0_3/response_plots/Eta_correta_%s.pdf",plot_name);
-  sprintf(path1,"/home/work/bhumika/work/calibration/Ultra_legacy/for_UL2018/trial1/png/overlay_plots_with_10_0_3/response_plots/Eta_correta_%s.png",plot_name);
-  sprintf(path2,"/home/work/bhumika/work/calibration/Ultra_legacy/for_UL2018/trial1/overlay_plots_with_10_0_3/response_plots/Eta_correta_%s.gif",plot_name);
   sprintf(new_rel,"new calib (10_6_0)");
   sprintf(old_rel,"old calib (10_0_3)");
 
@@ -164,7 +162,5 @@ void overlay_script_responsevsEta()
    //   legends->SetMarkerStyle(1);
    legends->Draw();
    Canvas_1_n2->SaveAs(path);
-   Canvas_1_n2->SaveAs(path1);
-   Canvas_1_n2->SaveAs(path2);
 
 }
