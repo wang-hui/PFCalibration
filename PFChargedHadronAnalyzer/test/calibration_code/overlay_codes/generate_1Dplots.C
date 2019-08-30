@@ -20,33 +20,33 @@ void generate_1Dplots()
   char* hist = new char[200];
   // sprintf(old_release, "corrEta");
   // sprintf(new_release, "corrEta");
-  sprintf(plot_name, "EH_barrel");
+  sprintf(plot_name, "EH_ec_out");
   //  sprintf(plot_name, "H_barrel");
   sprintf(hist, "histcorhybrid");
-  sprintf(hname1,"/home/work/bhumika/work/calibration/Ultra_legacy/for_UL2017/trial1/1D_response/before15may/corr_%s_10_6_0_pre2.root",plot_name);//
-  sprintf(hname,"/home/work/bhumika/work/calibration/Ultra_legacy/for_UL2017/raw/1D_response/Raw_%s_10_6_0_pre2.root",plot_name);
-  // sprintf(path,"/home/work/bhumika/work/calibration/Ultra_legacy/for_UL2018/trial1/overlay_plots_with_10_0_3/1D_response_plots/%s/",plot_name);
-  // sprintf(path1,"/home/work/bhumika/work/calibration/Ultra_legacy/for_UL2018/trial1/pdf/overlay_plots_with_10_0_3/1D_response_plots/%s",plot_name);
-  // sprintf(path2,"/home/work/bhumika/work/calibration/Ultra_legacy/for_UL2018/trial1/png/overlay_plots_with_10_0_3/1D_response_plots/%s",plot_name);
-  sprintf(new_rel,"After energy calibration");
-  sprintf(old_rel,"Without calibration");
+  sprintf(hname1,"/home/work/bhumika/work/calibration/Ultra_legacy/for_UL2018/trial1/1D_response/correta_%s_10_6_0.root",plot_name);
+  sprintf(hname,"/home/work/bhumika/work/calibration/Ultra_legacy/for_UL2018/for_10_0_3/1D_response/correta_%s_10_0_3.root",plot_name);
+  sprintf(path,"/home/work/bhumika/work/calibration/Ultra_legacy/for_UL2018/trial1/overlay_plots_with_10_0_3/1D_response_plots/%s/",plot_name);
+  sprintf(path1,"/home/work/bhumika/work/calibration/Ultra_legacy/for_UL2018/trial1/pdf/overlay_plots_with_10_0_3/1D_response_plots/%s",plot_name);
+  sprintf(path2,"/home/work/bhumika/work/calibration/Ultra_legacy/for_UL2018/trial1/png/overlay_plots_with_10_0_3/1D_response_plots/%s",plot_name);
+  sprintf(new_rel,"new calib (10_6_0)");
+  sprintf(old_rel,"old calib (10_0_3)");
     
   double xmin= -1., xmax =1.;
   double ymin= 0, y1, y2, ymax=0;
-  int n[69], i=0;
-  //  int i=0, n[0]=64;
-
-   for(int i=2; i<69; i++)
+  int n[69];
+  n[0]=0;
+  n[1]=2;
+  for(int i=2; i<69; i++)
     {
       if (n[i-1]<12)
-  	n[i]=n[i-1]+2;
+	n[i]=n[i-1]+2;
       else if (n[i-1]>=12 && n[i-1]<104)
-  	n[i]=n[i-1]+4;
+	n[i]=n[i-1]+4;
       else
-  	n[i]=n[i-1]+10;
+	n[i]=n[i-1]+10;
     }
 
-  for(int i=2; i<10;i++)
+  for(int i=2; i<68;i++)
     { 
       sprintf(stat_name,"Etrue bin %d-%d GeV",n[i],n[i+1]);
 
@@ -170,9 +170,9 @@ void generate_1Dplots()
    // // // legends->AddEntry(resp1, "for old (10_0_3)","lep");//(name of hist,what you want it called in legend, l=line, p=polymarker, f=boxy thing ) 
    // // // legends->AddEntry(resp3, "for new (10_6_0_pre2)","lep");
    // legends->Draw();
-   // Canvas_1_n2->SaveAs(full_path);
-   // Canvas_1_n2->SaveAs(full_path1);
-   // Canvas_1_n2->SaveAs(full_path2);
+   Canvas_1_n2->SaveAs(full_path);
+   Canvas_1_n2->SaveAs(full_path1);
+   Canvas_1_n2->SaveAs(full_path2);
    if (n[i]==494) continue;
     }
 }

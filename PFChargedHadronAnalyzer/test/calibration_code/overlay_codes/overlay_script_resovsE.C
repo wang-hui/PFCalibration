@@ -22,10 +22,10 @@ void overlay_script_resovsE()
   char* rootfile2 = new char[200];
 
 
-  sprintf(legendname,"EH endcap (outside tracker)");
-  sprintf(plot_name, "EH_ec_out");//correta_H_barrel_10_6_0_pre2_pt.root
-  // sprintf(legendname,"H barrel");
-  // sprintf(plot_name, "H_barrel");//correta_H_barrel_10_6_0_pre2_pt.root
+  // sprintf(legendname,"H endcap (outside tracker)");
+  // sprintf(plot_name, "H_ec_out");//correta_H_barrel_10_6_0_pre2_pt.root
+  sprintf(legendname,"EH barrel");
+  sprintf(plot_name, "EH_barrel");//correta_H_barrel_10_6_0_pre2_pt.root
 
   // sprintf(hname1,"/home/work/bhumika/work/calibration/Ultra_legacy/for_UL2018/trial1/response_plots_root/Pt_correta_%s_10_6_0.root",plot_name);
   // sprintf(hname,"/home/work/bhumika/work/calibration/Ultra_legacy/for_UL2018/for_10_0_3/response_plots_root/Pt_correta_%s_10_0_3.root",plot_name);
@@ -33,13 +33,13 @@ void overlay_script_resovsE()
   // sprintf(path1,"/home/work/bhumika/work/calibration/Ultra_legacy/for_UL2018/trial1/pdf/overlay_plots_with_10_0_3/response_plots/Pt_%s_resolution.pdf",plot_name);
   // sprintf(path2,"/home/work/bhumika/work/calibration/Ultra_legacy/for_UL2018/trial1/png/overlay_plots_with_10_0_3/response_plots/Pt_%s_resolution.png",plot_name);
 
-  sprintf(hname1,"/home/work/bhumika/work/calibration/Ultra_legacy/for_UL2017/trial1/response_plots_root/before15may/correta_%s_10_6_0_pre2.root",plot_name);
-  sprintf(hname,"/home/work/bhumika/work/calibration/Ultra_legacy/for_UL2017/raw/response_plots_root/Raw_%s_10_6_0_pre2.root",plot_name);
-  sprintf(path,"/home/work/bhumika/work/calibration/Ultra_legacy/for_UL2017/trial1/overlay_plots_with_raw/response_plots/correta_vs_raw_%s_reso.gif",plot_name);
-  sprintf(path1,"/home/work/bhumika/work/calibration/Ultra_legacy/for_UL2017/trial1/pdf/overlay_plots_raw/response_plots/correta_vs_raw_%s_reso.pdf",plot_name);
-  sprintf(path2,"/home/work/bhumika/work/calibration/Ultra_legacy/for_UL2017/trial1/png/overlay_plots_raw/response_plots/correta_vs_raw_%s_reso.png",plot_name);
-  sprintf(new_rel,"After Energy correction");
-  sprintf(old_rel,"Without calibration");
+  sprintf(hname1,"/home/work/bhumika/work/calibration/Ultra_legacy/for_UL2018/trial1/response_plots_root/correta_%s_10_6_0.root",plot_name);
+  sprintf(hname,"/home/work/bhumika/work/calibration/Ultra_legacy/for_UL2018/for_10_0_3_calib/response_plots_root/correta_%s_10_0_3.root",plot_name);
+  sprintf(path,"/home/work/bhumika/work/calibration/Ultra_legacy/for_UL2018/trial1/overlay_plots_with_10_0_3/response_plots/correta_%s_resolution.gif",plot_name);
+  sprintf(path1,"/home/work/bhumika/work/calibration/Ultra_legacy/for_UL2018/trial1/pdf/overlay_plots_with_10_0_3/response_plots/correta_%s_resolution.pdf",plot_name);
+  sprintf(path2,"/home/work/bhumika/work/calibration/Ultra_legacy/for_UL2018/trial1/png/overlay_plots_with_10_0_3/response_plots/correta_%s_resolution.png",plot_name);
+  sprintf(new_rel,"new calib (10_6_0)");
+  sprintf(old_rel,"old calib (10_0_3)");
 
 
    TCanvas *Canvas_1_n2 = new TCanvas("Canvas_1_n2", "Canvas_1_n2",65,52,525,527);

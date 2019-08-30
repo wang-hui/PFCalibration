@@ -22,10 +22,10 @@ void overlay_script_responsevsE()
   char* rootfile2 = new char[200];
 
 
-  // sprintf(legendname,"H endcap (inside tracker)");
-  // sprintf(plot_name, "H_ec_in");
-   sprintf(legendname,"H barrel");
-   sprintf(plot_name, "H_barrel");
+  sprintf(legendname,"H endcap (inside tracker)");
+  sprintf(plot_name, "H_ec_in");
+  //  sprintf(legendname,"H barrel");
+  //  sprintf(plot_name, "H_barrel");
   // sprintf(path_root1,"/home/work/bhumika/work/calibration/Ultra_legacy/for_UL2017/trial_oldparam/response_plots_root");
   // sprintf(path_root2,"/home/work/bhumika/work/calibration/Ultra_legacy/for_UL2017/trial1/response_plots_root/after15may");
   // sprintf(rootfile1,"correta");
@@ -37,13 +37,13 @@ void overlay_script_responsevsE()
   // sprintf(path1,"/home/work/bhumika/work/calibration/Ultra_legacy/for_UL2018/trial1/pdf/overlay_plots_with_10_0_3/response_plots/Pt%s.pdf",plot_name);
   // sprintf(path2,"/home/work/bhumika/work/calibration/Ultra_legacy/for_UL2018/trial1/png/overlay_plots_with_10_0_3/response_plots/Pt_%s.png",plot_name);
 
-  sprintf(hname1,"/home/work/bhumika/work/calibration/Ultra_legacy/for_UL2017/trial1/response_plots_root/after15may/correta_%s_10_6_0_pre2.root",plot_name);
-  sprintf(hname,"/home/work/bhumika/work/calibration/Ultra_legacy/for_UL2017/raw/response_plots_root/Raw_%s_10_6_0_pre2.root",plot_name);
-  sprintf(path,"/home/work/bhumika/work/calibration/Ultra_legacy/for_UL2017/trial1/overlay_plots_with_raw/response_plots/correta_vs_raw_%s.gif",plot_name);
-  sprintf(path1,"/home/work/bhumika/work/calibration/Ultra_legacy/for_UL2017/trial1/overlay_plots_raw/response_plots/correta_vs_raw_%s.pdf",plot_name);
-  sprintf(path2,"/home/work/bhumika/work/calibration/Ultra_legacy/for_UL2017/trial1/overlay_plots_raw/response_plots/correta_vs_raw_%s.png",plot_name);
-  sprintf(new_rel,"After Energy correction");
-  sprintf(old_rel,"Without calibration");
+  sprintf(hname1,"/home/work/bhumika/work/calibration/Ultra_legacy/for_UL2018/trial1/response_plots_root/correta_%s_10_6_0.root",plot_name);
+  sprintf(hname,"/home/work/bhumika/work/calibration/Ultra_legacy/for_UL2018/for_10_0_3_calib/response_plots_root/correta_%s_10_0_3.root",plot_name);
+  sprintf(path,"/home/work/bhumika/work/calibration/Ultra_legacy/for_UL2018/trial1/overlay_plots_with_10_0_3/response_plots/correta_%s.gif",plot_name);
+  sprintf(path1,"/home/work/bhumika/work/calibration/Ultra_legacy/for_UL2018/trial1/pdf/overlay_plots_with_10_0_3/response_plots/correta_%s.pdf",plot_name);
+  sprintf(path2,"/home/work/bhumika/work/calibration/Ultra_legacy/for_UL2018/trial1/png/overlay_plots_with_10_0_3/response_plots/correta_%s.png",plot_name);
+  sprintf(new_rel,"new calib (10_6_0)");
+  sprintf(old_rel,"old calib (10_0_3)");
 
 
 
