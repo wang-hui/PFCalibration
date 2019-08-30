@@ -33,12 +33,12 @@ bool useMean = false;
 bool useMedian = false;
 bool changeRange =false;
 bool old_logic = false;
-bool drawpT = true;
+bool drawpT = false;
 bool drawResoFit = false;
 bool saveCanvas = true;
-char* _region_ = (char*)"EC_outside_tracker";
-//char* _region_ = (char*)"EC_within_tracker";
-//char* _region_ = (char*)"barrel";
+// //char* _region_ = (char*)"EC_outside_tracker";
+char* _region_ = (char*)"EC_within_tracker";
+// char* _region_ = (char*)"barrel";
 //char* _region_ = (char*)"Full";
 
 float _etaMin_ = 0.0;
@@ -1589,15 +1589,13 @@ double Calibration::getCalibratedEnergy(double ETrue, double ecalEnergy,
        
        if(ecalEnergy > 0) {
 	 if( fabs(eta)>2.5) {
-	   etaPow = 0.3 + (fabs(eta) - 1.5)*(fabs(eta) - 1.5)*(fabs(eta) - 1.5)*(fabs(eta) - 1.5) ; //change for UL2017
+	   etaPow = 0.04 + (fabs(eta) - 1.5)*(fabs(eta) - 1.5)*(fabs(eta) - 1.5)*(fabs(eta) - 1.5) ; //change for UL2017
 	   //	   etaPow = 0.02+(fabs(eta) - 1.5)*(fabs(eta) - 1.5)*(fabs(eta) - 1.5)*(fabs(eta) - 1.5) ;
 	   //etaPow = 0.6+(fabs(eta) - 1.5)*(fabs(eta) - 1.5);
 	 }
 	 else {
-	   //  etaPow = 0.103-0.053*(fabs(eta) - 2.0);//*(fabs(eta) - 2.0);
-	   //etaPow = 1.0*(fabs(eta) - 2.0)*(fabs(eta) - 2.0)*(fabs(eta) - 2.0); //change for UL2017
-	   //etaPow = -0.8 + 2.2*(fabs(eta) - 1.5)*(fabs(eta) - 1.5); //change for UL2018
-	   etaPow = -0.08 + 0.5*(fabs(eta) - 1.5);//*(fabs(eta) - 1.5)*(fabs(eta)-1.5);
+	   // etaPow = 0.103-0.053*(fabs(eta) - 2.0);//*(fabs(eta) - 2.0);
+	   etaPow = 1.0*(fabs(eta) - 2.0);//*(fabs(eta) - 2.0)*(fabs(eta) - 2.0); //change for UL2017
 	 }
 	 /*
 	 if (fabs(eta) < 2.5) {
@@ -1613,11 +1611,11 @@ double Calibration::getCalibratedEnergy(double ETrue, double ecalEnergy,
 	 {
 	   
 	   if( fabs(eta)<2.5) {
-	    etaPow=0.08; //for UL2016 H
-	    //etaPow = 0.8-0.5*(fabs(eta) - 2.0)*(fabs(eta) - 2.0);//trial
+	     etaPow=0.05;
 	   }
 	   else  {
-            etaPow = (fabs(eta) - 1.5)*(fabs(eta) - 1.5)*(fabs(eta) - 1.5)*(fabs(eta) - 1.5) ; //for UL2016 H
+	     etaPow = -0.1 + (fabs(eta) - 1.5)*(fabs(eta) - 1.5);//*(fabs(eta) - 1.5)*(fabs(eta) - 1.5) ;
+	     //etaPow = (fabs(eta) - 1.5)*(fabs(eta) - 1.5);//*(fabs(eta) - 1.5)*(fabs(eta) - 1.5) ; 
 	     //Giving better result
 	     //etaPow = -0.6*(fabs(eta) - 1.5)*(fabs(eta) - 1.5) + 1.1*(fabs(eta) - 1.5)*(fabs(eta) - 1.5)*(fabs(eta) - 1.5)*(fabs(eta) - 1.5);
 	   }
@@ -1817,8 +1815,7 @@ void Calibration::drawCoeffGraph(string graph, string tag)
        //  leg->AddEntry(
      TLegend *leg=new TLegend(0.30,0.25,0.90,0.35);
      // leg->AddEntry(histo,"[0]+((([1]+([2]/sqrt(x)))*exp(-(x^[6]/[3])))-([4]*exp(-(x^[7]/[5]))))","");
-     leg->AddEntry(histo,"[0]+((([1]+([2]/sqrt(x)))*exp(-(x^[4]/[3]))))","");//for UL 2016 ec
-     // leg->AddEntry(histo,"[0]+((([1]+([2]/(x^[5])))*exp(-(x^[4]/[3]))))","");//for UL 2016 barrel 
+     leg->AddEntry(histo,"[0]+((([1]+([2]/sqrt(x)))*exp(-(x^[4]/[3]))))","");
      leg->SetTextAlign(32);
      leg->SetTextSize(0.04);
      leg->Draw();
@@ -1842,8 +1839,8 @@ void Calibration::drawCoeffGraph(string graph, string tag)
 
       //  leg->AddEntry(
      TLegend *leg=new TLegend(0.30,0.25,0.90,0.35);
-     //    leg->AddEntry(histo,"[0]+((([1]+([2]/sqrt(x)))*exp(-(x^[6]/[3])))-([4]*exp(-(x^[7]/[5]))))","");//for UL2016 barrel(EH)
-     leg->AddEntry(histo,"[0]+([4]*(x-[5])*exp(-(x*[7])))+(([1]+([2]/sqrt(x)))*exp(-(x^[6]/[3])))",""); //for UL2016 endcap(EH)
+         leg->AddEntry(histo,"[0]+((([1]+([2]/sqrt(x)))*exp(-(x^[6]/[3])))-([4]*exp(-(x^[7]/[5]))))","");
+     // leg->AddEntry(histo,"[0]+([4]*(x-[5])*exp(-(x*[7])))+(([1]+([2]/sqrt(x)))*exp(-(x^[6]/[3])))","");
      leg->SetTextAlign(32);
      leg->SetTextSize(0.04);
      leg->Draw();
@@ -1863,8 +1860,7 @@ void Calibration::drawCoeffGraph(string graph, string tag)
       graphC_->Draw("P");
 
      TLegend *leg=new TLegend(0.30,0.25,0.90,0.35);
-     //     leg->AddEntry(histo,"[0]+((([1]+([2]/sqrt(x)))*exp(-(x^[6]/[3])))-([4]*exp(-(x^[7]/[5]))))",""); //for UL 2017/2016 barrel
-     leg->AddEntry(histo,"[0]+((([1]+([2]/sqrt(x)))*exp(-(x^[6]/[3])))-([4]*exp(-(x^[7]/[5]))))",""); //for UL 2017/2016 endcap
+     leg->AddEntry(histo,"[0]+((([1]+([2]/sqrt(x)))*exp(-(x^[6]/[3])))-([4]*exp(-(x^[7]/[5]))))","");
      leg->SetTextAlign(32);
      leg->SetTextSize(0.04);
      leg->Draw();
@@ -1894,10 +1890,10 @@ void Calibration::drawCoeffGraph(string graph, string tag)
       faEtaBarrel->Draw("Lsame+");
       //   faEtaBarrel52x->Draw("Lsame+");
      TLegend *leg=new TLegend(0.30,0.75,0.85,0.85);
-     //leg->AddEntry(graphAlpha_,"[0]+[1]*exp(-x/[2])",""); //for UL2017 endcap
-     //leg->AddEntry(graphAlpha_,"[0]+[1]*x^[3]*exp(-x/[2])",""); //for UL2016 endcap H
-     leg->AddEntry(graphAlpha_,"[0]+([1]*x^[2]*exp(-x))","");//for 2016 endcap EH 
-     //leg->AddEntry(histo,"[0]+[1]*x",""); //for UL 2016/2017 barrel
+     leg->AddEntry(graphAlpha_,"[0]+[1]*exp(-x*[3]/[2])","");
+     //leg->AddEntry(graphAlpha_,"[0]+[1]*exp(-x/[2])","");
+     //leg->AddEntry(graphAlpha_,"[0]+([1]*x^[2]*exp(-x))","");
+     //leg->AddEntry(histo,"[0]+[1]*x","");
      leg->SetTextSize(0.04);
      leg->Draw();
 
@@ -1918,10 +1914,8 @@ void Calibration::drawCoeffGraph(string graph, string tag)
       fbEtaBarrel->Draw("Lsame+");
       //    fbEtaBarrel52x->Draw("Lsame+");
      TLegend *leg=new TLegend(0.30,0.75,0.85,0.85);
-     // leg->AddEntry(histo,"[0]+[1]*exp(-x/[2])",""); //for UL2017 endcap/barrel & for UL2016 barrel
-     //     leg->AddEntry(histo,"[0]+[1]*x*exp(-x/[2])",""); //for UL 2016 endcap H 
-     leg->AddEntry(histo,"[0]+[1]*(x^[3])*exp(-x/[2])",""); //for UL 2016 endcap EH
-    leg->SetTextSize(0.04);
+     leg->AddEntry(histo,"[0]+[1]*exp(-x/[2])","");
+     leg->SetTextSize(0.04);
      leg->Draw();
       saveString = "BetaCoefficient" + tag + ".gif";
       canvas->SaveAs(saveString.c_str());
@@ -2145,7 +2139,7 @@ void drawGausFit(TH2F* inHisto, TGraph& response, TGraph& resolution)
 	  //cout<<"ETrueBin.back()->GetEntries():"<<ETrueBin.back()->GetEntries()<<endl;
 	  if(bin > 2) {
 
-	    gaus =new TF1("gaus","gaus",-3,3);
+	    gaus =new TF1("gaus","gaus(0)",-3,3);
 	    gaus->SetParameters(500.,0.,0.2);
 	    //ETrueBin.back()->Fit("gaus", "Q", "", -1.0, 1.0);
 	    ETrueBin.back()->Fit("gaus", "Q", "", x_min, x_max);
@@ -2158,13 +2152,14 @@ void drawGausFit(TH2F* inHisto, TGraph& response, TGraph& resolution)
 	    if(gaus->GetParameter(2) < 0)
 	      goto here1;
 	    x_min = gaus->GetParameter(1)- gaus->GetParameter(2);
-      
+
 	    if(strcmp(inHisto->GetName(),"corrEtaEndcapEcalHcal") == 0 && strcmp(_region_,"EC_outside_tracker") == 0 && false)
 	      x_min = (gaus->GetParameter(1) - gaus->GetParameter(2)) < -0.7 ? -0.7 : (gaus->GetParameter(1) - gaus->GetParameter(2));
 
 		 
 	    //x_max = (gaus->GetParameter(1)+ 2* gaus->GetParameter(2))>1.0 ? 1.0 : (gaus->GetParameter(1)+ 2* gaus->GetParameter(2));
 	    x_max = (gaus->GetParameter(1)+ 2* gaus->GetParameter(2));
+	    
 	    ETrueBin.back()->Fit("gaus", "Q", "", x_min, x_max);
 
 	    // ETrueBin.back()->Fit("gaus", "Q", "",
@@ -2265,7 +2260,6 @@ void drawGausFit(TH2F* inHisto, TGraph& response, TGraph& resolution)
             average.push_back(ETrueBin.back()->GetMean());
             rms.push_back(ETrueBin.back()->GetRMS());
 	    
-	    cout<<bin<<"   "<<ETrue.back()<<"   "<<ETrueBin.back()->GetMean()<<" <> "<<gausMean.back()<<"   "<<ETrueBin.back()->GetRMS()<<"   "<<gausSigma.back()<<endl;
 
 	    //cout<<bin<<"   "<<ETrue.back()<<"   "<<ETrueBin.back()->GetMean()<<" <> "<<gausMean.back()<<"   "<<ETrueBin.back()->GetMeanError()<<"   "<<gaus->GetParError(1)<<endl;
 	    //cout<<bin<<"   "<<ETrue.back()<<"   "<<ETrueBin.back()->GetMean()<<" <> "<<gausMean.back()<<"   "<<ETrueBin.back()->GetMeanError()<<endl;
@@ -2747,11 +2741,11 @@ void getValuesFromTree(TTree* tree, vector<double>& ETrueEnergies,
        //if (fabs(eta_) > 2.5 && (true_/cosh(eta_) < 5)) { continue;}
        //if (true_ < 48 || true_ > 52 ) continue;
        //if (true_ < 178 || true_ > 182 ) continue;
-       //if (true_/cosh(eta_) < 20 ) continue;
+       if (true_/cosh(eta_) < 20 ) continue;
        //////  HEP17 Veto
        //if (phi_ < -0.4 && phi_ > -1.0 && eta_ < 3.0 && eta_ > 1.5) { veto++; continue; } 
-       //if (fabs(eta_) > 1.0)  continue;
-       //if (true_>50 ) continue;
+       if (fabs(eta_) > 1.0)  continue;
+       //   if (true_>50 ) continue;
        if(tree->GetBranchStatus("true"))
 	 ETrueEnergies.push_back(true_);
        else
@@ -3103,7 +3097,7 @@ void calibChris()
    //chain->Add("./root_files/PGun_2_500_10_6_0_pre2_UL2018.root");
    // chain->Add("./root_files/PGun_2_500_10_0_3_upgrade2018_ECAL_pfB.root");
    //  chain->Add("./home/bhumika/work/PFCalibration/for_10_0_2/calib_codes/PGun_2_500_10_0_2_upgrade2018_NO_CUT_new.root");
-   chain->Add("./root_files/PGun_Singlepion_10_6_0_UL2016.root");
+   chain->Add("./root/PGun_Singlepion_10_6_0_UL2017.root");
 
    sTree = (TTree*)chain;
    cout<<"Reading input tree..."<<endl;
@@ -3124,7 +3118,7 @@ void calibChris()
    
    else if (strcmp(_region_, "EC_outside_tracker") == 0 ) {
      _etaMin_ = 2.5;
-     //_etaMax_ = 3.0; //update on 29 Aug 2019
+     //_etaMax_ = 3.0;
      _etaMax_ = 2.75;
    }
    
@@ -3460,7 +3454,7 @@ void calibChris()
    functionBarrelEcalHcalA = new TF1("functionBarrelEcalHcalA","[0]", 0, 1000);
    // functionBarrelEcalHcalB = new TF1("functionBarrelEcalHcalB","[0]+([1]+[2]/sqrt(x))*exp(-x/[3])-[4]*exp(-x*x/[5])", 0, 1000);
    // functionBarrelEcalHcalB = new TF1("functionBarrelEcalHcalB","[0]+((([1]+([2]/sqrt(x)))*exp(-(x^[6]/[3])))-([4]*exp(-(x^[7]/[5]))))", 0, 1000);
-  functionBarrelEcalHcalB = new TF1("functionBarrelEcalHcalB","[0]+((([1]+([2]/(x^[5])))*exp(-(x^[4]/[3]))))", 0, 1000);
+  functionBarrelEcalHcalB = new TF1("functionBarrelEcalHcalB","[0]+((([1]+([2]/sqrt(x)))*exp(-(x^[4]/[3]))))", 0, 1000);
    //functionBarrelEcalHcalC = new TF1("functionBarrelEcalHcalC","[0]+(([1]+([2]/sqrt(x)))*exp(-(x^[4]/[3])))",0,1000); //[0]+([1]+[2]/sqrt(x))*exp(-x/[3])-[4]*exp(-x*x/[5])", 0, 1000);
    functionBarrelEcalHcalC = new TF1("functionBarrelEcalHcalC","[0]+((([1]+([2]/sqrt(x)))*exp(-(x^[6]/[3])))-([4]*exp(-(x^[7]/[5]))))",0,1000);
   
@@ -3491,71 +3485,65 @@ void calibChris()
 
      //faBarrel
 
-     //for UL2016
-     functionBarrelEcalHcalB->FixParameter(0,-1.81635);
-     functionBarrelEcalHcalB->FixParameter(1,2.88284);
-     functionBarrelEcalHcalB->FixParameter(2,7.12287);
-     functionBarrelEcalHcalB->FixParameter(3,0.118197);
-     functionBarrelEcalHcalB->FixParameter(4,-1.49896);
-     functionBarrelEcalHcalB->FixParameter(5,0.5988);
+     // for UL2017
+     functionBarrelEcalHcalB->FixParameter(0,-1.28945);
+     functionBarrelEcalHcalB->FixParameter(1,2.29041);
+     functionBarrelEcalHcalB->FixParameter(2,4.93862);
+     functionBarrelEcalHcalB->FixParameter(3,0.0744576);
+     functionBarrelEcalHcalB->FixParameter(4,-1.80063);
+
 
      //fbBarrel
 
-     //for UL2016 
-     functionBarrelEcalHcalC->FixParameter(0,1.78346);
-     functionBarrelEcalHcalC->FixParameter(1,-0.907339);
-     functionBarrelEcalHcalC->FixParameter(2,-21.1843);
-     functionBarrelEcalHcalC->FixParameter(3,0.64064);
-     functionBarrelEcalHcalC->FixParameter(4,0.820368);
-     functionBarrelEcalHcalC->FixParameter(5,0.0867443);
-     functionBarrelEcalHcalC->FixParameter(6,0.166651);
-     functionBarrelEcalHcalC->FixParameter(7,-0.854152);
+     // for UL2017
+     functionBarrelEcalHcalC->FixParameter(0,1.74951);
+     functionBarrelEcalHcalC->FixParameter(1,0.317424);
+     functionBarrelEcalHcalC->FixParameter(2,-7.78609);
+     functionBarrelEcalHcalC->FixParameter(3,1.44197);
+     functionBarrelEcalHcalC->FixParameter(4,0.818853);
+     functionBarrelEcalHcalC->FixParameter(5,0.0734628);
+     functionBarrelEcalHcalC->FixParameter(6,0.135386);
+     functionBarrelEcalHcalC->FixParameter(7,-0.836217);
 
      //fcBarrel
 
-     //for UL2016
-     functionBarrelHcalC->FixParameter(0,7.40006);
-     functionBarrelHcalC->FixParameter(1,8.34692);
-     functionBarrelHcalC->FixParameter(2,-16.4046);
-     functionBarrelHcalC->FixParameter(3,6.11434);
-     functionBarrelHcalC->FixParameter(4,13.3222);
-     functionBarrelHcalC->FixParameter(5,0.684788);
-     functionBarrelHcalC->FixParameter(6,0.0159107);
-     functionBarrelHcalC->FixParameter(7,-0.584424);
+     // for UL2017
+     functionBarrelHcalC->FixParameter(0,3.00232);
+     functionBarrelHcalC->FixParameter(1,3.96519);
+     functionBarrelHcalC->FixParameter(2,-10.7502);
+     functionBarrelHcalC->FixParameter(3,3.25745);
+     functionBarrelHcalC->FixParameter(4,4.68851);
+     functionBarrelHcalC->FixParameter(5,0.335698);
+     functionBarrelHcalC->FixParameter(6,0.0300156);
+     functionBarrelHcalC->FixParameter(7,-0.6611);
      
      functionEndcapEcalHcalA->FixParameter(0, aEHe);
   
 
-     //faEndcap
 
-     //for UL2016
-     functionEndcapEcalHcalB->FixParameter(0,1.13723);
-     functionEndcapEcalHcalB->FixParameter(1,10.1688);
-     functionEndcapEcalHcalB->FixParameter(2,-23.9953);
-     functionEndcapEcalHcalB->FixParameter(3,1.23784);
-     functionEndcapEcalHcalB->FixParameter(4,0.278710);
+     //faEndcap
+     //spandey
+    
+     //for UL2017
+     functionEndcapEcalHcalB->FixParameter(0,1.1278);
+     functionEndcapEcalHcalB->FixParameter(1,27.6333);
+     functionEndcapEcalHcalB->FixParameter(2,-63.9996);
+     functionEndcapEcalHcalB->FixParameter(3,0.670415);
+     functionEndcapEcalHcalB->FixParameter(4,0.20647);
+
 
      // fbEndcap
      
-     //for UL2016
-     functionEndcapEcalHcalC->FixParameter(0,-2.24333e+00);                                      
-     functionEndcapEcalHcalC->FixParameter(1,3.15985e+00);                                        
-     functionEndcapEcalHcalC->FixParameter(2,2.55316e+00);                                       
-     functionEndcapEcalHcalC->FixParameter(3,9.53963e+00);                                       
-     functionEndcapEcalHcalC->FixParameter(4,1.66999e-01);                                       
-     functionEndcapEcalHcalC->FixParameter(5,2.17192e+01);                                        
-     functionEndcapEcalHcalC->FixParameter(6,-2.76862e-01);                                      
-     functionEndcapEcalHcalC->FixParameter(7,0.117280);                                          
-  
-     
-     // functionEndcapEcalHcalC->FixParameter(0,-4651.06);
-     // functionEndcapEcalHcalC->FixParameter(1,4651.98);
-     // functionEndcapEcalHcalC->FixParameter(2,12.1135);
-     // functionEndcapEcalHcalC->FixParameter(3,503.253);
-     // functionEndcapEcalHcalC->FixParameter(4,-1.39108);
-     // functionEndcapEcalHcalC->FixParameter(5,-0.247085);
-     // functionEndcapEcalHcalC->FixParameter(6,-0.469361);
-     // functionEndcapEcalHcalC->FixParameter(7,0.296653);
+      //for UL2017
+     functionEndcapEcalHcalC->FixParameter(0,-2.0995);
+     functionEndcapEcalHcalC->FixParameter(1,3.41642);
+     functionEndcapEcalHcalC->FixParameter(2,2.81066);
+     functionEndcapEcalHcalC->FixParameter(3,5.41626);
+     functionEndcapEcalHcalC->FixParameter(4,-0.543298);
+     functionEndcapEcalHcalC->FixParameter(5,-4.35288);
+     functionEndcapEcalHcalC->FixParameter(6,-0.0420677);
+     functionEndcapEcalHcalC->FixParameter(7,0.242091);
+
 
      functionBarrelHcalA->FixParameter(0, aH);
      functionBarrelHcalB->FixParameter(0, 0.0);
@@ -3565,18 +3553,19 @@ void calibChris()
 
      //fcEndcap 
 
-     //for UL2016
-     functionEndcapHcalC->FixParameter(0,1.32375);
-     functionEndcapHcalC->FixParameter(1,0.191687);
-     functionEndcapHcalC->FixParameter(2,-2.81052);
-     functionEndcapHcalC->FixParameter(3,27.1729);
-     functionEndcapHcalC->FixParameter(4,0.418262);
-     functionEndcapHcalC->FixParameter(5,0.107711);
-     functionEndcapHcalC->FixParameter(6,1.71039);
-     functionEndcapHcalC->FixParameter(7,-1.01447);
+     //for UL2017
+     functionEndcapHcalC->FixParameter(0,1.13985);
+     functionEndcapHcalC->FixParameter(1,0.196757);
+     functionEndcapHcalC->FixParameter(2,-2.56203);
+     functionEndcapHcalC->FixParameter(3,22.1335);
+     functionEndcapHcalC->FixParameter(4,0.231671);
+     functionEndcapHcalC->FixParameter(5,0.0625535);
+     functionEndcapHcalC->FixParameter(6,1.71307);
+     functionEndcapHcalC->FixParameter(7,-0.987053);
 
 
-        
+
+   
    }
    else {
 
@@ -3908,16 +3897,15 @@ void calibChris()
 
 
    
-   //   functionEndcapBetaEcalHcal = new TF1("functionEndcapBetaEcalHcal","[0]+[1]*exp(-x/[2])",0,1000); //+[3]*[3]*exp(-x*x/([4]*[4]))
-   functionEndcapBetaEcalHcal = new TF1("functionEndcapBetaEcalHcal","[0]+[1]*x^[3]*exp(-x/[2])",0,1000); //+[3]*[3]*exp(-x*x/([4]*[4]))
+   functionEndcapBetaEcalHcal = new TF1("functionEndcapBetaEcalHcal","[0]+[1]*exp(-x/[2])",0,1000); //+[3]*[3]*exp(-x*x/([4]*[4]))
 
    //functionEndcapAlphaHcal = new TF1("functionEndcapAlphaHcal","[0]+[1]*x", 0, 1000);// +[1]*exp(-x/[2])
    //functionEndcapAlphaHcal = new TF1("functionEndcapAlphaHcal","[0]+[1]*x+[3]*exp(-x/[2])", 0, 1000);// +[1]*exp(-x/[2])
 
    // functionEndcapAlphaHcal = new TF1("functionEndcapAlphaHcal","[0]+[1]*exp(-x/[2])+[3]*[3]*exp(-x*x/([4]*[4]))", 0, 1000);// +[1]*exp(-x/[2])
    // functionEndcapBetaHcal = new TF1("functionEndcapBetaHcal","[0]+[1]*exp(-x/[2])+[3]*[3]*exp(-x*x/([4]*[4]))",0,1000);
-   functionEndcapAlphaHcal = new TF1("functionEndcapAlphaHcal","[0]+[1]*(x^[3])*exp(-x/[2])", 0, 1000);// +[1]*exp(-x/[2])
-   functionEndcapBetaHcal = new TF1("functionEndcapBetaHcal","[0]+[1]*x*exp(-x/[2])",0,1000);
+   functionEndcapAlphaHcal = new TF1("functionEndcapAlphaHcal","[0]+[1]*exp(-x/[2])", 0, 1000);// +[1]*exp(-x/[2])
+   functionEndcapBetaHcal = new TF1("functionEndcapBetaHcal","[0]+[1]*exp(-x/[2])",0,1000);
    functionEndcapGammaHcal = new TF1("functionEndcapGammaHcal","[0]+[1]*exp(-x/[2])+[3]*[3]*exp(-x*x/([4]*[4]))",0,1000);
 
 
@@ -3928,67 +3916,72 @@ void calibChris()
 
 
      //faEtaBarrelEH
-
-     //for UL2016
-    functionBarrelAlphaEcalHcal->FixParameter(0,340.572);
-    functionBarrelAlphaEcalHcal->FixParameter(1,-340.606);
-    functionBarrelAlphaEcalHcal->FixParameter(2,6689.73);
-    functionBarrelAlphaEcalHcal->FixParameter(3,0.000886848);
+     
+     //for UL2017
+     functionBarrelAlphaEcalHcal->FixParameter(0,340.583);
+     functionBarrelAlphaEcalHcal->FixParameter(1,-340.595);
+     functionBarrelAlphaEcalHcal->FixParameter(2,6192.42);
+     functionBarrelAlphaEcalHcal->FixParameter(3,0.000373602);
 
 
 
      //fbEtaBarrelEH
-
-    //for UL2016
-    functionBarrelBetaEcalHcal->FixParameter(0,0.0532902);
-    functionBarrelBetaEcalHcal->FixParameter(1,0.124218);
-    functionBarrelBetaEcalHcal->FixParameter(2,207.676);
+    
+     //for UL2017
+     functionBarrelBetaEcalHcal->FixParameter(0,0.0557658);
+     functionBarrelBetaEcalHcal->FixParameter(1,0.124518);
+     functionBarrelBetaEcalHcal->FixParameter(2,204.727);
 
 
      //faEtaBarrelH
-
-     //for UL2016  
-     functionBarrelAlphaHcal->FixParameter(0,-0.00157472);
-     functionBarrelAlphaHcal->FixParameter(1,0.00000);
-
-
+       
+     ////New Parameter
+     
+     //for UL2017
+     functionBarrelAlphaHcal->FixParameter(0,-0.00651428);
+     functionBarrelAlphaHcal->FixParameter(1,0.000000);
 
      //fbEtaBarrelH
 
-     //for UL2016
-     functionBarrelBetaHcal->FixParameter(0,-0.0154675);
-     functionBarrelBetaHcal->FixParameter(1,0.0728367);
-     functionBarrelBetaHcal->FixParameter(2,56.2748);
+     //for UL2017   
+     functionBarrelBetaHcal->FixParameter(0,0.000578309);
+     functionBarrelBetaHcal->FixParameter(1,-0.491991);
+     functionBarrelBetaHcal->FixParameter(2,1.445);
 
      //faEtaEndcapEH
 
-     //for UL2016
-     functionEndcapAlphaEcalHcal->FixParameter(0,0.00134831);
-     functionEndcapAlphaEcalHcal->FixParameter(1,-26.4964);
-     functionEndcapAlphaEcalHcal->FixParameter(2,0.206669);
+     //for UL2017
+     functionEndcapAlphaEcalHcal->FixParameter(0,0.00871125);
+     functionEndcapAlphaEcalHcal->FixParameter(1,-7.97617);
+     functionEndcapAlphaEcalHcal->FixParameter(2,0.819605);
 
+     
      //fbEtaEndcapEH
 
-     //for UL2016
-     functionEndcapBetaEcalHcal->FixParameter(0,0.0476086);
-     functionEndcapBetaEcalHcal->FixParameter(1,0.000573041);
-     functionEndcapBetaEcalHcal->FixParameter(2,133.97);
-     functionEndcapBetaEcalHcal->FixParameter(3,0.798439);
+     //for UL2017
+     functionEndcapBetaEcalHcal->FixParameter(0,0.0286728);
+     functionEndcapBetaEcalHcal->FixParameter(1,0.0428134);
+     functionEndcapBetaEcalHcal->FixParameter(2,263.774);
+
+
 
      //faEtaEndcapH
+     //spandey OLD_CALIB_HCAL
 
-     //for UL2016
-     functionEndcapAlphaHcal->FixParameter(0,-6.05737e-03);
-     functionEndcapAlphaHcal->FixParameter(1,-7.20466e-01);
-     functionEndcapAlphaHcal->FixParameter(2,1.75442e-01);
-     functionEndcapAlphaHcal->FixParameter(3,1.45679e+01);
+
+     //for UL2017
+     functionEndcapAlphaHcal->FixParameter(0,-0.00267139);
+     functionEndcapAlphaHcal->FixParameter(1,0.0376755);
+     functionEndcapAlphaHcal->FixParameter(2,42.5313);
+
 
      //fbEtaEndcapH
- 
-     //for UL2016
-     functionEndcapBetaHcal->FixParameter(0,0.0564225);
-     functionEndcapBetaHcal->FixParameter(1,0.00725947);
-     functionEndcapBetaHcal->FixParameter(2,23.1278);
+
+     //for UL2017
+     functionEndcapBetaHcal->FixParameter(0,0.022428);
+     functionEndcapBetaHcal->FixParameter(1,0.100791);
+     functionEndcapBetaHcal->FixParameter(2,85.7951);
+
 
 
    }
@@ -4384,29 +4377,29 @@ void calibChris()
    //// E-corrected endcap response for EH-hdarons
    //drawGausFit(corrEndcapEcalHcal,responseCor,resolutionCor);
    //// Eta-corrected endcap response for EH-hdarons
-   drawGausFit(corrEtaEndcapEcalHcal,responseCor,resolutionCor);
+   //   drawGausFit(corrEtaEndcapEcalHcal,responseCor,resolutionCor);
    //corrEtaEndcapEcalHcal->Draw("colz");
    //// raw endcap response for H-hdarons
    // rawEndcapHcal->Draw("colz");
    // drawGausFit(rawEndcapHcal,responseRaw,resolutionRaw);
    //// E-corrected endcap response for H-hdarons
-   //drawGausFit(corrEndcapHcal,responseCor,resolutionCor);
+   //    drawGausFit(corrEndcapHcal,responseCor,resolutionCor);
    //// Eta-corrected endcap response for H-hdarons
    //corrEtaEndcapHcal->Draw("colz");
-   //drawGausFit(corrEtaEndcapHcal, responseEta, resolutionEta);   
+   // drawGausFit(corrEtaEndcapHcal, responseEta, resolutionEta);   
 
 
    // something for overall
    //drawGausFit(rawBarrel,responseRaw,resolutionRaw);
 
 
-   //drawEtaDependence(rawEtaDependenceEH, responseEtaEtaEH);
+   //   drawEtaDependence(rawEtaDependenceEH, responseEtaEtaEH);
    //drawEtaDependence(hcorrEtaDependenceEH, responseEtaHCorrEtaEH);
    //drawEtaDependence(corrEtaDependenceEH, responseEtaEtaEH);
 
-   //   drawEtaDependence(rawEtaDependenceH, responseEtaEtaH);
+   //drawEtaDependence(rawEtaDependenceH, responseEtaEtaH);
    //drawEtaDependence(hcorrEtaDependenceH, responseEtaHCorrEtaH);
-   //drawEtaDependence(corrEtaDependenceH, responseEtaEtaH);
+   drawEtaDependence(corrEtaDependenceH, responseEtaEtaH);
    
    //drawGausFit(corrEta,response, resolution);
    //drawCompare(responseRaw, response, resolutionRaw, resolution);
