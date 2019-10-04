@@ -19,4 +19,5 @@ cmsRun myEDAna.py
 source /cvmfs/cms.cern.ch/crab3/crab.sh
 crab submit crab_step_analyser.py
 ```
+For PFcalibration use PFCalibration/PFChargedHadronAnalyzer/test/calibration_code/calibChris.C
 
