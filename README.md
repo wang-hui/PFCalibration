@@ -16,7 +16,7 @@ cd PFCalibration/PFChargedHadronAnalyzer/test/
 cmsenv
 cmsRun PGUnWithGeneration.py
 ```
-...
+```
 export SCRAM_ARCH=slc6_amd64_gcc530
 cmsrel CMSSW_8_1_0_pre16
 cd CMSSW_8_1_0_pre16/src
@@ -25,5 +25,5 @@ scram b -j 40
 cd PFCalibration/PFChargedHadronAnalyzer/test/
 cmsenv
 cmsRun PGUnWithGeneration.py
-...
+```
 
