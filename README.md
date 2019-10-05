@@ -19,6 +19,6 @@ cmsRun myEDAna.py
 source /cvmfs/cms.cern.ch/crab3/crab.sh
 crab submit crab_step_analyser.py
 ```
-For PFcalibration use PFCalibration/PFChargedHadronAnalyzer/test/calibration_code/calibChris.C
+For PFcalibration use PFCalibration/PFChargedHadronAnalyzer/test/calibration_code/calibChris.C  
 Note: Please run calibChris.C code on ROOT version 5.xx (it might crash in ROOT version 6.xx)
 
