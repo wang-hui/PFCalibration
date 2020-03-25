@@ -1,0 +1,159 @@
+// #include <stdio.h>
+// // #include<conio.h>
+// #include <iostream>
+// #include <iomanip>
+// #include <vector>
+// #include "TDirectory.h"
+
+// TH1D* includeOverflow(TH1D *hin) {
+//   TH1D *hout = (TH1D*) hin->Clone();
+
+//   int nbins = hin->GetNbinsX();
+//   double overflow = hin->GetBinContent(nbins+1);
+//   double lastbin  = hin->GetBinContent(nbins);
+//   hout->SetBinContent(nbins, lastbin+overflow);
+//   return hout;
+// }
+
+void overlay_script_1dresponse()
+{
+//=========Macro generated from canvas: Canvas_1_n2/Canvas_1_n2
+//=========  (Mon Apr  1 19:35:54 2019) by ROOT version 6.14/06
+  char* hname = new char[200];
+  char* hist_name = new char[200];
+  char* hname1 = new char[200];
+  char* path = new char[200];
+  char* plot_name = new char[200];
+  char* old_rel = new char[200];
+  char* new_rel = new char[200];
+
+  char old_release[50] = "10_0_3";
+  char new_release[50] = "10_6_0_pre2";
+  char plot[50] = "Raw_H_ec_out";
+  char hist[50] = "histcorhybrid";
+
+  bool set_xaxis=false;
+  bool set_yaxis=true;
+
+  double_t xmin= -1, xmax =8;
+  double_t ymin= 0, ymax =0.04;
+  int n[5]={48,52,56,60,64};//
+  //  int n[2]={100,124}; 
+  for(int i=0; i<5;i++)
+    {
+      sprintf(hname,"%s_%s.root",plot,old_release);
+      sprintf(hname1,"%s_%s.root",plot,new_release);
+      sprintf(plot_name,"%s",plot);
+      sprintf(hist_name,"%s%d",hist,n[i]);
+      sprintf(path,"../1D_response_plots/%s_%s.gif",plot,hist_name);
+      sprintf(old_rel,"%s",old_release);
+      sprintf(new_rel,"%s",new_release);
+
+
+   TCanvas *Canvas_1_n2 = new TCanvas(hist_name, hist_name,65,52,525,527);
+   Canvas_1_n2->Range(-60.25,-0.625,562.25,0.625);
+   Canvas_1_n2->SetFillColor(0);
+   Canvas_1_n2->SetBorderMode(0);
+   Canvas_1_n2->SetBorderSize(2);
+   Canvas_1_n2->SetGridx();
+   Canvas_1_n2->SetGridy();
+   Canvas_1_n2->SetFrameBorderMode(0);
+   Canvas_1_n2->SetFrameBorderMode(0);
+   TFile * inputfile1 = new TFile(hname,"READ");
+   TFile * inputfile2 = new TFile(hname1,"READ");
+   TH1D *resp1 = (TH1D*) inputfile1 -> Get(hist_name);
+   TH1D *resp2 = (TH1D*) inputfile2 -> Get(hist_name);
+   TPaveStats *ptstats = new TPaveStats(0.65,0.50,0.9,0.75,"brNDC");
+   //   TPaveStats *ptstats = new TPaveStats(0.6260745,0.6433121,0.8810888,0.8832272,"brNDC");
+   //  ptstats->SetName(old_rel);
+   ptstats->SetBorderSize(1);
+   ptstats->SetFillColor(0);
+   ptstats->SetLineColor(2);
+   ptstats->SetTextAlign(12);
+   ptstats->SetTextColor(2);
+   ptstats->SetTextFont(42);
+   TText *ptstats_LaTex = ptstats->AddText(old_rel);
+   ptstats_LaTex->SetTextSize(0.0315317);
+   ptstats->SetOptStat(1111);
+   ptstats->SetOptFit(10001);
+   ptstats->Draw();
+   resp1->GetListOfFunctions()->Add(ptstats);
+   ptstats->SetParent(resp1);
+
+   resp1->SetLineColor(2);
+   resp1->SetLineWidth(2);
+   resp1->Scale(1.0/resp1->Integral());
+   resp1->SetTitle(hist_name);
+   //   resp1->GetXaxis()->SetTitle("Energy Response");
+   resp1->GetXaxis()->SetTitle("(E_{cor}-E_{true})/E_{true}");
+   resp1->GetXaxis()->SetTitleSize(0.035);
+   resp1->GetXaxis()->SetTitleOffset(0);
+   resp1->GetXaxis()->SetTitleFont(42);
+   if (set_xaxis)
+     {
+     resp1->Rebin((xmax-xmin)/0.5);
+     resp1->GetXaxis()->SetRangeUser(xmin,xmax);
+     }
+   
+   if (set_yaxis)
+     resp1->GetYaxis()->SetRangeUser(ymin , ymax);                                               
+   
+   resp1->SetName(old_rel);
+
+   ptstats = new TPaveStats(0.650,0.25,0.9,0.50,"brNDC");
+   // ptstats = new TPaveStats(0.6260745,0.403397,0.8810888,0.6433121,"brNDC");
+   //   ptstats->SetName("stats");
+   ptstats->SetBorderSize(1);
+   ptstats->SetFillColor(0);
+   ptstats->SetLineColor(4);
+   ptstats->SetTextAlign(12);
+   ptstats->SetTextColor(4);
+   ptstats->SetTextFont(42);
+   ptstats_LaTex = ptstats->AddText(new_rel);
+   ptstats_LaTex->SetTextSize(0.0315317);
+   ptstats->SetOptStat(1111);
+   // ptstats->SetOptFit(10001);
+   ptstats->Draw();
+   resp2->GetListOfFunctions()->Add(ptstats);
+   ptstats->SetParent(resp2);
+
+   resp2->SetLineColor(4);
+   resp2->SetLineWidth(2);
+   resp2->Scale(1.0/resp2->Integral());
+
+   if (set_xaxis)
+     {
+     resp2->Rebin((xmax-xmin)/0.5);
+     resp2->GetXaxis()->SetRangeUser(xmin,xmax);
+     }
+   if (set_yaxis)
+     resp2->GetYaxis()->SetRangeUser(ymin , ymax);                                               
+           
+   resp2->SetName(new_rel);
+   // resp1=includeOverflow(resp1);
+   // resp2=includeOverflow(resp2);
+
+   resp1->Draw("hists");
+    
+   resp2->Draw("sames hists");
+   Canvas_1_n2->Modified();
+   Canvas_1_n2->cd();
+   Canvas_1_n2->SetSelected(Canvas_1_n2);
+
+   TF1* f1 = (TF1*)resp1->GetFunction("gaus");
+   TF1* f2 = (TF1*)resp2->GetFunction("gaus");
+   // f1->SetLineColor(0);
+   // f2->SetLineColor(0);
+   f1->Delete();
+   f2->Delete();
+   
+   TLegend* legends = new TLegend(0.65, 0.75, 0.9, 0.9,"","brNDC"); // the numbers determine the position of the box 
+   legends->SetFillColor(0);
+   legends->SetTextSize(0.039); 
+   legends->SetHeader(plot_name); 
+   // legends->AddEntry(resp1, "for old (10_0_3)","lep");//(name of hist,what you want it called in legend, l=line, p=polymarker, f=boxy thing ) 
+   // legends->AddEntry(resp2, "for new (10_6_0_pre2)","lep");
+   legends->Draw();
+   Canvas_1_n2->SaveAs(path);
+    }
+}
