@@ -1,0 +1,125 @@
+ threshE = 3.5;
+  threshH = 2.5;
+  faBarrel = new TF1("faBarrel","[0]+((([1]+([2]/(x^[5])))*exp(-(x^[4]/[3]))))",1.,1000.);
+  faBarrel->SetParameter(0,-1.81635);
+  faBarrel->SetParameter(1,2.88284);
+  faBarrel->SetParameter(2,7.12287);
+  faBarrel->SetParameter(3,0.118197);
+  faBarrel->SetParameter(4,-1.49896);
+  faBarrel->SetParameter(5,0.5988);
+  faBarrel at x = 10 ;  ,1.76044
+
+  fbBarrel = new TF1("fbBarrel","[0]+((([1]+([2]/sqrt(x)))*exp(-(x^[6]/[3])))-([4]*exp(-(x^[7]/[5]))))",1.,1000.);
+  fbBarrel->SetParameter(0,1.78346);
+  fbBarrel->SetParameter(1,-0.907339);
+  fbBarrel->SetParameter(2,-21.1843);
+  fbBarrel->SetParameter(3,0.64064);
+  fbBarrel->SetParameter(4,0.820368);
+  fbBarrel->SetParameter(5,0.0867443);
+  fbBarrel->SetParameter(6,0.166651);
+  fbBarrel->SetParameter(7,-0.854152);
+  fbBarrel at x = 10 ;  ,0.850498
+
+  fcBarrel = new TF1("fcBarrel","[0]+((([1]+([2]/sqrt(x)))*exp(-(x^[6]/[3])))-([4]*exp(-(x^[7]/[5]))))",1.,1000.);
+  fcBarrel->SetParameter(0,7.40006);
+  fcBarrel->SetParameter(1,8.34692);
+  fcBarrel->SetParameter(2,-16.4046);
+  fcBarrel->SetParameter(3,6.11434);
+  fcBarrel->SetParameter(4,13.3222);
+  fcBarrel->SetParameter(5,0.684788);
+  fcBarrel->SetParameter(6,0.0159107);
+  fcBarrel->SetParameter(7,-0.584424);
+  fcBarrel at x = 10 ;  ,0.957746
+
+  faEtaBarrelEH = new TF1("faEtaBarrelEH","[0]+[1]*exp(-x*[3]/[2])",1.,1000.);
+  faEtaBarrelEH->SetParameter(0,340.572);
+  faEtaBarrelEH->SetParameter(1,-340.606);
+  faEtaBarrelEH->SetParameter(2,6689.73);
+  faEtaBarrelEH->SetParameter(3,0.000886848);
+  faEtaBarrelEH at x = 10 ;  ,-0.0335485
+
+  fbEtaBarrelEH = new TF1("fbEtaBarrelEH","[0]+[1]*exp(-x/[2])",1.,1000.);
+  fbEtaBarrelEH->SetParameter(0,0.0532902);
+  fbEtaBarrelEH->SetParameter(1,0.124218);
+  fbEtaBarrelEH->SetParameter(2,207.676);
+  fbEtaBarrelEH at x = 10 ;  ,0.171669
+
+  faEtaBarrelH = new TF1("faEtaBarrelH","[0]+[1]*x",1.,1000.);
+  faEtaBarrelH->SetParameter(0,-0.00157472);
+  faEtaBarrelH->SetParameter(1,0);
+  faEtaBarrelH at x = 10 ;  ,-0.00157472
+
+  fbEtaBarrelH = new TF1("fbEtaBarrelH","[0]+[1]*exp(-x/[2])",1.,1000.);
+  fbEtaBarrelH->SetParameter(0,-0.0154675);
+  fbEtaBarrelH->SetParameter(1,0.0728367);
+  fbEtaBarrelH->SetParameter(2,56.2748);
+  fbEtaBarrelH at x = 10 ;  ,0.0455109
+
+  faEndcap = new TF1("faEndcap","[0]+((([1]+([2]/sqrt(x)))*exp(-(x^[4]/[3]))))",1.,1000.);
+  faEndcap->SetParameter(0,1.13723);
+  faEndcap->SetParameter(1,10.1688);
+  faEndcap->SetParameter(2,-23.9953);
+  faEndcap->SetParameter(3,1.23784);
+  faEndcap->SetParameter(4,0.27871);
+  faEndcap at x = 10 ;  ,1.69341
+
+  fbEndcap = new TF1("fbEndcap","[0]+([4]*(x-[5])*exp(-(x*[7])))+(([1]+([2]/sqrt(x)))*exp(-(x^[6]/[3])))",1.,1000.);
+  fbEndcap->SetParameter(0,-2.24333);
+  fbEndcap->SetParameter(1,3.15985);
+  fbEndcap->SetParameter(2,2.55316);
+  fbEndcap->SetParameter(3,9.53963);
+  fbEndcap->SetParameter(4,0.166999);
+  fbEndcap->SetParameter(5,21.7192);
+  fbEndcap->SetParameter(6,-0.276862);
+  fbEndcap->SetParameter(7,0.11728);
+  fbEndcap at x = 10 ;  ,0.904327
+
+  fcEndcap = new TF1("fcEndcap","([0]+((([1]+([2]/sqrt(x)))*exp(-(x^[6]/[3])))-([4]*exp(-(x^[7]/[5])))))",1.,1000.);
+  fcEndcap->SetParameter(0,1.32375);
+  fcEndcap->SetParameter(1,0.191687);
+  fcEndcap->SetParameter(2,-2.81052);
+  fcEndcap->SetParameter(3,27.1729);
+  fcEndcap->SetParameter(4,0.418262);
+  fcEndcap->SetParameter(5,0.107711);
+  fcEndcap->SetParameter(6,1.71039);
+  fcEndcap->SetParameter(7,-1.01447);
+  fcEndcap at x = 10 ;  ,1.04795
+
+  faEtaEndcapEH = new TF1("faEtaEndcapEH","[0]+([1]*x^[2]*exp(-x))",1.,1000.);
+  faEtaEndcapEH->SetParameter(0,0.00134831);
+  faEtaEndcapEH->SetParameter(1,-26.4964);
+  faEtaEndcapEH->SetParameter(2,0.206669);
+  faEtaEndcapEH at x = 10 ;  ,-0.000587715
+
+  fbEtaEndcapEH = new TF1("fbEtaEndcapEH","[0]+[1]*x^[3]*exp(-x/[2])",1.,1000.);
+ fbEtaEndcapEH->SetParameter(0,0.0476086);
+ fbEtaEndcapEH->SetParameter(1,0.000573041);
+ fbEtaEndcapEH->SetParameter(2,133.97);
+ fbEtaEndcapEH->SetParameter(3,0.798439);
+  fbEtaEndcapEH at x = 10 ;  ,0.0509521
+
+  faEtaEndcapH = new TF1("faEtaEndcapH","[0]+[1]*(x^[3])*exp(-x/[2])",1.,1000.);
+  faEtaEndcapH->SetParameter(0,-0.00605737);
+  faEtaEndcapH->SetParameter(1,-0.720466);
+  faEtaEndcapH->SetParameter(2,0.175442);
+  faEtaEndcapH->SetParameter(3,14.5679);
+  faEtaEndcapH at x = 10 ;  ,-0.00605737
+
+  fbEtaEndcapH = new TF1("fbEtaEndcapH","[0]+[1]*x*exp(-x/[2])",1.,1000.);
+  fbEtaEndcapH->SetParameter(0,0.0564225);
+  fbEtaEndcapH->SetParameter(1,0.00725947);
+  fbEtaEndcapH->SetParameter(2,23.1278);
+  fbEtaEndcapH at x = 10 ;  ,0.103534
+
+=======================================================================================
+
+For EH
+ etapow = eta*eta                              :    (barrel)
+ etapow =  0.01 + 0.5*(fabs(eta) - 1.5)        :    (Endcap inside tracker)
+ etaPow = 0.3 + (fabs(eta) - 1.5)^4            :    (Endcap outside tracker)
+
+
+For H
+ etapow = eta*eta                              :    (barrel)
+ etapow = (fabs(eta) - 1.5)^4                  :    (Endcap inside tracker)
+ etaPow = 0.08                                 :    (Endcap outside tracker)
