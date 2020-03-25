@@ -1,0 +1,146 @@
+{
+//=========Macro generated from canvas: Canvas_1_n2/Canvas_1_n2
+//=========  (Mon Jun  3 19:00:27 2019) by ROOT version5.34/36
+   TCanvas *Canvas_1_n2 = new TCanvas("Canvas_1_n2", "Canvas_1_n2",632,294,700,500);
+   Canvas_1_n2->Range(-60.25,-0.125,562.25,1.125);
+   Canvas_1_n2->SetFillColor(0);
+   Canvas_1_n2->SetBorderMode(0);
+   Canvas_1_n2->SetBorderSize(2);
+   Canvas_1_n2->SetFrameBorderMode(0);
+   Canvas_1_n2->SetFrameBorderMode(0);
+   
+   TH2F *resoHisto = new TH2F("resoHisto","Resolution",500,2,500,200,0,1);
+   resoHisto->SetStats(0);
+
+   Int_t ci;      // for color index setting
+   TColor *color; // for color definition with alpha
+   ci = TColor::GetColor("#000099");
+   resoHisto->SetLineColor(ci);
+   resoHisto->GetXaxis()->SetTitle("E_{true} [GeV]");
+   resoHisto->GetXaxis()->SetLabelFont(42);
+   resoHisto->GetXaxis()->SetLabelSize(0.035);
+   resoHisto->GetXaxis()->SetTitleSize(0.035);
+   resoHisto->GetXaxis()->SetTitleFont(42);
+   resoHisto->GetYaxis()->SetTitle("#sigma(E)/E_{true}");
+   resoHisto->GetYaxis()->SetLabelFont(42);
+   resoHisto->GetYaxis()->SetLabelSize(0.035);
+   resoHisto->GetYaxis()->SetTitleSize(0.035);
+   resoHisto->GetYaxis()->SetTitleFont(42);
+   resoHisto->GetZaxis()->SetLabelFont(42);
+   resoHisto->GetZaxis()->SetLabelSize(0.035);
+   resoHisto->GetZaxis()->SetTitleSize(0.035);
+   resoHisto->GetZaxis()->SetTitleFont(42);
+   resoHisto->Draw("");
+   
+   TPaveText *pt = new TPaveText(0.4018911,0.94,0.5981089,0.995,"blNDC");
+   pt->SetName("title");
+   pt->SetBorderSize(0);
+   pt->SetFillColor(0);
+   pt->SetFillStyle(0);
+   pt->SetTextFont(42);
+   TText *text = pt->AddText("Resolution");
+   pt->Draw();
+   
+   TGraph *graph = new TGraph(68);
+   graph->SetName("Graph0");
+   graph->SetTitle("Graph");
+   graph->SetFillColor(1);
+   graph->SetMarkerColor(4);
+   graph->SetMarkerStyle(22);
+   graph->SetMarkerSize(0.8);
+   graph->SetPoint(0,6,0.2679054466);
+   graph->SetPoint(1,8,-0.3340599396);
+   graph->SetPoint(2,10,0.5402150346);
+   graph->SetPoint(3,12,0.4774745585);
+   graph->SetPoint(4,16,0.3619535753);
+   graph->SetPoint(5,20,0.3082334015);
+   graph->SetPoint(6,24,0.276000586);
+   graph->SetPoint(7,28,0.2549260482);
+   graph->SetPoint(8,32,0.2360404802);
+   graph->SetPoint(9,36,0.2211204136);
+   graph->SetPoint(10,40,0.2075977779);
+   graph->SetPoint(11,44,0.1975476115);
+   graph->SetPoint(12,48,0.1892058484);
+   graph->SetPoint(13,52,0.1839308233);
+   graph->SetPoint(14,56,0.1756706905);
+   graph->SetPoint(15,60,0.1695311638);
+   graph->SetPoint(16,64,0.1624522743);
+   graph->SetPoint(17,68,0.1551294641);
+   graph->SetPoint(18,72,0.1512276653);
+   graph->SetPoint(19,76,0.1470110134);
+   graph->SetPoint(20,80,0.1436798939);
+   graph->SetPoint(21,84,0.1407142914);
+   graph->SetPoint(22,88,0.1368752701);
+   graph->SetPoint(23,92,0.1323126928);
+   graph->SetPoint(24,96,0.1295614077);
+   graph->SetPoint(25,100,0.1281101763);
+   graph->SetPoint(26,104,0.1243450041);
+   graph->SetPoint(27,114,0.1187274849);
+   graph->SetPoint(28,124,0.1128584789);
+   graph->SetPoint(29,134,0.1095496163);
+   graph->SetPoint(30,144,0.1069850399);
+   graph->SetPoint(31,154,0.1022312534);
+   graph->SetPoint(32,164,0.09854225673);
+   graph->SetPoint(33,174,0.09604920787);
+   graph->SetPoint(34,184,0.09346666339);
+   graph->SetPoint(35,194,0.09112361157);
+   graph->SetPoint(36,204,0.08852981082);
+   graph->SetPoint(37,214,0.0864221248);
+   graph->SetPoint(38,224,0.08427770214);
+   graph->SetPoint(39,234,0.08218215273);
+   graph->SetPoint(40,244,0.08104992934);
+   graph->SetPoint(41,254,0.08042441064);
+   graph->SetPoint(42,264,0.07875561338);
+   graph->SetPoint(43,274,0.07704425316);
+   graph->SetPoint(44,284,0.07613793356);
+   graph->SetPoint(45,294,0.07525781923);
+   graph->SetPoint(46,304,0.07396456242);
+   graph->SetPoint(47,314,0.07268476263);
+   graph->SetPoint(48,324,0.07224869282);
+   graph->SetPoint(49,334,0.07151270298);
+   graph->SetPoint(50,344,0.07070127941);
+   graph->SetPoint(51,354,0.06935344506);
+   graph->SetPoint(52,364,0.06848389881);
+   graph->SetPoint(53,374,0.06728870435);
+   graph->SetPoint(54,384,0.06689341888);
+   graph->SetPoint(55,394,0.06654645048);
+   graph->SetPoint(56,404,0.06486921883);
+   graph->SetPoint(57,414,0.06408672087);
+   graph->SetPoint(58,424,0.06406033398);
+   graph->SetPoint(59,434,0.06307603753);
+   graph->SetPoint(60,444,-0.06725832201);
+   graph->SetPoint(61,454,0.06238495971);
+   graph->SetPoint(62,464,0.06192872709);
+   graph->SetPoint(63,474,-0.06558372057);
+   graph->SetPoint(64,484,-0.0650897321);
+   graph->SetPoint(65,494,-0.0646258075);
+   graph->SetPoint(66,504,-0.0642856191);
+   graph->SetPoint(67,-0.3340599396,0);
+   
+   TH1F *Graph_Graph1 = new TH1F("Graph_Graph1","Graph",100,-50.76747,554.4334);
+   Graph_Graph1->SetMinimum(-0.4214874);
+   Graph_Graph1->SetMaximum(0.6276425);
+   Graph_Graph1->SetDirectory(0);
+   Graph_Graph1->SetStats(0);
+
+   ci = TColor::GetColor("#000099");
+   Graph_Graph1->SetLineColor(ci);
+   Graph_Graph1->GetXaxis()->SetLabelFont(42);
+   Graph_Graph1->GetXaxis()->SetLabelSize(0.035);
+   Graph_Graph1->GetXaxis()->SetTitleSize(0.035);
+   Graph_Graph1->GetXaxis()->SetTitleFont(42);
+   Graph_Graph1->GetYaxis()->SetLabelFont(42);
+   Graph_Graph1->GetYaxis()->SetLabelSize(0.035);
+   Graph_Graph1->GetYaxis()->SetTitleSize(0.035);
+   Graph_Graph1->GetYaxis()->SetTitleFont(42);
+   Graph_Graph1->GetZaxis()->SetLabelFont(42);
+   Graph_Graph1->GetZaxis()->SetLabelSize(0.035);
+   Graph_Graph1->GetZaxis()->SetTitleSize(0.035);
+   Graph_Graph1->GetZaxis()->SetTitleFont(42);
+   graph->SetHistogram(Graph_Graph1);
+   
+   graph->Draw("p");
+   Canvas_1_n2->Modified();
+   Canvas_1_n2->cd();
+   Canvas_1_n2->SetSelected(Canvas_1_n2);
+}
