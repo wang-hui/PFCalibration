@@ -6,9 +6,12 @@ Here are the following instructions :
 1. You need to select only one _region_ from the lines at 39-42 in the calibChris code.
 
 2. Then search "summary" in the code you will get list of commented plots. (you can find at line 4368-4396)
-  i)   There we have in total 12 drawGausFit functions for response wrt true energy.
-  ii)  There are 6 drawEtaDependence functions for response wrt abs(Eta).
-  iii) There are 14 calibration coefficients plots for H barrel, H endcap, EH barrel & EH endcap.
+ 
+ i)   There we have in total 12 drawGausFit functions for response wrt true energy.
+ 
+ ii)  There are 6 drawEtaDependence functions for response wrt abs(Eta).
+ 
+ iii) There are 14 calibration coefficients plots for H barrel, H endcap, EH barrel & EH endcap.
   You need to uncomment lines to get the plot.
  
 3. To run the code : 
