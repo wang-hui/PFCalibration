@@ -93,7 +93,13 @@ for event in events_:
             ijets=jets[i]
             jjets=jet1s[j]
             deltaR2=deltaPhi(ijets.phi(), jjets.phi())**2 + (ijets.eta()- jjets.eta())**2
-            if(deltaR2<0.04 and abs(ijets.eta())<1.3 and abs(ijets.eta())>0.5):
+            if(outHistFile=="JetpTresponse_eta0pt5to1pt3" and deltaR2<0.04 and abs(ijets.eta())<1.3 and abs(jjets.eta())>0.5):
+                CaloPF_JetPtHist_.Fill(jjets.pt(),ijets.pt()/jjets.pt())
+            if(outHistFile=="JetpTresponse_eta1pt3to2pt1"and deltaR2<0.04 and abs(ijets.eta())<2.1 and abs(jjets.eta())>1.3):
+                CaloPF_JetPtHist_.Fill(jjets.pt(),ijets.pt()/jjets.pt())
+            if(outHistFile=="JetpTresponse_eta2pt1to2pt5"and deltaR2<0.04 and abs(ijets.eta())<2.5 and abs(jjets.eta())>2.1):
+                CaloPF_JetPtHist_.Fill(jjets.pt(),ijets.pt()/jjets.pt())
+            if(outHistFile=="JetpTresponse_eta2pt5to3pt0"and deltaR2<0.04 and abs(ijets.eta())<3.0 and abs(jjets.eta())>2.5):
                 CaloPF_JetPtHist_.Fill(jjets.pt(),ijets.pt()/jjets.pt())
 
 # make a canvas, draw, and save it
