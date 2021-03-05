@@ -12,26 +12,19 @@ def deltaPhi(phi1, phi2):
     return abs(dphi)
 outHistFile=sys.argv[1]
 #UL=2017
-UL=sys.argv[2]
-#outHistFile2="JetpTresponse_eta"
-#outHistFile="JetpTresponse_eta1pt3to2pt1"
-#outHistFile="JetpTresponse_eta2pt1to2pt5"
-#outHistFile="JetpTresponse_eta2pt5to3pt0"
-# if(UL=="2016"): 
-#     title_2016
-# if(UL=="2017"): 
-#     title_=Ultralegacy 2017
-# if(UL=="2018"): 
-#     title_=Ultralegacy 2018
+UL2017=sys.argv[2]
+UL2018=sys.argv[3]
+
 if(outHistFile=="JetpTresponse_eta0pt5to1pt3") : histtiltle="Jet pT response, 0.5<|#eta|<1.3"
 if(outHistFile=="JetpTresponse_eta1pt3to2pt1") : histtiltle="Jet pT response, 1.3<|#eta|<2.1"
 if(outHistFile=="JetpTresponse_eta2pt1to2pt5") : histtiltle="Jet pT response, 2.1<|#eta|<2.5"
 if(outHistFile=="JetpTresponse_eta2pt5to3pt0") : histtiltle="Jet pT response, 2.5<|#eta|<3.0"
 if(outHistFile=="JetpTresponse_eta") : histtiltle="Jet Response wrt Eta"
 #events = Events ("step3_unity_offset0.root")
-events = Events ("../step3_unity_"+str(UL)+"_tmp.root")
+#events = Events ("../step3_unity_"+str(UL)+"_tmp.root")
 #events = Events ("step3_UL2018.root")
-events_ = Events ("../step3_UL"+str(UL)+".root")
+events = Events ("../step3_"+str(UL2017)+".root")
+events_ = Events ("../step3_"+str(UL2018)+".root")
 
 # create handle outside of loop
 handle  = Handle ("std::vector<reco::PFJet>")
@@ -156,7 +149,7 @@ CaloPF_JetPtHist.GetYaxis().SetLabelSize(0.05)
 CaloPF_JetPtHist.GetYaxis().SetTitleSize (0.05)
 CaloPF_JetPtHist.GetYaxis().SetTitleOffset (0.86)
 CaloPF_JetPtHist_.GetYaxis().SetTitle ("PFJet pT/GenJet pT")
-CaloPF_JetPtHist.SetTitleSize (0.05)
+CaloPF_JetPtHist.SetTitleSize (0.08)
 
 CaloPF_JetPt_EtaHist.SetStats(0)
 CaloPF_JetPt_EtaHist_.SetStats(0)
@@ -178,9 +171,9 @@ line1.SetLineColor(ROOT.kBlack)
 line1.SetLineWidth(2)
 
 legend1 = ROOT . TLegend (0.6 ,0.3 ,0.8 ,0.5)
-legend1.SetHeader("Ultralegacy "+str(UL),"C")
-legend1.AddEntry ( CaloPF_JetPtHist2 ,"Before PFCalibration")
-legend1.AddEntry ( CaloPF_JetPtHist2_ ,"After PFCalibration ")
+legend1.SetHeader("After Calibration","C")
+legend1.AddEntry ( CaloPF_JetPtHist2 ,"Ultralegacy "+str(UL2017))
+legend1.AddEntry ( CaloPF_JetPtHist2_ ,"Ultralegacy "+str(UL2018))
 legend1.SetLineWidth (0)
 legend1.SetTextSize(0.04)
 
@@ -215,9 +208,9 @@ CaloPF_JetPtHist2.GetYaxis().SetTitle ("Entries")
 
 
 legend = ROOT . TLegend (0.5 ,0.1 ,0.7 ,0.3)
-legend.SetHeader("Ultralegacy "+str(UL),"C")
-legend.AddEntry ( CaloPF_JetPtHist ,"Before PFCalibration")
-legend.AddEntry ( CaloPF_JetPtHist_ ,"After PFCalibration ")
+legend.SetHeader("After Calibration","C")
+legend.AddEntry ( CaloPF_JetPtHist ,"Ultralegacy "+str(UL2017))
+legend.AddEntry ( CaloPF_JetPtHist_ ,"Ultralegacy "+str(UL2018))
 legend.SetLineWidth (0)
 legend.SetTextSize(0.06)
 
@@ -235,8 +228,8 @@ if(outHistFile=="JetpTresponse_eta0pt5to1pt3" or outHistFile=="JetpTresponse_eta
     CaloPF_JetPtHist2.Draw()
     CaloPF_JetPtHist2_.Draw("same")
     legend1.Draw("sames")
-    c1.Print ("1DCaloPF_JetPtHist"+"_"+outHistFile+"_"+str(UL)+".png")
-    c1.SaveAs ("1DCaloPF_JetPtHist"+"_"+outHistFile+"_"+str(UL)+".root")
+    c1.Print ("1DCaloPF_JetPtHist"+"_"+outHistFile+"_"+str(UL2017)+"wrt"+str(UL2018)+".png")
+    c1.SaveAs ("1DCaloPF_JetPtHist"+"_"+outHistFile+"_"+str(UL2017)+"wrt"+str(UL2018)+".root")
 
     ratio = CaloPF_JetPtHist.Clone()
     ratio1 = CaloPF_JetPtHist_.Clone()
@@ -279,9 +272,9 @@ if(outHistFile=="JetpTresponse_eta0pt5to1pt3" or outHistFile=="JetpTresponse_eta
     pad2.cd()
     ratio.Draw("pe")
     line.Draw("same")
-    c3.Print(outHistFile+"_"+str(UL)+".png")
-    c3.Print(outHistFile+"_"+str(UL)+".pdf")
-    c3.SaveAs(outHistFile+"_"+str(UL)+".root")
+    c3.Print(outHistFile+"_"+str(UL2017)+"wrt"+str(UL2018)+".png")
+    c3.Print(outHistFile+"_"+str(UL2017)+"wrt"+str(UL2018)+".pdf")
+    c3.SaveAs(outHistFile+"_"+str(UL2017)+"wrt"+str(UL2018)+".root")
 # ratio.Write()
 # outHistFile.Close()
 
@@ -324,6 +317,6 @@ if(outHistFile=="JetpTresponse_eta"):
     pad4.cd()
     ratio.Draw("pe")
     line3.Draw("same")
-    c4.Print(outHistFile+"_"+str(UL)+".png")
-    c4.Print(outHistFile+"_"+str(UL)+".pdf")
-    c4.SaveAs(outHistFile+"_"+str(UL)+".root")
+    c4.Print(outHistFile+"_"+str(UL2017)+"wrt"+str(UL2018)+".png")
+    c4.Print(outHistFile+"_"+str(UL2017)+"wrt"+str(UL2018)+".pdf")
+    c4.SaveAs(outHistFile+"_"+str(UL2017)+"wrt"+str(UL2018)+".root")
