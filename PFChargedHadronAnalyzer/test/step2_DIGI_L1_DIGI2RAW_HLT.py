@@ -7,7 +7,7 @@ import FWCore.ParameterSet.Config as cms
 
 from Configuration.StandardSequences.Eras import eras
 
-process = cms.Process('HLT',eras.Run2_2018)
+process = cms.Process('HLT',eras.Run3)
 
 # import of standard configurations
 process.load('Configuration.StandardSequences.Services_cff')
@@ -31,9 +31,10 @@ process.maxEvents = cms.untracked.PSet(
 # Input source
 process.source = cms.Source("PoolSource",
     dropDescendantsOfDroppedBranches = cms.untracked.bool(False),
-    fileNames = cms.untracked.vstring('root://se01.indiacms.res.in//store/user/bkansal/step1/PGun_step1_GEN_SIM_1060_2_200_Mar20_2018/CRAB_PrivateMC/crab_PGun_step1_GEN_SIM_1060_2_200_Mar20_2018/190321_094931/0000/step1_1.root'),
+    # fileNames = cms.untracked.vstring('root://se01.indiacms.res.in//store/user/bkansal/step1/PGun_step1_GEN_SIM_1060_2_200_Mar20_2018/CRAB_PrivateMC/crab_PGun_step1_GEN_SIM_1060_2_200_Mar20_2018/190321_094931/0000/step1_1.root'),
     #fileNames = cms.untracked.vstring('root://se01.indiacms.res.in//store/user/spandey/step1/PGun_step1_GEN_SIM_1002_2_200_Feb_12/CRAB_PrivateMC/crab_PGun_step1_GEN_SIM_1002_2_200_Feb_12/180212_064702/0000/step1_1.root'),
     # fileNames = cms.untracked.vstring(),
+    fileNames = cms.untracked.vstring('root://se01.indiacms.res.in//store/user/bkansal/step1/PGun_step1_GEN_SIM_1100_2021_2_200_Mar12/CRAB_PrivateMC/crab_PGun_step1_GEN_SIM_1100_2021_2_200_Mar12/210312_072255/0000//step1_86.root'),
     inputCommands = cms.untracked.vstring(
         'keep *', 
         'drop *_genParticles_*_*', 
@@ -85,7 +86,8 @@ process.FEVTDEBUGHLToutput = cms.OutputModule("PoolOutputModule",
 process.mix.digitizers = cms.PSet(process.theDigitizersValid)
 from Configuration.AlCa.GlobalTag import GlobalTag
 #process.GlobalTag = GlobalTag(process.GlobalTag, 'auto:run1_mc', '')
-process.GlobalTag = GlobalTag(process.GlobalTag, '105X_upgrade2018_realistic_v6', '')
+#process.GlobalTag = GlobalTag(process.GlobalTag, '105X_upgrade2018_realistic_v6', '')
+process.GlobalTag = GlobalTag(process.GlobalTag, '110X_mcRun3_2021_realistic_v6', '')
 
 # Path and EndPath definitions
 process.digitisation_step = cms.Path(process.pdigi_valid)

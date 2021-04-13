@@ -7,7 +7,7 @@ import FWCore.ParameterSet.Config as cms
 
 from Configuration.StandardSequences.Eras import eras
 
-process = cms.Process('RECO',eras.Run2_2018)
+process = cms.Process('RECO',eras.Run3)
 
 # import of standard configurations
 process.load('Configuration.StandardSequences.Services_cff')
@@ -29,13 +29,13 @@ process.load('DQMOffline.Configuration.DQMOfflineMC_cff')
 process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_cff')
 
 process.maxEvents = cms.untracked.PSet(
-    input = cms.untracked.int32(1)
+    input = cms.untracked.int32(100)
 )
 
 # Input source
 process.source = cms.Source("PoolSource",
-    # fileNames = cms.untracked.vstring('root://cmsxrootd.fnal.gov//store/mc/RunIIWinter19PFCalibDR/Single_Pion_gun_E_2to200_13TeV_pythia8/GEN-SIM-RECO/2016ConditionsNoPU_105X_mcRun2_asymptotic_v2-v1/60000/FDF53C10-9714-A043-8691-05F878EC5468.root'),
-    fileNames = cms.untracked.vstring('file:/eos/cms/store/mc/RunIIWinter19PFCalibDR/Single_Pion_gun_E_2to200_13TeV_pythia8/GEN-SIM-RECO/2017ConditionsNoPU_105X_mc2017_realistic_v5-v1/120000/FFB35EB9-41D4-3545-9E3F-195ED35277CE.root'),
+    fileNames = cms.untracked.vstring('root://se01.indiacms.res.in//store/user/bkansal/step2/PGun_step2_DIGI_1100_2021_200_500_Mar12/CRAB_UserFiles/crab_PGun_step2_DIGI_1100_2021_200_500_Mar12//210314_125611/0004/step2_4993.root'),
+#    fileNames = cms.untracked.vstring('file:/eos/cms/store/mc/RunIIWinter19PFCalibDR/Single_Pion_gun_E_2to200_13TeV_pythia8/GEN-SIM-RECO/2017ConditionsNoPU_105X_mc2017_realistic_v5-v1/120000/FFB35EB9-41D4-3545-9E3F-195ED35277CE.root'),
     secondaryFileNames = cms.untracked.vstring()
 )
 
@@ -57,7 +57,7 @@ process.RECOSIMoutput = cms.OutputModule("PoolOutputModule",
         dataTier = cms.untracked.string('GEN-SIM-RECO'),
         filterName = cms.untracked.string('')
     ),
-    fileName = cms.untracked.string('file:step3.root'),
+    fileName = cms.untracked.string('file:step3_reco.root'),
     outputCommands = process.RECOSIMEventContent.outputCommands,
     splitLevel = cms.untracked.int32(0)
 )
@@ -147,10 +147,8 @@ for a in process.aliases: delattr(process, a)
 process.RandomNumberGeneratorService.restoreStateLabel=cms.untracked.string("randomEngineStateProducer")
 from Configuration.AlCa.GlobalTag import GlobalTag
 #process.GlobalTag = GlobalTag(process.GlobalTag, 'auto:run1_mc', '')
-process.GlobalTag = GlobalTag(process.GlobalTag, '105X_upgrade2018_realistic_v6', '')
-
-
-
+#process.GlobalTag = GlobalTag(process.GlobalTag, '105X_upgrade2018_realistic_v6', '')
+process.GlobalTag = GlobalTag(process.GlobalTag, '110X_mcRun3_2021_realistic_v6', '')
 
 
 process.pfChargedHadronAnalyzer = cms.EDAnalyzer(
@@ -258,7 +256,7 @@ process.DQMoutput_step = cms.EndPath(process.DQMoutput)
 # Schedule definition
 #process.schedule = cms.Schedule(process.raw2digi_step,process.L1Reco_step,process.reconstruction_step,process.recosim_step,process.eventinterpretaion_step,process.Flag_HBHENoiseFilter,process.Flag_HBHENoiseIsoFilter,process.Flag_CSCTightHaloFilter,process.Flag_CSCTightHaloTrkMuUnvetoFilter,process.Flag_CSCTightHalo2015Filter,process.Flag_globalTightHalo2016Filter,process.Flag_globalSuperTightHalo2016Filter,process.Flag_HcalStripHaloFilter,process.Flag_hcalLaserEventFilter,process.Flag_EcalDeadCellTriggerPrimitiveFilter,process.Flag_EcalDeadCellBoundaryEnergyFilter,process.Flag_ecalBadCalibFilter,process.Flag_goodVertices,process.Flag_eeBadScFilter,process.Flag_ecalLaserCorrFilter,process.Flag_trkPOGFilters,process.Flag_chargedHadronTrackResolutionFilter,process.Flag_muonBadTrackFilter,process.Flag_BadChargedCandidateFilter,process.Flag_BadPFMuonFilter,process.Flag_BadChargedCandidateSummer16Filter,process.Flag_BadPFMuonSummer16Filter,process.Flag_trkPOG_manystripclus53X,process.Flag_trkPOG_toomanystripclus53X,process.Flag_trkPOG_logErrorTooManyClusters,process.Flag_METFilters,process.prevalidation_step,process.prevalidation_step1,process.validation_step,process.validation_step1,process.dqmoffline_step,process.dqmoffline_1_step,process.dqmofflineOnPAT_step,process.dqmofflineOnPAT_1_step,process.RECOSIMoutput_step,process.MINIAODSIMoutput_step,process.DQMoutput_step)
 
-process.schedule = cms.Schedule(process.raw2digi_step,process.L1Reco_step,process.reconstruction_step,process.eventinterpretaion_step,process.gRR,process.EDA)
+process.schedule = cms.Schedule(process.raw2digi_step,process.L1Reco_step,process.reconstruction_step,process.eventinterpretaion_step,process.RECOSIMoutput_step,process.gRR,process.EDA)
 
 
 

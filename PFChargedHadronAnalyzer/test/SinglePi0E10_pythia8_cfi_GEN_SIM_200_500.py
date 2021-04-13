@@ -56,7 +56,7 @@ process.RAWSIMoutput = cms.OutputModule("PoolOutputModule",
         filterName = cms.untracked.string('')
     ),
     eventAutoFlushCompressedSize = cms.untracked.int32(20971520),
-    fileName = cms.untracked.string('file:step1.root'),
+    fileName = cms.untracked.string('file:step1_200_500.root'),
     outputCommands = process.RAWSIMEventContent.outputCommands,
     splitLevel = cms.untracked.int32(0)
 )
@@ -90,10 +90,10 @@ process.GlobalTag = GlobalTag(process.GlobalTag, '110X_mcRun3_2021_realistic_v6'
 
 process.generator = cms.EDProducer("FlatRandomEGunProducer",
     PGunParameters = cms.PSet(
-        MaxE = cms.double(200.0),
+        MaxE = cms.double(500.0),
         MaxEta = cms.double(3.0),
         MaxPhi = cms.double(3.14159265359),
-        MinE = cms.double(2.0),
+        MinE = cms.double(200.0),
         MinEta = cms.double(-3.0),
         MinPhi = cms.double(-3.14159265359),
         #ParticleID = cms.vint32(211)

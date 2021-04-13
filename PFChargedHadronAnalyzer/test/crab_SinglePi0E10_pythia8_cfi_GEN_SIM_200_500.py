@@ -2,7 +2,7 @@ from WMCore.Configuration import Configuration
 config = Configuration()
 
 config.section_("General")
-config.General.requestName ='PGun_step1_GEN_SIM_1100_2021_2_200_Mar12'
+config.General.requestName ='PGun_step1_GEN_SIM_1100_2021_200_500_Mar12'
 config.General.workArea = 'crab_projects'
 
 #optional
@@ -17,8 +17,8 @@ config.General.workArea = 'crab_projects'
 config.section_("JobType")
 config.JobType.pluginName = 'PrivateMC'
 #config.JobType.psetName = 'SinglePiE50HCAL_pythia8_cfi_GEN_SIM.py'
-config.JobType.psetName = 'SinglePi0E10_pythia8_cfi_GEN_SIM.py'
-config.JobType.outputFiles = ['step1.root']
+config.JobType.psetName = 'SinglePi0E10_pythia8_cfi_GEN_SIM_200_500.py'
+config.JobType.outputFiles = ['step1_200_500.root']
 config.JobType.eventsPerLumi = 2000
 
 config.section_("Data")
@@ -31,7 +31,7 @@ config.Data.totalUnits = config.Data.unitsPerJob * NJOBS
 config.Data.publication = False
 #config.Data.publishDBS = '' default for the moment
 #config.Data.outLFN = '/home/spandey/t3store/PF_PGun'
-config.Data.outLFNDirBase = '/store/user/bkansal/step1/PGun_step1_GEN_SIM_1100_2021_2_200_Mar12/'
+config.Data.outLFNDirBase = '/store/user/bkansal/step1/PGun_step1_GEN_SIM_1100_2021_200_500_Mar12/'
 
 config.section_("Site")
 config.Site.storageSite = 'T2_IN_TIFR'
