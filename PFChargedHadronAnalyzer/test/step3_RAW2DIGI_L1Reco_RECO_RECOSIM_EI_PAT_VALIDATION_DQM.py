@@ -34,8 +34,10 @@ process.maxEvents = cms.untracked.PSet(
 
 # Input source
 process.source = cms.Source("PoolSource",
-    fileNames = cms.untracked.vstring('root://se01.indiacms.res.in//store/user/bkansal/step2/PGun_step2_DIGI_1100_2021_200_500_Mar12/CRAB_UserFiles/crab_PGun_step2_DIGI_1100_2021_200_500_Mar12//210314_125611/0004/step2_4993.root'),
+#    fileNames = cms.untracked.vstring('root://se01.indiacms.res.in//store/user/bkansal/step2/PGun_step2_DIGI_1100_2021_200_500_Mar12/CRAB_UserFiles/crab_PGun_step2_DIGI_1100_2021_200_500_Mar12//210314_125611/0004/step2_4993.root'),
 #    fileNames = cms.untracked.vstring('file:/eos/cms/store/mc/RunIIWinter19PFCalibDR/Single_Pion_gun_E_2to200_13TeV_pythia8/GEN-SIM-RECO/2017ConditionsNoPU_105X_mc2017_realistic_v5-v1/120000/FFB35EB9-41D4-3545-9E3F-195ED35277CE.root'),
+#    fileNames = cms.untracked.vstring('file:step2.root'),
+    fileNames = cms.untracked.vstring('root://se01.indiacms.res.in//store/user/bkansal/step2/PGun_step2_DIGI_1200_2021_2_200_Sep17_tmp/CRAB_UserFiles/crab_PGun_step2_DIGI_1200_2021_2_200_Sep17_tmp/210918_034925/0000/step2_99.root'),
     secondaryFileNames = cms.untracked.vstring()
 )
 
@@ -148,7 +150,8 @@ process.RandomNumberGeneratorService.restoreStateLabel=cms.untracked.string("ran
 from Configuration.AlCa.GlobalTag import GlobalTag
 #process.GlobalTag = GlobalTag(process.GlobalTag, 'auto:run1_mc', '')
 #process.GlobalTag = GlobalTag(process.GlobalTag, '105X_upgrade2018_realistic_v6', '')
-process.GlobalTag = GlobalTag(process.GlobalTag, '110X_mcRun3_2021_realistic_v6', '')
+#process.GlobalTag = GlobalTag(process.GlobalTag, '110X_mcRun3_2021_realistic_v6', '')
+process.GlobalTag = GlobalTag(process.GlobalTag, '120X_mcRun3_2021_realistic_v6', '')
 
 
 process.pfChargedHadronAnalyzer = cms.EDAnalyzer(
@@ -173,7 +176,7 @@ process.pfChargedHadronAnalyzer = cms.EDAnalyzer(
 
 
 
-process.load("RecoParticleFlow.PFProducer.particleFlowSimParticle_cfi")
+process.load("RecoParticleFlow.PFProducer.particleFlowSimParticle_cff")
 #process.load("RecoParticleFlow.Configuration.HepMCCopy_cfi")                                                                        
 
 process.particleFlowSimParticle.ParticleFilter = cms.PSet(
