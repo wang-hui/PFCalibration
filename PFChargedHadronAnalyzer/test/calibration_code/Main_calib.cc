@@ -31,13 +31,13 @@ bool useMean = false;
 bool useMedian = false;
 bool changeRange =false;
 bool old_logic = false;
-bool drawpT = true;
+bool drawpT = false;
 bool drawResoFit = false;
 bool saveCanvas = true;
 //char* _region_ = (char*)"EC_outside_tracker";
 //char* _region_ = (char*)"EC_within_tracker";
-char* _region_ = (char*)"barrel";
-//char* _region_ = (char*)"Full";
+//char* _region_ = (char*)"barrel";
+char* _region_ = (char*)"Full";
 
 float _etaMin_ = 0.0;
 float _etaMax_ = 0.0;
@@ -984,7 +984,7 @@ int main()
    
    else if (strcmp(_region_,  "Full") == 0 ) {
      _etaMin_ = 1.55;
-     _etaMax_ = 3.0;
+     _etaMax_ = 2.75;
    }
  
    // cout<< " _region_: " << _region_<< " , (_region_ == EC_outside_tracker): " 
@@ -1822,12 +1822,17 @@ int main()
 
     //faEtaEndcapEH
     //trial1
+     functionEndcapAlphaEcalHcal->FixParameter(0,0.0226425);
+     functionEndcapAlphaEcalHcal->FixParameter(1,0);
+     functionEndcapAlphaEcalHcal->FixParameter(2,7.24241);
+     functionEndcapAlphaEcalHcal->FixParameter(3,1.11497);
 
-   functionEndcapAlphaEcalHcal->FixParameter(0,0.020023 );
-   functionEndcapAlphaEcalHcal->FixParameter(1,-0.000327971);
-   functionEndcapAlphaEcalHcal->FixParameter(2,15.1533);
-   functionEndcapAlphaEcalHcal->FixParameter(3,0.311884);
-
+     /*
+   functionEndcapAlphaEcalHcal->SetParameter(0,0.020023 );
+   functionEndcapAlphaEcalHcal->SetParameter(1,-0.000327971);
+   functionEndcapAlphaEcalHcal->SetParameter(2,15.1533);
+   functionEndcapAlphaEcalHcal->SetParameter(3,0.311884);
+     */
      //     functionEndcapAlphaEcalHcal->SetParameter(0,5.37368e-02);
      //     functionEndcapAlphaEcalHcal->SetParameter(1,4.40507);
      //     functionEndcapAlphaEcalHcal->SetParameter(2,-1.55219e+02);
@@ -2301,17 +2306,17 @@ int main()
    //// raw barrel response for EH-hdarons
    //   drawGausFit(rawBarrelEcalHcal,responseRaw,resolutionRaw);
    /// E-corrected barrel response for EH-hdarons
-   drawGausFit(corrBarrelEcalHcal,responseCor,resolutionCor);
+   //   drawGausFit(corrBarrelEcalHcal,responseCor,resolutionCor);
    //// Eta-corrected barrel response for EH-hdarons
-   drawGausFit(corrEtaBarrelEcalHcal, responseEta, resolutionEta);
+   //   drawGausFit(corrEtaBarrelEcalHcal, responseEta, resolutionEta);
 
    
    //// raw barrel response for H-hdarons
    //   drawGausFit(rawBarrelHcal,responseRaw,resolutionRaw);
    //// E-corrected barrel response for H-hdarons
-   drawGausFit(corrBarrelHcal,responseCor,resolutionCor);
+   //   drawGausFit(corrBarrelHcal,responseCor,resolutionCor);
    //// Eta-corrected barrel response for H-hdarons
-   drawGausFit(corrEtaBarrelHcal,responseCor,resolutionCor);
+   //   drawGausFit(corrEtaBarrelHcal,responseCor,resolutionCor);
 
    //// raw endcap response for EH-hdarons 
    //rawEndcapEcalHcal->Draw("colz");
@@ -2319,7 +2324,7 @@ int main()
    //// E-corrected endcap response for EH-hdarons
    //   drawGausFit(corrEndcapEcalHcal,responseCor,resolutionCor);
    //// Eta-corrected endcap response for EH-hdarons
-   //  drawGausFit(corrEtaEndcapEcalHcal,responseCor,resolutionCor);
+   //    drawGausFit(corrEtaEndcapEcalHcal,responseCor,resolutionCor);
       //   corrEtaEndcapEcalHcal->Draw("colz");
 
    
@@ -2339,11 +2344,11 @@ int main()
 
    //   drawEtaDependence(rawEtaDependenceEH, responseEtaEtaEH);
    //   drawEtaDependence(hcorrEtaDependenceEH, responseEtaHCorrEtaEH);
-   //   drawEtaDependence(corrEtaDependenceEH, responseEtaEtaEH);
+   drawEtaDependence(corrEtaDependenceEH, responseEtaEtaEH);
 
    //   drawEtaDependence(rawEtaDependenceH, responseEtaEtaH);
    //   drawEtaDependence(hcorrEtaDependenceH, responseEtaHCorrEtaH);
-   //   drawEtaDependence(corrEtaDependenceH, responseEtaEtaH);
+   //drawEtaDependence(corrEtaDependenceH, responseEtaEtaH);
    
    //drawGausFit(corrEta,response, resolution);
    //drawCompare(responseRaw, response, resolutionRaw, resolution);
@@ -2364,16 +2369,16 @@ int main()
    //endcapWithHcalCalib->drawCoeffGraph("Beta", "H_endcap");
 
    // barrel EH calibration coefficient
-   // barrelWithEcalHcalCalib->drawCoeffGraph("A","EH_barrel");
-   //barrelWithEcalHcalCalib->drawCoeffGraph("B", "EH_barrel");
-   //barrelWithEcalHcalCalib->drawCoeffGraph("Alpha","EH_barrel");
-   //barrelWithEcalHcalCalib->drawCoeffGraph("Beta", "EH_barrel");
+    //   barrelWithEcalHcalCalib->drawCoeffGraph("A","EH_barrel");
+    //   barrelWithEcalHcalCalib->drawCoeffGraph("B", "EH_barrel");
+    //   barrelWithEcalHcalCalib->drawCoeffGraph("Alpha","EH_barrel");
+    //   barrelWithEcalHcalCalib->drawCoeffGraph("Beta", "EH_barrel");
 
    // endcap EH calibration coefficient
-  //   endcapWithEcalHcalCalib->drawCoeffGraph("A","EH_endcap");
-  //   endcapWithEcalHcalCalib->drawCoeffGraph("B", "EH_endcap");
-  //   endcapWithEcalHcalCalib->drawCoeffGraph("Alpha","EH_endcap");
-  //   endcapWithEcalHcalCalib->drawCoeffGraph("Beta", "EH_endcap");
+   //   endcapWithEcalHcalCalib->drawCoeffGraph("A","EH_endcap");
+   //   endcapWithEcalHcalCalib->drawCoeffGraph("B", "EH_endcap");
+   //   endcapWithEcalHcalCalib->drawCoeffGraph("Alpha","EH_endcap");
+   //   endcapWithEcalHcalCalib->drawCoeffGraph("Beta", "EH_endcap");
 
 
 
