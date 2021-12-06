@@ -25,14 +25,15 @@ process.load('Configuration.StandardSequences.EndOfProcess_cff')
 process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_cff')
 
 process.maxEvents = cms.untracked.PSet(
-    input = cms.untracked.int32(10),
+    input = cms.untracked.int32(-1), #NEvents
     output = cms.optional.untracked.allowed(cms.int32,cms.PSet)
 )
 
 # Input source
 process.source = cms.Source("PoolSource",
 #    fileNames = cms.untracked.vstring('file:JME-Run3Summer21DRPremix-00001_1_1.root'),
-    fileNames = cms.untracked.vstring('root://se01.indiacms.res.in//store/user/bkansal/step2/PGun_step2_DIGI_1200_2021_2_200_Sep17_tmp/CRAB_UserFiles/crab_PGun_step2_DIGI_1200_2021_2_200_Sep17_tmp/210918_034925/0000/step2_99.root'),
+#    fileNames = cms.untracked.vstring('root://se01.indiacms.res.in//store/user/bkansal/step2/PGun_step2_DIGI_1200_2021_2_200_Sep17_tmp/CRAB_UserFiles/crab_PGun_step2_DIGI_1200_2021_2_200_Sep17_tmp/210918_034925/0000/step2_99.root'),
+    fileNames = cms.untracked.vstring('file:step2.root'), # input root file name
     secondaryFileNames = cms.untracked.vstring()
 )
 

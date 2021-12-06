@@ -25,7 +25,7 @@ process.load('Configuration.StandardSequences.EndOfProcess_cff')
 process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_cff')
 
 process.maxEvents = cms.untracked.PSet(
-    input = cms.untracked.int32(-1)
+    input = cms.untracked.int32(-1) #Nevents, if -1 -> all events in input root file
 )
 
 # Input source
@@ -35,7 +35,7 @@ process.source = cms.Source("PoolSource",
     #fileNames = cms.untracked.vstring('root://se01.indiacms.res.in//store/user/spandey/step1/PGun_step1_GEN_SIM_1002_2_200_Feb_12/CRAB_PrivateMC/crab_PGun_step1_GEN_SIM_1002_2_200_Feb_12/180212_064702/0000/step1_1.root'),
     # fileNames = cms.untracked.vstring(),
    # fileNames = cms.untracked.vstring('root://se01.indiacms.res.in//store/user/bkansal/step1/PGun_step1_GEN_SIM_1200_2021_2_200_Sep17//CRAB_PrivateMC/crab_PGun_step1_GEN_SIM_1200_2021_2_200_Sep17//210917_081720/0000//step1_976.root'),
-    fileNames = cms.untracked.vstring('file:step1.root'),
+    fileNames = cms.untracked.vstring('file:step1.root'), # input rootfile name same as outfile file name in step1
     inputCommands = cms.untracked.vstring(
         'keep *', 
         'drop *_genParticles_*_*', 
@@ -76,7 +76,7 @@ process.FEVTDEBUGHLToutput = cms.OutputModule("PoolOutputModule",
         dataTier = cms.untracked.string('GEN-SIM-DIGI-RAW-HLTDEBUG'),
         filterName = cms.untracked.string('')
     ),
-    fileName = cms.untracked.string('file:step2.root'),
+    fileName = cms.untracked.string('file:step2.root'), # output root file name
     outputCommands = process.FEVTDEBUGHLTEventContent.outputCommands,
     splitLevel = cms.untracked.int32(0)
 )
