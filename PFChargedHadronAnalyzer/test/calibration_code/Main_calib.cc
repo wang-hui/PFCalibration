@@ -20,7 +20,7 @@
 // #include <iostream>
 // #include <math.h>
 
-#include "Main_UL2016.h"
+#include "Main_calib.h"
 //#include "CrystalBall.C"
 
 using namespace std;
@@ -954,8 +954,8 @@ int main()
    // chain->Add("./root_files/PGun_2_500_10_0_3_upgrade2018_ECAL_pfB.root");
    //  chain->Add("./home/bhumika/work/PFCalibration/for_10_0_2/calib_codes/PGun_2_500_10_0_2_upgrade2018_NO_CUT_new.root");
    //chain->Add("./root_files/PGun_Singlepion_10_6_0_UL2016.root");
-   chain->Add("./root_files/PGun_Singlepion_12_0_0_Run3.root");
-
+   //   chain->Add("./root_files/PGun_Singlepion_12_0_0_Run3.root");
+   chain->Add("../../../../../../PFcalibration_2019/CMSSW_10_6_0/src/PFCalibration/PFChargedHadronAnalyzer/test/step3_2016.root");
    sTree = (TTree*)chain;
    cout<<"Reading input tree..."<<endl;
    getValuesFromTree(sTree, ETrueEnergies, ecalEnergies, 
