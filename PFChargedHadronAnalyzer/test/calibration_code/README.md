@@ -1,11 +1,13 @@
 # For PFcalibration use PFCalibration/PFChargedHadronAnalyzer/test/calibration_code/Main_calib.cc 
 Note: Please run code in ROOT version > 6.xx
 
+You need to add the input root file path in line 958 of Main_calib.cc.
+
 Here are the following instructions :
 
-1. You need to select only one _region_ from the lines at 39-42 in the calibChris code.
+1. You need to select only one _region_ from the lines at 39-42 in the Main_calib.cc code.
 
-2. Then search "summary" in the code you will get list of commented plots. (you can find from lines 2301-2376)
+2. Then search "summary" in the code you will get list of commented functions. (you can find from lines 2301-2376)
 
     i)   There we have in total 12 drawGausFit functions for response wrt true energy. 
     
@@ -13,7 +15,7 @@ Here are the following instructions :
     
     iii) There are 14 calibration coefficients plots for H barrel, H endcap, EH barrel & EH endcap.
     
-   You need to uncomment lines to get the plot.
+   You need to uncomment lines to get the corresponding plot.
  
 3. To run the code : 
 ```
