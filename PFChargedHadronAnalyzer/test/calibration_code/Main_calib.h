@@ -1677,11 +1677,12 @@ void Calibration::drawCoeffGraph(string graph, string tag)
 
   cout<<" Tag = "<<tag<<endl;
   cout<<" Graph = "<<graph<<endl;
-  TString fileName="resp_reso_"+graph+"_"+tag+".root";
+  TString fileName="results_temp/resp_reso_"+graph+"_"+tag+".root";
   //char* fileName = new char[1000];
-   string saveString;
-   //TCanvas* canvas = new TCanvas( (graph+tag).c_str() , graph.c_str(), 1200,600 );
-   TCanvas* canvas = new TCanvas( (graph+tag).c_str() , graph.c_str(), 500,300 );
+   string saveString = "plots_temp/";
+   TString chi2 = "chi2/NDF ="; 
+   TCanvas* canvas = new TCanvas( (graph+tag).c_str() , graph.c_str(), 1000,600 );
+   //TCanvas* canvas = new TCanvas( (graph+tag).c_str() , graph.c_str(), 500,300 );
    //   sprintf(fileName,"resp_reso_%s_%s.root",graph,tag);
    TFile* file3=new TFile(fileName,"recreate");
    file3->cd();
@@ -1717,16 +1718,19 @@ void Calibration::drawCoeffGraph(string graph, string tag)
        // }
 
        //  leg->AddEntry(
-     TLegend *leg=new TLegend(0.30,0.25,0.90,0.35);
-     // leg->AddEntry(histo,"[0]+((([1]+([2]/sqrt(x)))*exp(-(x^[6]/[3])))-([4]*exp(-(x^[7]/[5]))))","");
-     leg->AddEntry(histo,"[0]+((([1]+([2]/sqrt(x)))*exp(-(x^[4]/[3]))))","");//for UL 2016 ec
+     auto myList = graphB_->GetListOfFunctions();
+     auto myFunc = (TF1*)myList->First(); 
+     TLegend *leg=new TLegend(0.50,0.15,0.90,0.35);
+     leg->AddEntry((TObject*)0,myFunc->GetTitle(),"");
+     leg->AddEntry((TObject*)0,chi2+(myFunc->GetChisquare()/myFunc->GetNDF()),"");
+     //leg->AddEntry(histo,"[0]+((([1]+([2]/sqrt(x)))*exp(-(x^[4]/[3]))))","");//for UL 2016 ec
      // leg->AddEntry(histo,"[0]+((([1]+([2]/(x^[5])))*exp(-(x^[4]/[3]))))","");//for UL 2016 barrel 
      leg->SetTextAlign(32);
      leg->SetTextSize(0.04);
      leg->Draw();
-     saveString = "ACoefficient" + tag + ".gif";
-     canvas->SaveAs(saveString.c_str());
-     saveString = "ACoefficient" + tag + ".png";
+     //saveString = "ACoefficient" + tag + ".gif";
+     //canvas->SaveAs(saveString.c_str());
+     saveString += "ACoefficient" + tag + ".png";
      canvas->SaveAs(saveString.c_str());
      graphB_->Write();
 
@@ -1747,15 +1751,18 @@ void Calibration::drawCoeffGraph(string graph, string tag)
       //}
 
       //  leg->AddEntry(
-     TLegend *leg=new TLegend(0.30,0.25,0.90,0.35);
-     leg->AddEntry(histo,"[0]+((([1]+([2]/sqrt(x)))*exp(-(x^[6]/[3])))-([4]*exp(-(x^[7]/[5]))))","");//for UL2016 barrel(EH)
+     auto myList = graphC_->GetListOfFunctions();
+     auto myFunc = (TF1*)myList->First(); 
+     TLegend *leg=new TLegend(0.50,0.15,0.90,0.35);
+     leg->AddEntry((TObject*)0,myFunc->GetTitle(),"");
+     leg->AddEntry((TObject*)0,chi2+(myFunc->GetChisquare()/myFunc->GetNDF()),"");
      //     leg->AddEntry(histo,"[0]+([4]*(x-[5])*exp(-(x*[7])))+(([1]+([2]/sqrt(x)))*exp(-(x^[6]/[3])))",""); //for UL2016 endcap(EH)
      leg->SetTextAlign(32);
      leg->SetTextSize(0.04);
      leg->Draw();
-     saveString = "BCoefficient" + tag + ".gif";
-      canvas->SaveAs(saveString.c_str());
-     saveString = "BCoefficient" + tag + ".png";
+     //saveString = "BCoefficient" + tag + ".gif";
+     // canvas->SaveAs(saveString.c_str());
+     saveString += "BCoefficient" + tag + ".png";
       canvas->SaveAs(saveString.c_str());
 
       graphC_->Write();
@@ -1773,9 +1780,12 @@ void Calibration::drawCoeffGraph(string graph, string tag)
       
       graphC_->Draw("P");
 
-     TLegend *leg=new TLegend(0.30,0.25,0.90,0.35);
+     auto myList = graphC_->GetListOfFunctions();
+     auto myFunc = (TF1*)myList->First(); 
+     TLegend *leg=new TLegend(0.50,0.15,0.90,0.35);
+     leg->AddEntry((TObject*)0,myFunc->GetTitle(),"");
+     leg->AddEntry((TObject*)0,chi2+(myFunc->GetChisquare()/myFunc->GetNDF()),"");
      //     leg->AddEntry(histo,"[0]+((([1]+([2]/sqrt(x)))*exp(-(x^[6]/[3])))-([4]*exp(-(x^[7]/[5]))))",""); //for UL 2017/2016 barrel
-     leg->AddEntry(histo,"[0]+((([1]+([2]/sqrt(x)))*exp(-(x^[6]/[3])))-([4]*exp(-(x^[7]/[5]))))",""); //for UL 2017/2016 endcap
      leg->SetTextAlign(32);
      leg->SetTextSize(0.04);
      leg->Draw();
@@ -1788,9 +1798,9 @@ void Calibration::drawCoeffGraph(string graph, string tag)
       // 	//    	fcBarrel52x->Draw("Lsame+");
       // }
 
-      saveString = "CCoefficient" + tag + ".gif";
-      canvas->SaveAs(saveString.c_str());
-      saveString = "CCoefficient" + tag + ".png";
+      //saveString = "CCoefficient" + tag + ".gif";
+      //canvas->SaveAs(saveString.c_str());
+      saveString += "CCoefficient" + tag + ".png";
       canvas->SaveAs(saveString.c_str());
 
       graphC_->Write();
@@ -1801,6 +1811,7 @@ void Calibration::drawCoeffGraph(string graph, string tag)
       histo->SetTitle("Alpha parameter ");
       graphAlpha_->SetTitle("Alpha vs True Energy");
       histo->GetYaxis()->SetTitle( ("#alpha coefficient ("+tag+")").c_str() );
+      histo->GetYaxis()->SetRangeUser(-0.5,0.5);
       graphAlpha_->SetMarkerStyle(22);
       graphAlpha_->SetMarkerSize(1);
       graphAlpha_->SetMarkerColor(2);
@@ -1809,18 +1820,19 @@ void Calibration::drawCoeffGraph(string graph, string tag)
       graphAlpha_->Draw("P");
       faEtaBarrel->Draw("Lsame+");
       //   faEtaBarrel52x->Draw("Lsame+");
-     TLegend *leg=new TLegend(0.30,0.75,0.85,0.85);
+     auto myList = graphAlpha_->GetListOfFunctions();
+     auto myFunc = (TF1*)myList->First(); 
+     TLegend *leg=new TLegend(0.50,0.15,0.90,0.35);
+     leg->AddEntry((TObject*)0,myFunc->GetTitle(),"");
+     leg->AddEntry((TObject*)0,chi2+(myFunc->GetChisquare()/myFunc->GetNDF()),"");
      //leg->AddEntry(graphAlpha_,"[0]+[1]*exp(-x/[2])",""); //for UL2017 endcap
      //leg->AddEntry(graphAlpha_,"[0]+[1]*x^[3]*exp(-x/[2])",""); //for UL2016 endcap H
      //     leg->AddEntry(graphAlpha_,"[0]+([1]*x^[2]*exp(-x))","");//for 2016 endcap EH 
      //leg->AddEntry(histo,"[0]+[1]*x",""); //for UL 2016/2017 barrel
-     if(tag=="EH_endcap" || tag=="H_endcap") leg->AddEntry(histo,"[0]+((([1]+([2]/(x^[5])))*exp(-(x^[4]/[3]))))","");
-     if(tag=="EH_barrel") leg->AddEntry(histo,"[0]+[1]*exp(-x*[3]/[2])","");
-     if(tag=="H_barrel") leg->AddEntry(histo,"[0]+[1]*x","");
      leg->SetTextSize(0.04);
      leg->Draw();
 
-      saveString = "AlphaCoefficient" + tag + ".gif";
+      saveString += "AlphaCoefficient" + tag + ".png";
       canvas->SaveAs(saveString.c_str());
       graphAlpha_->Write();
   }
@@ -1829,6 +1841,7 @@ void Calibration::drawCoeffGraph(string graph, string tag)
       histo->SetTitle("Beta parameter ");
       graphBeta_->SetTitle("Beta vs True Energy");
       histo->GetYaxis()->SetTitle( ("#beta coefficient ("+tag+")").c_str() );
+      histo->GetYaxis()->SetRangeUser(-0.5,0.5);
       graphBeta_->SetMarkerStyle(22);
       graphBeta_->SetMarkerSize(1);
       graphBeta_->SetMarkerColor(2);
@@ -1837,19 +1850,17 @@ void Calibration::drawCoeffGraph(string graph, string tag)
       graphBeta_->Draw("P");
       fbEtaBarrel->Draw("Lsame+");
       //    fbEtaBarrel52x->Draw("Lsame+");
-     TLegend *leg=new TLegend(0.30,0.75,0.85,0.85);
+     auto myList = graphBeta_->GetListOfFunctions();
+     auto myFunc = (TF1*)myList->First(); 
+     TLegend *leg=new TLegend(0.50,0.15,0.90,0.35);
+     leg->AddEntry((TObject*)0,myFunc->GetTitle(),"");
+     leg->AddEntry((TObject*)0,chi2+(myFunc->GetChisquare()/myFunc->GetNDF()),"");
      // leg->AddEntry(histo,"[0]+[1]*exp(-x/[2])",""); //for UL2017 endcap/barrel & for UL2016 barrel
      //     leg->AddEntry(histo,"[0]+[1]*x*exp(-x/[2])",""); //for UL 2016 endcap H 
      //     leg->AddEntry(histo,"[0]+[1]*(x^[3])*exp(-x/[2])",""); //for UL 2016 endcap EH
-     if(tag=="EH_endcap") leg->AddEntry(histo,"[0]+((([1]+([2]/(x^[5])))*exp(-(x^[4]/[3]))))","");
-     if(tag=="EH_endcap") leg->AddEntry(histo,"[0]+[1]*x*exp(-x/[2])","");
-     if(tag=="EH_barrel") leg->AddEntry(histo,"[0]+((([1]+([2]/(x^[5])))*exp(-(x^[4]/[3]))))","");
-     if(tag=="H_barrel") leg->AddEntry(histo,"[0]+[1]*exp(-x/[2])","");
      leg->SetTextSize(0.04);
      leg->Draw();
-     saveString = "BetaCoefficient" + tag + ".gif";
-     canvas->SaveAs(saveString.c_str());
-     saveString = "BetaCoefficient" + tag + ".png";
+     saveString += "BetaCoefficient" + tag + ".png";
      canvas->SaveAs(saveString.c_str());
 
       graphBeta_->Write();
@@ -1859,6 +1870,7 @@ void Calibration::drawCoeffGraph(string graph, string tag)
       histo->SetTitle("Gamma parameter");
       graphGamma_->SetTitle("Gamma vs True Energy");
       histo->GetYaxis()->SetTitle( ("#gamma coefficient ("+tag+")").c_str() );
+      histo->GetYaxis()->SetRangeUser(-0.5,0.5);
       graphGamma_->SetMarkerStyle(22);
       graphGamma_->SetMarkerSize(1);
       graphGamma_->SetMarkerColor(2);
@@ -2076,6 +2088,16 @@ const char* functionBarrelAlphaEH_e;
 const char* functionBarrelBetaEH_e;
 const char* functionBarrelAlphaH_e;
 const char* functionBarrelBetaH_e;
+
+void print_TF1(TString myTitle, TF1* myTF1) {
+    cout << "TF1 " << myTitle << "(\"" << myTitle << "\",\""<< myTF1->GetTitle() << "\",1.,1000.);"<< endl;
+    cout << myTitle << ".SetParameters(";
+    for ( int i = 0; i < myTF1->GetNpar(); ++i ) {
+        if (i==0) {cout << myTF1->GetParameter(i);}
+        else {cout << ", " << myTF1->GetParameter(i);}
+    }
+    cout << ");" << endl; 
+}
 
 //All the differenct types of TH2's that will be filled in order to make 
 //resolution and response plots

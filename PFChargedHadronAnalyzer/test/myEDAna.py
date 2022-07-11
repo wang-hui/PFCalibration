@@ -5,9 +5,11 @@
 # with command line options: step3 --datatier GEN-SIM-RECO,MINIAODSIM,DQMIO --runUnscheduled --conditions auto:run1_mc -s RAW2DIGI,L1Reco,RECO,RECOSIM,EI,PAT,VALIDATION:@standardValidationNoHLT+@miniAODValidation,DQM:@standardDQMFakeHLT+@miniAODDQM --eventcontent RECOSIM,MINIAODSIM,DQM -n 100 --filein file:step2.root --fileout file:step3.root
 import FWCore.ParameterSet.Config as cms
 
-from Configuration.StandardSequences.Eras import eras
+#from Configuration.StandardSequences.Eras import eras
+from Configuration.Eras.Era_Run2_2018_cff import Run2_2018
 
-process = cms.Process('ana',eras.Run3)
+#process = cms.Process('ana',eras.Run3)
+process = cms.Process('ana',Run2_2018)
 
 # import of standard configurations
 # process.load('Configuration.StandardSequences.Services_cff')
@@ -28,16 +30,24 @@ process.load('Configuration.StandardSequences.GeometryRecoDB_cff')
 # process.load('DQMOffline.Configuration.DQMOfflineMC_cff')
 process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_cff')
 
+process.MessageLogger.cerr.FwkReport.reportEvery = 10000
+
 process.maxEvents = cms.untracked.PSet(
-    input = cms.untracked.int32(10)
+    input = cms.untracked.int32(-1)
 )
+
+import sys
+f = open(sys.argv[2], "r")
+my_list = f.readlines()
+f.close()
 
 # Input source
 process.source = cms.Source("PoolSource",
     #fileNames = cms.untracked.vstring('root://se01.indiacms.res.in//store/user/spandey/step2/PGun_step2_DIGI_1002_2_200_Feb_12/CRAB_UserFiles/crab_PGun_step2_DIGI_1002_2_200_Feb_12/180212_110432/0000/step2_2.root'),
 #    fileNames = cms.untracked.vstring('root://cms-xrd-global.cern.ch//store/mc/RunIIWinter19PFCalibDR/Single_Pion_gun_E_200to500_13TeV_pythia8/GEN-SIM-RECO/2016ConditionsNoPU_105X_mcRun2_asymptotic_v2-v1/270000/FF853C26-CDC1-4D44-95D9-924C3C3A482F.root'),
 #    fileNames = cms.untracked.vstring('root://cms-xrd-global.cern.ch//store/mc/Run3Summer21DR/Single_Pion_gun_E_200to500_14TeV_pythia8/GEN-SIM-RECO/NoPURAWRECO_120X_mcRun3_2021_realistic_v6-v2/260000/0788ebab-26eb-410e-97b0-868877d34e33.root'),
-    fileNames = cms.untracked.vstring('root://cms-xrd-global.cern.ch//store/mc/Run3Summer21DR/Single_Pion_gun_E_2to200_14TeV_pythia8/GEN-SIM-RECO/NoPURAWRECO_120X_mcRun3_2021_realistic_v6-v2/270000/00617b79-69fd-4239-a0a6-cde116b7abe1.root'),
+#    fileNames = cms.untracked.vstring('root://cmseos.fnal.gov//eos/uscms/store/user/lpcrutgers/huiwang/HCAL/UL_Single_Pion_gun_E_2to200_RECO_mahi_energy-2022-01-23/MC_RECO_0.root'),
+    fileNames = cms.untracked.vstring(my_list),
     secondaryFileNames = cms.untracked.vstring()
 )
 
@@ -149,10 +159,10 @@ process.options = cms.untracked.PSet(
 # process.RandomNumberGeneratorService.restoreStateLabel=cms.untracked.string("randomEngineStateProducer")
 
 from Configuration.AlCa.GlobalTag import GlobalTag
-#process.GlobalTag = GlobalTag(process.GlobalTag, 'auto:run1_mc', '')
+process.GlobalTag = GlobalTag(process.GlobalTag, '106X_upgrade2018_realistic_v11_L1v1', '')
 #process.GlobalTag = GlobalTag(process.GlobalTag, '100X_upgrade2018_realistic_v10', '')
 #process.GlobalTag = GlobalTag(process.GlobalTag, '105X_mcRun2_asymptotic_v2', '')
-process.GlobalTag = GlobalTag(process.GlobalTag, '120X_mcRun3_2021_realistic_v6', '')
+#process.GlobalTag = GlobalTag(process.GlobalTag, '120X_mcRun3_2021_realistic_v6', '')
 
 
 process.pfChargedHadronAnalyzer = cms.EDAnalyzer(

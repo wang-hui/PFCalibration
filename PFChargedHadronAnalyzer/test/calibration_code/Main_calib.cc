@@ -26,12 +26,12 @@
 using namespace std;
 
 
-bool freezeparameters = true;
+bool freezeparameters = false;
 bool useMean = false;
 bool useMedian = false;
 bool changeRange =false;
 bool old_logic = false;
-bool drawpT = true;
+bool drawpT = false;
 bool drawResoFit = false;
 bool saveCanvas = true;
 //char* _region_ = (char*)"EC_outside_tracker";
@@ -198,7 +198,7 @@ void drawGausFit(TH2F* inHisto, TGraph& response, TGraph& resolution)
    vector<double> rms;
 
    char* fileName = new char[1000];
-   sprintf(fileName,"projections_%s_%s.root",_region_,inHisto->GetName());
+   sprintf(fileName,"results_temp/projections_%s_%s.root",_region_,inHisto->GetName());
    TFile* file1=new TFile(fileName,"recreate");
 
    
@@ -377,7 +377,7 @@ void drawGausFit(TH2F* inHisto, TGraph& response, TGraph& resolution)
    // delete cccc;
    //Added by bhumika 1 april 2019
    
-   sprintf(fileName,"resp_reso_%s_%s.root",_region_,inHisto->GetName());
+   sprintf(fileName,"results_temp/resp_reso_%s_%s.root",_region_,inHisto->GetName());
    TFile* file2=new TFile(fileName,"recreate");
    file2->cd();
    response = TGraph(ETrue.size(), &ETrue[1], &gausMean[1]); //Fill the graphs
@@ -420,16 +420,17 @@ void drawGausFit(TH2F* inHisto, TGraph& response, TGraph& resolution)
    //canvas = new TCanvas(("canvas "+ (string)(inHisto->GetName()) ).c_str(), ("Response and Resolution "+ (string)(inHisto->GetName())).c_str(), 1000, 500);
    //spandey
    //canvas = new TCanvas(("canvas "+ (string)(inHisto->GetName()) ).c_str(), ("Response and Resolution "+ (string)(inHisto->GetName())).c_str(), 800, 400);
-   canvas = new TCanvas(("canvas "+ (string)(inHisto->GetName()) ).c_str(), ("Response and Resolution "+ (string)(inHisto->GetName())).c_str(), 500, 300);
+   canvas = new TCanvas(("canvas "+ (string)(inHisto->GetName()) ).c_str(), ("Response and Resolution "+ (string)(inHisto->GetName())).c_str(), 1000, 600);
 
 
- 
+
    canvas->Divide(2, 1);
    temp->~TCanvas();  //destroy the TCanvas 
 
    canvas->cd(1);
    gPad->SetGridx();
    gPad->SetGridy();
+   gPad->SetLeftMargin(0.15);
    respHisto->SetStats(0);
    respHisto->SetTitle("Response");
    respHisto->Draw();
@@ -486,7 +487,7 @@ void drawGausFit(TH2F* inHisto, TGraph& response, TGraph& resolution)
    if (saveCanvas) {
      //string cname = ((string)(inHisto->GetName()) ) + ".gif";
      char  cname[200];
-     sprintf(cname,  "%s_%s_updatedCode.gif",inHisto->GetName(),_region_);
+     sprintf(cname,  "plots_temp/%s_%s_updatedCode.png",inHisto->GetName(),_region_);
      canvas->Print(cname);
    }
    //Added by Bhumika 1 April 2019
@@ -525,7 +526,7 @@ void drawEtaDependence(TH2F* inHisto, TGraph& responseEta)
    vector<double> average;
    vector<double> etaRms;
    
-      TFile* file1=new TFile("projections_eta.root","recreate");
+      TFile* file1=new TFile("results_temp/projections_eta.root","recreate");
    temp->cd();//This TCanvas is only used since when we do the fit down below 
               //it creates an unwanted TCanvas. We will get rid of it later on 
               //in the function.
@@ -620,7 +621,7 @@ for(unsigned bin = 1; bin < (unsigned)inHisto->GetNbinsX(); bin = bin + 1)
    //  delete cccc;
    file1->Close();
    char* fileName = new char[1000];
-   sprintf(fileName,"resp_reso_%s_wrtEta.root",inHisto->GetName());
+   sprintf(fileName,"results_temp/resp_reso_%s_wrtEta.root",inHisto->GetName());
    TFile* file2=new TFile(fileName,"recreate");
 
    //   TFile* file2=new TFile("output2.root","recreate");
@@ -681,7 +682,7 @@ for(unsigned bin = 1; bin < (unsigned)inHisto->GetNbinsX(); bin = bin + 1)
 
 
   char  cname[200];
-  sprintf(cname,  "%s_updatedCode.gif",inHisto->GetName());
+  sprintf(cname,  "plots_temp/%s_updatedCode.png",inHisto->GetName());
   canvas->Print(cname);
 
   respHisto->Write();
@@ -929,33 +930,12 @@ int main()
    //LoadNewThresholds();
 
    gStyle->SetOptFit(0);
-
-   //Open the file, get the tree and fill of the vectors of values you need.
-   //inputFile = TFile::Open("IsolatedChargedHadronsFromQCD.root");
-   //inputFile = TFile::Open("pfcalibTestTag_all.root");
-   // inputFile = TFile::Open("IsolatedChargedHadronsFromMinBias.root");
-   // sTree = (TTree*)inputFile->Get("s;1");
+   const bool use_UL2018 = false;
    
    TChain* chain= new TChain("s");
-
-   
-
-
-   /// HCAL issue SAMPLE - MC-v2
-   //chain->Add("./input_sample/PGun_930pre1_JetMET_HCALScaleStudies_2_500.root");
-
-
-   ///JME_checks sample
-   //chain->Add("/home/shubham/work/PFCalibration/samples/10_0_2_NO_CUT/PGun_2_200_10_0_2_upgrade2018_NO_CUT.root");
-
-   // chain->Add("/home/shubham/work/PFCalibration/samples/10_0_2_NO_CUT/PGun_2_500_10_0_2_upgrade2018_NO_CUT_new.root");
-
-   //chain->Add("./root_files/PGun_2_500_10_6_0_pre2_UL2018.root");
-   // chain->Add("./root_files/PGun_2_500_10_0_3_upgrade2018_ECAL_pfB.root");
-   //  chain->Add("./home/bhumika/work/PFCalibration/for_10_0_2/calib_codes/PGun_2_500_10_0_2_upgrade2018_NO_CUT_new.root");
-   //chain->Add("./root_files/PGun_Singlepion_10_6_0_UL2016.root");
-   //   chain->Add("./root_files/PGun_Singlepion_12_0_0_Run3.root");
-   chain->Add("../../../../../../PFcalibration_2019/CMSSW_10_6_0/src/PFCalibration/PFChargedHadronAnalyzer/test/step3_2016.root");
+   //chain->Add("../step3.root");
+   chain->Add("/eos/uscms/store/user/huiwang/HCAL/UL_Single_Pion_gun_E_2to200_noPU_RECO_simHits_fix_HB_PFCalib_ntuple.root");
+   chain->Add("/eos/uscms/store/user/huiwang/HCAL/UL_Single_Pion_gun_E_200to500_RECO_simHit_energy_class_PFCalib_ntuple.root");
    sTree = (TTree*)chain;
    cout<<"Reading input tree..."<<endl;
    getValuesFromTree(sTree, ETrueEnergies, ecalEnergies, 
@@ -1311,30 +1291,41 @@ int main()
 
 
    //Define the functions that you will fit your ABC calibration constants to.
+    if (use_UL2018) {
    functionBarrelEcalHcalA = new TF1("functionBarrelEcalHcalA","[0]", 0, 1000);
-   // functionBarrelEcalHcalB = new TF1("functionBarrelEcalHcalB","[0]+([1]+[2]/sqrt(x))*exp(-x/[3])-[4]*exp(-x*x/[5])", 0, 1000);
-   // functionBarrelEcalHcalB = new TF1("functionBarrelEcalHcalB","[0]+((([1]+([2]/sqrt(x)))*exp(-(x^[6]/[3])))-([4]*exp(-(x^[7]/[5]))))", 0, 1000);
-  functionBarrelEcalHcalB = new TF1("functionBarrelEcalHcalB","[0]+((([1]+([2]/(x^[5])))*exp(-(x^[4]/[3]))))", 0, 1000);
-   //functionBarrelEcalHcalC = new TF1("functionBarrelEcalHcalC","[0]+(([1]+([2]/sqrt(x)))*exp(-(x^[4]/[3])))",0,1000); //[0]+([1]+[2]/sqrt(x))*exp(-x/[3])-[4]*exp(-x*x/[5])", 0, 1000);
-   functionBarrelEcalHcalC = new TF1("functionBarrelEcalHcalC","[0]+((([1]+([2]/sqrt(x)))*exp(-(x^[6]/[3])))-([4]*exp(-(x^[7]/[5]))))",0,1000);
+   functionBarrelEcalHcalB = new TF1("functionBarrelEcalHcalB","[0]+((([1]+([2]/sqrt(x)))*exp(-(x^[4]/[3]))))", 0, 1000); 
+   functionBarrelEcalHcalC = new TF1("functionBarrelEcalHcalC","[0]+((([1]+([2]/sqrt(x)))*exp(-(x^[6]/[3])))-([4]*exp(-(x^[7]/[5]))))",0,1000); 
   
    functionEndcapEcalHcalA = new TF1("functionEndcapEcalHcalA","[0]", 0, 1000);
-   // functionEndcapEcalHcalC = new TF1("functionEndcapEcalHcalC","[0]+([1]+[2]/sqrt(x))*exp(-x/[3])-[4]*exp(-x*x/[5])", 0, 1000);
-   // functionEndcapEcalHcalB = new TF1("functionEndcapEcalHcalB","[0]+((([1]+([2]/sqrt(x)))*exp(-(x^[6]/[3])))-([4]*exp(-(x^[7]/[5]))))", 0, 1000);
-   functionEndcapEcalHcalB = new TF1("functionEndcapEcalHcalB","[0]+((([1]+([2]/sqrt(x)))*exp(-(x^[4]/[3]))))", 0, 1000);
-   // functionEndcapEcalHcalC = new TF1("functionEndcapEcalHcalC","([0]+((([1]+([2]/sqrt(x)))*exp(-(x^[6]/[3])))-([4]*exp(-(x^[7]/[5])))))", 0, 1000);
+   functionEndcapEcalHcalB = new TF1("functionEndcapEcalHcalB","[0]+(([1]+([2]*pow(x,[5])))*x^[4]*exp(-(x^[6])/[3]))", 0, 1000); 
    functionEndcapEcalHcalC = new TF1("functionEndcapEcalHcalC","[0]+([4]*(x-[5])*exp(-(x*[7])))+(([1]+([2]/sqrt(x)))*exp(-(x^[6]/[3])))", 0, 1000);
 
    functionBarrelHcalA = new TF1("functionBarrelHcalA","[0]", 0, 1000);
    functionBarrelHcalB = new TF1("functionBarrelHcalB","[0]", 0, 1000);
-   // functionBarrelHcalC = new TF1("functionBarrelHcalC","[0]+([1]+[2]/sqrt(x))*exp(-x/[3])-[4]*exp(-x*x/[5])", 0, 1000);
-   functionBarrelHcalC = new TF1("functionBarrelHcalC","[0]+((([1]+([2]/sqrt(x)))*exp(-(x^[6]/[3])))-([4]*exp(-(x^[7]/[5]))))", 0, 1000);
-   //spandey
-   //functionBarrelHcalC = new TF1("functionBarrelHcalC","1.03*([0]+((([1]+([2]/sqrt(x)))*exp(-(x^[6]/[3])))-([4]*exp(-(x^[7]/[5])))))", 0, 1000);
+   functionBarrelHcalC = new TF1("functionBarrelHcalC","[0]+((([1]+([2]/pow(x,[8])))*exp(-(x^[6]/[3])))-([4]*exp(-(x^[7]/[5]))))",0,1000); 
   
    functionEndcapHcalA = new TF1("functionEndcapHcalA","[0]", 0, 1000);
    functionEndcapHcalB = new TF1("functionEndcapHcalB","[0]", 0, 1000);
    functionEndcapHcalC = new TF1("functionEndcapHcalC","([0]+((([1]+([2]/sqrt(x)))*exp(-(x^[6]/[3])))-([4]*exp(-(x^[7]/[5])))))", 0, 1000); //[0]+([1]+[2]/sqrt(x))*exp(-x/[3])-[4]*exp(-x*x/[5])
+    }
+
+    else {
+   functionBarrelEcalHcalA = new TF1("functionBarrelEcalHcalA","[0]", 0, 1000);
+   functionBarrelEcalHcalB = new TF1("functionBarrelEcalHcalB","[0]+((([1]+([2]/(x^[5])))*exp(-(x^[4]/[3]))))", 0, 1000);
+   functionBarrelEcalHcalC = new TF1("functionBarrelEcalHcalC","[0]+((([1]+([2]/sqrt(x)))*exp(-(x^[6]/[3])))-([4]*exp(-(x^[7]/[5]))))",0,1000); 
+  
+   functionEndcapEcalHcalA = new TF1("functionEndcapEcalHcalA","[0]", 0, 1000);
+   functionEndcapEcalHcalB = new TF1("functionEndcapEcalHcalB","[0]+((([1]+([2]/sqrt(x)))*exp(-(x^[4]/[3]))))", 0, 1000);
+   functionEndcapEcalHcalC = new TF1("functionEndcapEcalHcalC","[0]+([4]*(x-[5])*exp(-(x*[7])))+(([1]+([2]/sqrt(x)))*exp(-(x^[6]/[3])))", 0, 1000);
+
+   functionBarrelHcalA = new TF1("functionBarrelHcalA","[0]", 0, 1000);
+   functionBarrelHcalB = new TF1("functionBarrelHcalB","[0]", 0, 1000);
+   functionBarrelHcalC = new TF1("functionBarrelHcalC","[0]+((([1]+([2]/sqrt(x)))*exp(-(x^[6]/[3])))-([4]*exp(-(x^[7]/[5]))))", 0, 1000);
+
+   functionEndcapHcalA = new TF1("functionEndcapHcalA","[0]", 0, 1000);
+   functionEndcapHcalB = new TF1("functionEndcapHcalB","[0]", 0, 1000);
+   functionEndcapHcalC = new TF1("functionEndcapHcalC","([0]+((([1]+([2]/sqrt(x)))*exp(-(x^[6]/[3])))-([4]*exp(-(x^[7]/[5])))))", 0, 1000); //[0]+([1]+[2]/sqrt(x))*exp(-x/[3])-[4]*exp(-x*x/[5])
+    }
 
 
    if(freezeparameters) {
@@ -1446,7 +1437,110 @@ int main()
         
    }
    else {
+    if (use_UL2018) {
+     functionBarrelEcalHcalA->FixParameter(0, aEH);
 
+     //faBarrel
+
+     //for UL2016
+     functionBarrelEcalHcalB->SetParameter(0,-0.238075);
+     functionBarrelEcalHcalB->SetParameter(1,1.2558);
+     functionBarrelEcalHcalB->SetParameter(2,4.73676);
+     functionBarrelEcalHcalB->SetParameter(3,0.0334334);
+     functionBarrelEcalHcalB->SetParameter(4,-2.01974);
+
+
+     //fbBarrel
+
+     //for UL2016 
+     functionBarrelEcalHcalC->SetParameter(0,1.29058);
+     functionBarrelEcalHcalC->SetParameter(1,0.506012);
+     functionBarrelEcalHcalC->SetParameter(2,-4.8232);
+     functionBarrelEcalHcalC->SetParameter(3,3.466);
+     functionBarrelEcalHcalC->SetParameter(4,0.3094);
+     functionBarrelEcalHcalC->SetParameter(5,0.0126828);
+     functionBarrelEcalHcalC->SetParameter(6,0.437779);
+     functionBarrelEcalHcalC->SetParameter(7,-1.41666);
+
+     //fcBarrel
+
+     //for UL2016
+     functionBarrelHcalC->SetParameter(0,2.17818);
+     functionBarrelHcalC->SetParameter(1,-0.127103);
+     functionBarrelHcalC->SetParameter(2,-10.6713);
+     functionBarrelHcalC->SetParameter(3,1.23319);
+     functionBarrelHcalC->SetParameter(4,1.23137);
+     functionBarrelHcalC->SetParameter(5,0.163938);
+     functionBarrelHcalC->SetParameter(6,0.159672);
+     functionBarrelHcalC->SetParameter(7,-0.939935);
+     functionBarrelHcalC->SetParameter(8,0.766221);
+     
+     functionEndcapEcalHcalA->FixParameter(0, aEHe);
+  
+
+     //faEndcap
+
+     //for UL2016
+     functionEndcapEcalHcalB->SetParameter(0,1.18762e+00);
+     functionEndcapEcalHcalB->SetParameter(1,2.75791e+00);
+     functionEndcapEcalHcalB->SetParameter(2,-7.85781e+01);
+     functionEndcapEcalHcalB->SetParameter(3,9.31148e-01);
+     functionEndcapEcalHcalB->SetParameter(4,4.49848e-01);
+     functionEndcapEcalHcalB->SetParameter(4,-2.01369e+00);
+     functionEndcapEcalHcalB->SetParameter(4,2.92501e-01);
+
+     // fbEndcap
+     
+     //for UL2016
+     functionEndcapEcalHcalC->SetParameter(0,-2.00584);                                      
+     functionEndcapEcalHcalC->SetParameter(1,3.5026);                                        
+     functionEndcapEcalHcalC->SetParameter(2,0.684199);                                       
+     functionEndcapEcalHcalC->SetParameter(3,7.17498);                                       
+     functionEndcapEcalHcalC->SetParameter(4,-1.24095);                                       
+     functionEndcapEcalHcalC->SetParameter(5,0.286394);                                        
+     functionEndcapEcalHcalC->SetParameter(6,0.00632705);                                      
+     functionEndcapEcalHcalC->SetParameter(7,0.342529);                                          
+  
+     // functionEndcapEcalHcalC->FixParameter(0,-4651.06);
+     // functionEndcapEcalHcalC->FixParameter(1,4651.98);
+     // functionEndcapEcalHcalC->FixParameter(2,12.1135);
+     // functionEndcapEcalHcalC->FixParameter(3,503.253);
+     // functionEndcapEcalHcalC->FixParameter(4,-1.39108);
+     // functionEndcapEcalHcalC->FixParameter(5,-0.247085);
+     // functionEndcapEcalHcalC->FixParameter(6,-0.469361);
+     // functionEndcapEcalHcalC->FixParameter(7,0.296653);
+
+     functionBarrelHcalA->FixParameter(0, aH);
+     functionBarrelHcalB->FixParameter(0, 0.0);
+
+     functionEndcapHcalA->FixParameter(0, aHe);
+     functionEndcapHcalB->FixParameter(0, 0.0);
+
+     //fcEndcap 
+
+     //for UL2016
+     //functionEndcapHcalC->FixParameter(0,1.75770);
+     //functionEndcapHcalC->FixParameter(1,0.866230);
+     //functionEndcapHcalC->FixParameter(2,-5.60717);
+     //functionEndcapHcalC->FixParameter(3,3.08493);
+     //functionEndcapHcalC->FixParameter(4,0.966077);
+     //functionEndcapHcalC->FixParameter(5,0.0315277);
+     //functionEndcapHcalC->FixParameter(6,0.253619);
+     //functionEndcapHcalC->FixParameter(7,-1.33786);
+
+
+     //trial
+     functionEndcapHcalC->SetParameter(0,1.55955);
+     functionEndcapHcalC->SetParameter(1,1.11623);
+     functionEndcapHcalC->SetParameter(2,-5.521);
+     functionEndcapHcalC->SetParameter(3,2.67844);
+     functionEndcapHcalC->SetParameter(4,0.921303);
+     functionEndcapHcalC->SetParameter(5,0.0372015);
+     functionEndcapHcalC->SetParameter(6,0.14929);
+     functionEndcapHcalC->SetParameter(7,-1.27774);
+    }
+
+    else {
      functionBarrelEcalHcalA->FixParameter(0, aEH);
 
      //faBarrel
@@ -1525,28 +1619,24 @@ int main()
      //fcEndcap 
 
      //for UL2016
-     functionEndcapHcalC->FixParameter(0,1.75770);
-     functionEndcapHcalC->FixParameter(1,0.866230);
-     functionEndcapHcalC->FixParameter(2,-5.60717);
-     functionEndcapHcalC->FixParameter(3,3.08493);
-     functionEndcapHcalC->FixParameter(4,0.966077);
-     functionEndcapHcalC->FixParameter(5,0.0315277);
-     functionEndcapHcalC->FixParameter(6,0.253619);
-     functionEndcapHcalC->FixParameter(7,-1.33786);
+     //functionEndcapHcalC->FixParameter(0,1.75770);
+     //functionEndcapHcalC->FixParameter(1,0.866230);
+     //functionEndcapHcalC->FixParameter(2,-5.60717);
+     //functionEndcapHcalC->FixParameter(3,3.08493);
+     //functionEndcapHcalC->FixParameter(4,0.966077);
+     //functionEndcapHcalC->FixParameter(5,0.0315277);
+     //functionEndcapHcalC->FixParameter(6,0.253619);
+     //functionEndcapHcalC->FixParameter(7,-1.33786);
 
-
-     //trial
-     //functionEndcapHcalC->SetParameter(0,1.32375);
-     //functionEndcapHcalC->SetParameter(1,0.191687);
-     //functionEndcapHcalC->SetParameter(2,-2.81052);
-     //functionEndcapHcalC->SetParameter(3,27.1729);
-     //functionEndcapHcalC->SetParameter(4,0.418262);
-     //functionEndcapHcalC->SetParameter(5,0.107711);
-     //functionEndcapHcalC->SetParameter(6,1.71039);
-     //functionEndcapHcalC->SetParameter(7,-1.01447);
-
-
-     
+     functionEndcapHcalC->SetParameter(0,1.75770);
+     functionEndcapHcalC->SetParameter(1,0.866230);
+     functionEndcapHcalC->SetParameter(2,-5.60717);
+     functionEndcapHcalC->SetParameter(3,3.08493);
+     functionEndcapHcalC->SetParameter(4,0.966077);
+     functionEndcapHcalC->SetParameter(5,0.0315277);
+     functionEndcapHcalC->SetParameter(6,0.253619);
+     functionEndcapHcalC->SetParameter(7,-1.33786);
+    }     
 
    }
 
@@ -1757,36 +1847,36 @@ int main()
    endcapWithEcalCalib->initializeGraphs("alphabeta");
    endcapWithHcalCalib->initializeGraphs("alphabeta");   
 
-   functionBarrelAlphaEcalHcal = new TF1("functionBarrelAlphaEcalHcal","[0]+[1]*exp(-x*[3]/[2])", 0, 1000);//exp(-x*[2])/(x^[2]
-   //trial1
-   functionBarrelBetaEcalHcal = new TF1("functionBarrelBetaEcalHcal","[0]+((([1]+([2]/(x^[5])))*exp(-(x^[4]/[3]))))", 0, 1000);          
-   functionBarrelAlphaHcal = new TF1("functionBarrelAlphaHcal","[0]+[1]*x", 0, 1000);
-   //UL2018                                                                                                                                                                
-   // functionBarrelAlphaHcal = new TF1("functionBarrelAlphaHcal","[0]+[1]*exp(-x/[2])", 0, 1000);// +[1]*exp(-x/[2])
-   functionBarrelBetaHcal = new TF1("functionBarrelBetaHcal","[0]+[1]*exp(-x/[2])", 0, 1000);
-
-
+    if (use_UL2018) {
+   functionBarrelAlphaEcalHcal = new TF1("functionBarrelAlphaEcalHcal","[0]+[1]*exp(-(x^[3])/[2])", 0, 1000); 
+   functionBarrelBetaEcalHcal = new TF1("functionBarrelBetaEcalHcal","[0]+[1]*exp(-x/[2])", 0, 1000); 
+   functionBarrelAlphaHcal = new TF1("functionBarrelAlphaHcal","([0]*x^[3])+([1]*exp(-x/[2]))", 0, 1000);
+   functionBarrelBetaHcal = new TF1("functionBarrelBetaHcal","[0]+(([1]+[2]/x)*exp(-x/[3]))", 0, 1000); 
+ 
    //faEtaEndCapEH
    //UL2018
-   //   functionEndcapAlphaEcalHcal = new TF1("functionEndcapAlphaEcalHcal","[0]+([1]*x^[2]*exp(-x))", 0, 1000);
-   //   functionEndcapBetaEcalHcal = new TF1("functionEndcapBetaEcalHcal","[0]+[1]*x^[3]*exp(-x/[2])",0,1000); //+[3]*[3]*exp(-x*x/([4]*[4]))
-   //trial1
-   functionEndcapAlphaEcalHcal = new TF1("functionEndcapAlphaEcalHcal","[0]+([1]*x^[2]*exp(-x/[3]))", 0, 1000);     
-   //functionEndcapAlphaEcalHcal = new TF1("functionEndcapAlphaEcalHcal","[0]+((([1]+([2]/(x^[5])))*exp(-(x^[4]/[3]))))",0,1000);
-   functionEndcapBetaEcalHcal = new TF1("functionEndcapBetaEcalHcal","[0]+((([1]+([2]/(x^[5])))*exp(-(x^[4]/[3]))))",0,1000);
-   
-   //functionEndcapAlphaHcal = new TF1("functionEndcapAlphaHcal","[0]+[1]*x", 0, 1000);// +[1]*exp(-x/[2])
-   //functionEndcapAlphaHcal = new TF1("functionEndcapAlphaHcal","[0]+[1]*x+[3]*exp(-x/[2])", 0, 1000);// +[1]*exp(-x/[2])
+   functionEndcapAlphaEcalHcal = new TF1("functionEndcapAlphaEcalHcal","[0]+([1]*x^[2]*exp(-x))", 0, 1000);
+   functionEndcapBetaEcalHcal = new TF1("functionEndcapBetaEcalHcal","[0]+((([1]+([2]/sqrt(x)))*exp(-(x^[4]/[3]))))",0,1000); 
+   functionEndcapAlphaHcal = new TF1("functionEndcapAlphaHcal","[0]+[1]*exp(-x/[2])", 0, 1000); 
+   functionEndcapBetaHcal = new TF1("functionEndcapBetaHcal","[0]+[1]*exp(-x/[2])",0,1000); 
 
-   // functionEndcapAlphaHcal = new TF1("functionEndcapAlphaHcal","[0]+[1]*exp(-x/[2])+[3]*[3]*exp(-x*x/([4]*[4]))", 0, 1000);// +[1]*exp(-x/[2])
-   // functionEndcapBetaHcal = new TF1("functionEndcapBetaHcal","[0]+[1]*exp(-x/[2])+[3]*[3]*exp(-x*x/([4]*[4]))",0,1000);
-   //UL2018
-   //   functionEndcapAlphaHcal = new TF1("functionEndcapAlphaHcal","[0]+[1]*(x^[3])*exp(-x/[2])", 0, 1000);// +[1]*exp(-x/[2])
-   functionEndcapAlphaHcal = new TF1("functionEndcapAlphaHcal","[0]+((([1]+([2]/sqrt(x)))*exp(-(x^[4]/[3]))))", 0, 1000);
-  functionEndcapBetaHcal = new TF1("functionEndcapBetaHcal","[0]+[1]*x*exp(-x/[2])",0,1000);
-   //functionEndcapBetaHcal = new TF1("functionEndcapBetaHcal","[0]+((([1]+([2]/sqrt(x)))*exp(-(x^[4]/[3]))))",0,1000);
    functionEndcapGammaHcal = new TF1("functionEndcapGammaHcal","[0]+[1]*exp(-x/[2])+[3]*[3]*exp(-x*x/([4]*[4]))",0,1000);
+    }
 
+    else {
+   functionBarrelAlphaEcalHcal = new TF1("functionBarrelAlphaEcalHcal","[0]+[1]*exp(-x*[3]/[2])", 0, 1000);//exp(-x*[2])/(x^[2]
+   functionBarrelBetaEcalHcal = new TF1("functionBarrelBetaEcalHcal","[0]+((([1]+([2]/(x^[5])))*exp(-(x^[4]/[3]))))", 0, 1000);          
+   functionBarrelAlphaHcal = new TF1("functionBarrelAlphaHcal","[0]+[1]*x", 0, 1000);
+   functionBarrelBetaHcal = new TF1("functionBarrelBetaHcal","[0]+[1]*exp(-x/[2])", 0, 1000);
+ 
+   //faEtaEndCapEH
+   //UL2018
+   functionEndcapAlphaEcalHcal = new TF1("functionEndcapAlphaEcalHcal","[0]+([1]*x^[2]*exp(-x/[3]))", 0, 1000); 
+   functionEndcapBetaEcalHcal = new TF1("functionEndcapBetaEcalHcal","[0]+((([1]+([2]/(x^[5])))*exp(-(x^[4]/[3]))))",0,1000);
+   functionEndcapAlphaHcal = new TF1("functionEndcapAlphaHcal","[0]+((([1]+([2]/sqrt(x)))*exp(-(x^[4]/[3]))))", 0, 1000);
+   functionEndcapBetaHcal = new TF1("functionEndcapBetaHcal","[0]+[1]*x*exp(-x/[2])",0,1000);
+   functionEndcapGammaHcal = new TF1("functionEndcapGammaHcal","[0]+[1]*exp(-x/[2])+[3]*[3]*exp(-x*x/([4]*[4]))",0,1000);
+    }
 
    if(freezeparameters) {
 
@@ -1886,33 +1976,60 @@ int main()
    }
 
    else {
+    if (use_UL2018) {
+     //faEtaBarrelEH                                                                                                                                                       
+     functionBarrelAlphaEcalHcal->SetParameter(0,57.1792);
+     functionBarrelAlphaEcalHcal->SetParameter(1,-46.337);
+     functionBarrelAlphaEcalHcal->SetParameter(2,-4.74507);
+     functionBarrelAlphaEcalHcal->SetParameter(3,-0.000330548);
 
+    //fbEtaBarrelEH                                                                                                                                                        
+    functionBarrelBetaEcalHcal->SetParameter(0,0.0563392);
+    functionBarrelBetaEcalHcal->SetParameter(1,0.127482);
+    functionBarrelBetaEcalHcal->SetParameter(2,202.232);
+
+    //faEtaBarrelH                                                                                                                                                         
+    functionBarrelAlphaHcal->SetParameter(0,-44.8973);
+    functionBarrelAlphaHcal->SetParameter(1,-0.0262427);
+    functionBarrelAlphaHcal->SetParameter(2,26.1048);
+    functionBarrelAlphaHcal->SetParameter(3,-4.73515);
+
+    //fbEtaBarrelH                                                                                                                                                         
+    functionBarrelBetaHcal->SetParameter(0,-0.0126882);
+    functionBarrelBetaHcal->SetParameter(1,0.0523982);
+    functionBarrelBetaHcal->SetParameter(2,0.220561);
+    functionBarrelBetaHcal->SetParameter(3,62.9852);
+
+
+   //faEtaEndcapEH
+   functionEndcapAlphaEcalHcal->SetParameter(0,0.0128452);
+   functionEndcapAlphaEcalHcal->SetParameter(1,-87.2358);
+   functionEndcapAlphaEcalHcal->SetParameter(2,-1.48798);
+   
+   //fbEtaEndcapEH                                                                                                                                                       
+   functionEndcapBetaEcalHcal->SetParameter(0,9.91715e-03);
+   functionEndcapBetaEcalHcal->SetParameter(1,7.81560e-01);
+   functionEndcapBetaEcalHcal->SetParameter(2,-3.73765e+00);
+   functionEndcapBetaEcalHcal->SetParameter(3,2.35045e+00);
+   functionEndcapBetaEcalHcal->SetParameter(4,3.82723e-01);
+   
+   //faEtaEndcapH                                                                                                                                                        
+   functionEndcapAlphaHcal->SetParameter(0,-0.0013801);
+   functionEndcapAlphaHcal->SetParameter(1,0.0545178);
+   functionEndcapAlphaHcal->SetParameter(2,34.3199);
+   
+   //fbEtaEndcapH                                                                                                                                                        
+   functionEndcapBetaHcal->SetParameter(0,-0.0001);
+   functionEndcapBetaHcal->SetParameter(1,0.0);
+   functionEndcapBetaHcal->SetParameter(2,0.0);
+    }
+
+    else {
      functionBarrelAlphaEcalHcal->SetParameters(0.02, -0.1, 500);
      functionBarrelBetaEcalHcal->SetParameters(1.17842e-01,1.71167e-01,5.88921e+00);
 
      functionBarrelAlphaHcal->SetParameters(0.02, -0.1, 500);
      functionBarrelBetaHcal->SetParameters(1.17842e-01,1.71167e-01,5.88921e+00);
-
-     //faEtaBarrelEH                                                                                                                                                       
-     //functionBarrelAlphaEcalHcal->SetParameter(0,340.572);
-     //functionBarrelAlphaEcalHcal->SetParameter(1,-340.606);
-     //functionBarrelAlphaEcalHcal->SetParameter(2,6689.73);
-     //functionBarrelAlphaEcalHcal->SetParameter(3,0.000886848);
-
-    //fbEtaBarrelEH                                                                                                                                                        
-    //functionBarrelBetaEcalHcal->SetParameter(0,0.0532902);
-    //functionBarrelBetaEcalHcal->SetParameter(1,0.124218);
-    //functionBarrelBetaEcalHcal->SetParameter(2,207.676);
-
-    //faEtaBarrelH                                                                                                                                                         
-    //functionBarrelAlphaHcal->SetParameter(0,-0.00157472);
-    //functionBarrelAlphaHcal->SetParameter(1,0.00000);
-
-    //fbEtaBarrelH                                                                                                                                                         
-    //functionBarrelBetaHcal->SetParameter(0,-0.0154675);
-    //functionBarrelBetaHcal->SetParameter(1,0.0728367);
-    //functionBarrelBetaHcal->SetParameter(2,56.2748);
-
 
    //faEtaEndcapEH
    functionEndcapAlphaEcalHcal->SetParameter(0,0.00134831);
@@ -1935,14 +2052,7 @@ int main()
    functionEndcapBetaHcal->SetParameter(0,0.0564225);
    functionEndcapBetaHcal->SetParameter(1,0.00725947);
    functionEndcapBetaHcal->SetParameter(2,23.1278);
-     //////////////
-     //   functionEndcapAlphaEcalHcal->SetParameters(0.02, -0.1, 500);
-     //   functionEndcapBetaEcalHcal->SetParameters(0.0399873, -1.51747, 3.22236);
-
-     //   functionEndcapAlphaHcal->SetParameters(0.02, -0.1, 500, 0.5, 0.6);
-     //   functionEndcapBetaHcal->SetParameters(0.07, -2.5, 6.0, 0.3, 175.0);
-   //   functionEndcapGammaHcal->SetParameters(-1.71458e+00,9.61337e+00,2.94747e+00);
-
+    }
    }
 
 
@@ -2063,6 +2173,10 @@ int main()
 	     rawEtaDependenceH->Fill(eta, (ecal + hcal - etrue)/etrue);
 	     //if((fabs(eta) < 1.5) && (correctedEta != correctedE)) cout<<"yolo "<<fabs(eta)<<", correctedEta:"<<correctedEta<<", correctedE:"<<correctedE<<", (correctedEta != correctedE):"
 	     //<<(correctedEta != correctedE)<<endl;
+
+             //if(entry < 100) {
+             //   std::cout << "fabs(eta) < 1.5: eta " << eta << ", correctedE " << correctedE << ", etrue " << etrue << ", ratio " << (correctedEta - etrue)/etrue << std::endl;
+             //}
 	     corrEtaDependenceH->Fill(eta, (correctedEta - etrue)/etrue);
 	     hcorrEtaDependenceH->Fill(eta, (correctedE - etrue)/etrue);
 	     corrEtaDependenceProfH->Fill(etrue, eta, (correctedEta - etrue)/etrue);
@@ -2131,10 +2245,10 @@ int main()
          }
       }
       
-      //if(fabs(eta) < 2.5 && fabs(eta) > 1.55) //WITHIN TRACKER alpha beta fit range for endcap 
+      if(fabs(eta) < 2.5 && fabs(eta) > 1.55) //WITHIN TRACKER alpha beta fit range for endcap 
       //if(fabs(eta) < 3.0 && fabs(eta) > 1.55) //FULL EndCap alpha beta fit range for endcap   //shubham
 	  //if(fabs(eta) < 3.0 && fabs(eta) > 2.5) //OUTSIDE TRACKER alpha beta fit range for endcap   //shubham
-      if(fabs(eta) < _etaMax_ && fabs(eta) > _etaMin_) 
+      //if(fabs(eta) < _etaMax_ && fabs(eta) > _etaMin_) 
       {
 	//if (fabs(eta) > 2.7) cout<<"yolo "<<fabs(eta)<<endl;
          raw->Fill(etrue, (ecal + hcal - etrue)/etrue);
@@ -2204,6 +2318,9 @@ int main()
             corrEtaEndcap->Fill(etrue, (correctedEta - etrue)/etrue);
             corrEtaEndcapHcal->Fill(etrue, (correctedEta - etrue)/etrue);
 
+             //if(entry < 100) {
+             //   std::cout << "fabs(eta) < _etaMax_: eta " << eta << ", correctedE " << correctedE << ", etrue " << etrue << ", ratio " << (correctedEta - etrue)/etrue << std::endl;
+             //}
 	    rawEtaDependenceH->Fill(eta, (ecal + hcal - etrue)/etrue);
 	    corrEtaDependenceH->Fill(eta, (correctedEta - etrue)/etrue);
 	    hcorrEtaDependenceH->Fill(eta, (correctedE - etrue)/etrue);
@@ -2299,7 +2416,7 @@ int main()
    //rawBarrelHcal->Draw("colz");
    
    //// raw barrel response for EH-hdarons
-   //   drawGausFit(rawBarrelEcalHcal,responseRaw,resolutionRaw);
+   drawGausFit(rawBarrelEcalHcal,responseRaw,resolutionRaw);
    /// E-corrected barrel response for EH-hdarons
    drawGausFit(corrBarrelEcalHcal,responseCor,resolutionCor);
    //// Eta-corrected barrel response for EH-hdarons
@@ -2307,7 +2424,7 @@ int main()
 
    
    //// raw barrel response for H-hdarons
-   //   drawGausFit(rawBarrelHcal,responseRaw,resolutionRaw);
+   drawGausFit(rawBarrelHcal,responseRaw,resolutionRaw);
    //// E-corrected barrel response for H-hdarons
    drawGausFit(corrBarrelHcal,responseCor,resolutionCor);
    //// Eta-corrected barrel response for H-hdarons
@@ -2337,13 +2454,13 @@ int main()
    //drawGausFit(rawBarrel,responseRaw,resolutionRaw);
 
 
-   //   drawEtaDependence(rawEtaDependenceEH, responseEtaEtaEH);
-   //   drawEtaDependence(hcorrEtaDependenceEH, responseEtaHCorrEtaEH);
-   //   drawEtaDependence(corrEtaDependenceEH, responseEtaEtaEH);
+      drawEtaDependence(rawEtaDependenceEH, responseEtaEtaEH);
+      drawEtaDependence(hcorrEtaDependenceEH, responseEtaHCorrEtaEH);
+      drawEtaDependence(corrEtaDependenceEH, responseEtaEtaEH);
 
-   //   drawEtaDependence(rawEtaDependenceH, responseEtaEtaH);
-   //   drawEtaDependence(hcorrEtaDependenceH, responseEtaHCorrEtaH);
-   //   drawEtaDependence(corrEtaDependenceH, responseEtaEtaH);
+      drawEtaDependence(rawEtaDependenceH, responseEtaEtaH);
+      drawEtaDependence(hcorrEtaDependenceH, responseEtaHCorrEtaH);
+      drawEtaDependence(corrEtaDependenceH, responseEtaEtaH);
    
    //drawGausFit(corrEta,response, resolution);
    //drawCompare(responseRaw, response, resolutionRaw, resolution);
@@ -2354,26 +2471,26 @@ int main()
 
 
    // barrel H calibration coefficient
-   //  barrelWithHcalCalib->drawCoeffGraph("C", "H_barrel");
-   // barrelWithHcalCalib->drawCoeffGraph("Alpha","H_barrel");
-   // barrelWithHcalCalib->drawCoeffGraph("Beta", "H_barrel");
+    barrelWithHcalCalib->drawCoeffGraph("C", "H_barrel");
+    barrelWithHcalCalib->drawCoeffGraph("Alpha","H_barrel");
+    barrelWithHcalCalib->drawCoeffGraph("Beta", "H_barrel");
 
    // endcap H calibration coefficient
-   //endcapWithHcalCalib->drawCoeffGraph("C", "H_endcap");
-   //endcapWithHcalCalib->drawCoeffGraph("Alpha","H_endcap");
-   //endcapWithHcalCalib->drawCoeffGraph("Beta", "H_endcap");
+   endcapWithHcalCalib->drawCoeffGraph("C", "H_endcap");
+   endcapWithHcalCalib->drawCoeffGraph("Alpha","H_endcap");
+   endcapWithHcalCalib->drawCoeffGraph("Beta", "H_endcap");
 
    // barrel EH calibration coefficient
-   // barrelWithEcalHcalCalib->drawCoeffGraph("A","EH_barrel");
-   //barrelWithEcalHcalCalib->drawCoeffGraph("B", "EH_barrel");
-   //barrelWithEcalHcalCalib->drawCoeffGraph("Alpha","EH_barrel");
-   //barrelWithEcalHcalCalib->drawCoeffGraph("Beta", "EH_barrel");
+   barrelWithEcalHcalCalib->drawCoeffGraph("A","EH_barrel");
+   barrelWithEcalHcalCalib->drawCoeffGraph("B", "EH_barrel");
+   barrelWithEcalHcalCalib->drawCoeffGraph("Alpha","EH_barrel");
+   barrelWithEcalHcalCalib->drawCoeffGraph("Beta", "EH_barrel");
 
    // endcap EH calibration coefficient
-  //   endcapWithEcalHcalCalib->drawCoeffGraph("A","EH_endcap");
-  //   endcapWithEcalHcalCalib->drawCoeffGraph("B", "EH_endcap");
-  //   endcapWithEcalHcalCalib->drawCoeffGraph("Alpha","EH_endcap");
-  //   endcapWithEcalHcalCalib->drawCoeffGraph("Beta", "EH_endcap");
+     endcapWithEcalHcalCalib->drawCoeffGraph("A","EH_endcap");
+     endcapWithEcalHcalCalib->drawCoeffGraph("B", "EH_endcap");
+     endcapWithEcalHcalCalib->drawCoeffGraph("Alpha","EH_endcap");
+     endcapWithEcalHcalCalib->drawCoeffGraph("Beta", "EH_endcap");
 
 
 
@@ -2441,7 +2558,7 @@ int main()
    // bcplot->Draw("colz");
    // corrEtaDependenceProf->Draw("colz");
 
-   
+/*   
    functionBarrelEcalHcalB_e = functionBarrelEcalHcalB->GetTitle();
    functionBarrelEcalHcalC_e = functionBarrelEcalHcalC->GetTitle();
    functionBarrelHcalC_e = functionBarrelHcalC->GetTitle();
@@ -2461,6 +2578,28 @@ int main()
    functionEndcapAlphaH_e = functionEndcapAlphaHcal->GetTitle();
    functionEndcapBetaH_e = functionEndcapBetaHcal->GetTitle();
 
+   TFile* function_parameters_file=new TFile("function_parameters.root","recreate");
+   
+   functionBarrelEcalHcalB->Write();
+   functionBarrelEcalHcalC->Write();
+   functionBarrelHcalC->Write();
+   functionBarrelAlphaEcalHcal->Write();
+   functionBarrelBetaEcalHcal->Write();
+   
+   functionBarrelAlphaHcal->Write();
+   functionBarrelBetaHcal->Write();
+   
+   
+   functionEndcapEcalHcalB->Write();
+   functionEndcapEcalHcalC->Write();
+   functionEndcapHcalC->Write();
+   functionEndcapAlphaEcalHcal->Write();
+   functionEndcapBetaEcalHcal->Write();
+    
+   functionEndcapAlphaHcal->Write();
+   functionEndcapBetaHcal->Write();
+
+   function_parameters_file->Close();
 
    //FUnction printing =============================================
    //takes more place, but easier to read
@@ -2596,7 +2735,7 @@ int main()
      {
        if ( i > (functionEndcapBetaEcalHcal->GetNpar()-1)) break;
        endcapBeta = functionEndcapBetaEcalHcal->GetParameter(i);
-       cout<<" fbEtaEndcapEH->SetParameter("<<i<<","<<endcapBeta<<");"<<endl;
+       cout<<"  fbEtaEndcapEH->SetParameter("<<i<<","<<endcapBeta<<");"<<endl;
      }
    cout<<"  fbEtaEndcapEH at x = 10 ;  "<<","<<functionEndcapBetaEcalHcal->Eval(10.)<<endl<<endl;
 
@@ -2621,7 +2760,25 @@ int main()
        cout<<"  fbEtaEndcapH->SetParameter("<<i<<","<<endcapBeta<<");"<<endl;
      }
    cout<<"  fbEtaEndcapH at x = 10 ;  "<<","<<functionEndcapBetaHcal->Eval(10.)<<endl;
+*/
 
+    print_TF1("faBarrel", functionBarrelEcalHcalB);
+    print_TF1("fbBarrel", functionBarrelEcalHcalC);
+    print_TF1("fcBarrel", functionBarrelHcalC);
+
+    print_TF1("faEtaBarrelEH", functionBarrelAlphaEcalHcal);
+    print_TF1("fbEtaBarrelEH", functionBarrelBetaEcalHcal);
+    print_TF1("faEtaBarrelH", functionBarrelAlphaHcal);
+    print_TF1("fbEtaBarrelH", functionBarrelBetaHcal);
+
+    print_TF1("faEndcap", functionEndcapEcalHcalB);
+    print_TF1("fbEndcap", functionEndcapEcalHcalC);
+    print_TF1("fcEndcap", functionEndcapHcalC);
+
+    print_TF1("faEtaEndcapEH", functionEndcapAlphaEcalHcal);
+    print_TF1("fbEtaEndcapEH", functionEndcapBetaEcalHcal);
+    print_TF1("faEtaEndcapH", functionEndcapAlphaHcal);
+    print_TF1("fbEtaEndcapH", functionEndcapBetaHcal);
 
    cout<<"Ndf for  faBarrel ;  "<<functionBarrelEcalHcalB->GetNDF()<<endl;
    cout<<"Chi Square for  faBarrel ;  "<<functionBarrelEcalHcalB->GetChisquare()<<endl;
@@ -2631,8 +2788,8 @@ int main()
    cout<<"Chi Square for  fbBarrel ;  "<<functionBarrelEcalHcalC->GetChisquare()<<endl;
    cout<<"Chi Square/Ndf for  fbBarrel ;  "<<","<<functionBarrelEcalHcalC->GetChisquare()/functionBarrelEcalHcalC->GetNDF()<<endl<<endl;
 
-   cout<<"Ndf for  fcBarrel ;  "<<functionBarrelEcalHcalB->GetNDF()<<endl;
-   cout<<"Chi Square for  fcBarrel ;  "<<functionBarrelEcalHcalB->GetChisquare()<<endl;
+   cout<<"Ndf for  fcBarrel ;  "<<functionBarrelHcalC->GetNDF()<<endl;
+   cout<<"Chi Square for  fcBarrel ;  "<<functionBarrelHcalC->GetChisquare()<<endl;
    cout<<"Chi Square/Ndf for  fcBarrel ;  "<<","<<functionBarrelHcalC->GetChisquare()/functionBarrelHcalC->GetNDF()<<endl<<endl;
 
    cout<<"Ndf for  faEndcap ;  "<<functionEndcapEcalHcalB->GetNDF()<<endl;
