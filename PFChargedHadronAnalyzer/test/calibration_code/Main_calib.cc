@@ -36,8 +36,8 @@ bool drawResoFit = false;
 bool saveCanvas = true;
 //char* _region_ = (char*)"EC_outside_tracker";
 //char* _region_ = (char*)"EC_within_tracker";
-char* _region_ = (char*)"barrel";
-//char* _region_ = (char*)"Full";
+//char* _region_ = (char*)"barrel";
+char* _region_ = (char*)"Full";
 
 float _etaMin_ = 0.0;
 float _etaMax_ = 0.0;
@@ -209,6 +209,7 @@ void drawGausFit(TH2F* inHisto, TGraph& response, TGraph& resolution)
    // TCanvas* cccc=new TCanvas("balda","bacla");
    //cout<<"ETrue.back(), gausMean[0].back()"<<endl;
    //cout<<"**********Draw Gaus**********"<<endl;
+    cout << "\n==========" << inHisto->GetName() << "==========" << endl;
    for(unsigned bin = 2; bin < sampleRangeHigh; )
    {
      double x_min = -1.0, x_max = 1.0;
@@ -931,11 +932,15 @@ int main()
 
    gStyle->SetOptFit(0);
    const bool use_UL2018 = false;
+   const bool use_run3_DLPHIN_etaFunc = false;
+   const bool use_run3_DLPHIN_Func = false;
    
    TChain* chain= new TChain("s");
    //chain->Add("../step3.root");
-   chain->Add("/eos/uscms/store/user/huiwang/HCAL/UL_Single_Pion_gun_E_2to200_noPU_RECO_simHits_fix_HB_PFCalib_ntuple.root");
-   chain->Add("/eos/uscms/store/user/huiwang/HCAL/UL_Single_Pion_gun_E_200to500_RECO_simHit_energy_class_PFCalib_ntuple.root");
+   //chain->Add("/eos/uscms/store/user/huiwang/HCAL/UL_Single_Pion_gun_E_2to200_noPU_RECO_simHits_fix_HB_PFCalib_ntuple.root");
+   //chain->Add("/eos/uscms/store/user/huiwang/HCAL/UL_Single_Pion_gun_E_200to500_RECO_simHit_energy_class_PFCalib_ntuple.root");
+   chain->Add("/eos/uscms/store/user/huiwang/HCAL/UL_Single_Pion_gun_E_2to200_noPU_RECO_DLPHIN_class_PFCalib_ntuple.root");
+   chain->Add("/eos/uscms/store/user/huiwang/HCAL/UL_Single_Pion_gun_E_200to500_noPU_RECO_DLPHIN_class_PFCalib_ntuple.root");
    sTree = (TTree*)chain;
    cout<<"Reading input tree..."<<endl;
    getValuesFromTree(sTree, ETrueEnergies, ecalEnergies, 
@@ -1309,6 +1314,24 @@ int main()
    functionEndcapHcalC = new TF1("functionEndcapHcalC","([0]+((([1]+([2]/sqrt(x)))*exp(-(x^[6]/[3])))-([4]*exp(-(x^[7]/[5])))))", 0, 1000); //[0]+([1]+[2]/sqrt(x))*exp(-x/[3])-[4]*exp(-x*x/[5])
     }
 
+    else if (use_run3_DLPHIN_Func) {
+   functionBarrelEcalHcalA = new TF1("functionBarrelEcalHcalA","[0]", 0, 1000);
+   functionBarrelEcalHcalB = new TF1("functionBarrelEcalHcalB","[0]+[1]*exp(-[2]*x^[5])*sin([3]*x)*x^[4]+[6]/x^[7]+[8]*exp(-[9]*x)*x^[10]", 0, 1000); 
+   functionBarrelEcalHcalC = new TF1("functionBarrelEcalHcalC","[0]+(([1]+x^[2])*exp(-x^[6]/[3])-[4]*exp(-x^[7]/[5]))+[8]*exp([9]*x^[10])",0,1000); 
+  
+   functionEndcapEcalHcalA = new TF1("functionEndcapEcalHcalA","[0]", 0, 1000);
+   functionEndcapEcalHcalB = new TF1("functionEndcapEcalHcalB","[0]+[1]*exp(-[2]*x^[5])*sin([3]*x)*x^[4]+[6]/x^[7]+[8]*exp(-[9]*x)*x^[10]", 0, 1000); 
+   functionEndcapEcalHcalC = new TF1("functionEndcapEcalHcalC","[0]+[1]*exp(-[2]*x^[5])*sin([3]*x)*x^[4]+[6]/x^[7]+[8]*exp(-[9]*x^[10])", 0, 1000);
+
+   functionBarrelHcalA = new TF1("functionBarrelHcalA","[0]", 0, 1000);
+   functionBarrelHcalB = new TF1("functionBarrelHcalB","[0]", 0, 1000);
+   functionBarrelHcalC = new TF1("functionBarrelHcalC","1.0+[0]*exp(-[1]*x^[4])*sin([2]*x)*x^[3]+[5]/x^[6]+[7]*exp(-[8]*x)*x^[9]+[10]*exp(-x)",0,1000); 
+  
+   functionEndcapHcalA = new TF1("functionEndcapHcalA","[0]", 0, 1000);
+   functionEndcapHcalB = new TF1("functionEndcapHcalB","[0]", 0, 1000);
+   functionEndcapHcalC = new TF1("functionEndcapHcalC","1.0+[0]*exp(-[1]*x^[4])*sin([2]*x)*x^[3]+[5]/x^[6]+[7]*exp(-[8]*x)*x^[9]+[10]*exp(-x)", 0, 1000);
+    }
+
     else {
    functionBarrelEcalHcalA = new TF1("functionBarrelEcalHcalA","[0]", 0, 1000);
    functionBarrelEcalHcalB = new TF1("functionBarrelEcalHcalB","[0]+((([1]+([2]/(x^[5])))*exp(-(x^[4]/[3]))))", 0, 1000);
@@ -1538,6 +1561,34 @@ int main()
      functionEndcapHcalC->SetParameter(5,0.0372015);
      functionEndcapHcalC->SetParameter(6,0.14929);
      functionEndcapHcalC->SetParameter(7,-1.27774);
+    }
+
+    else if (use_run3_DLPHIN_Func) {
+     functionBarrelEcalHcalA->FixParameter(0, aEH);
+
+     //faBarrel
+     functionBarrelEcalHcalB->SetParameters(1.90195, 280624, 1.89876, 0.00132344, -1.18772, 0.134465, -66.8363, 0.564154, 0.00238925, 0.221958, 2.7123);
+     //fbBarrel
+     functionBarrelEcalHcalC->SetParameters(0.00442647, -0.149906, -209.241, 7.30561e+15, 0.424094, 0.588435, 5.21754, -0.267476, 1.43091, -21.5162, -2.03098);
+
+     functionBarrelHcalA->FixParameter(0, aH);
+     functionBarrelHcalB->FixParameter(0, 0.0);
+
+     //fcBarrel
+     functionBarrelHcalC->SetParameters(82883.2, 2.29864, 0.00495771, -1.64454, 0.120845, -51.0768, 1.05394, 0.00158811, 0.767451, 4.91654, 11.9439);
+     
+     functionEndcapEcalHcalA->FixParameter(0, aEHe);
+
+     //faEndcap
+     functionEndcapEcalHcalB->SetParameters(5.62799, 75268.8, 2.00962, 0.00350616, -0.882834, 0.17141, -48.2706, 0.355673, -3.28547e-07, 0.234877, 5.96123);
+     // fbEndcap
+     functionEndcapEcalHcalC->SetParameters(0.940992, 192.155, 0.171065, 5.6362e-08, 3.33735, 1.02453, -8.39031, 0.909057, 4.8306, 0.873036, 0.283608);                                      
+
+     functionEndcapHcalA->FixParameter(0, aHe);
+     functionEndcapHcalB->FixParameter(0, 0.0);
+
+     //fcEndcap 
+     functionEndcapHcalC->SetParameters(204674.0, 2.01533, 0.00226186, -1.54271, 0.146723, -64.3186, 0.974905, -9.43548, 0.00988682, -0.907971, 14.8322);
     }
 
     else {
@@ -1863,6 +1914,36 @@ int main()
    functionEndcapGammaHcal = new TF1("functionEndcapGammaHcal","[0]+[1]*exp(-x/[2])+[3]*[3]*exp(-x*x/([4]*[4]))",0,1000);
     }
 
+    else if (use_run3_DLPHIN_etaFunc) {
+   functionBarrelAlphaEcalHcal = new TF1("functionBarrelAlphaEcalHcal","[0]+[1]*exp(-x*[3]/[2])+[4]*exp(-x)*cos(x)*x^[5]+[6]*sin(x)*cos(x)", 0, 1000);
+   functionBarrelBetaEcalHcal = new TF1("functionBarrelBetaEcalHcal","[0]*x^[1]*log([2]*x)*exp([3]*x^[4]) + [5]/x**2", 0, 1000);          
+   functionBarrelAlphaHcal = new TF1("functionBarrelAlphaHcal","[0]+[1]*exp(-[2]*x^[5])*sin([3]*x)*x^[4]+[6]/x^[7]+[8]*exp(-[9]*x)", 0, 1000);
+   functionBarrelBetaHcal = new TF1("functionBarrelBetaHcal","[0]+[1]*x^[3]*exp(-x^[4]/[2])+[5]*exp(-x^[7]/[6])", 0, 1000);
+ 
+   //faEtaEndCapEH
+   //UL2018
+   functionEndcapAlphaEcalHcal = new TF1("functionEndcapAlphaEcalHcal","[0]*x^[6]/exp([5]*x^[1])+[2]/(exp([3]*x)-1)+[4]", 0, 1000); 
+   functionEndcapBetaEcalHcal = new TF1("functionEndcapBetaEcalHcal","[0]+[1]*x^[2]*exp(-[3]*x^[4])+[5]/x**2",0,1000);
+   functionEndcapAlphaHcal = new TF1("functionEndcapAlphaHcal","[0]+[1]*exp(-[2]*x^[5])*sin([3]*x)*x^[4]+[6]/x^[7]+[8]*exp(-[9]*x)", 0, 1000);
+   functionEndcapBetaHcal = new TF1("functionEndcapBetaHcal","[0]+[1]*x^[3]*exp(-x^[4]/[2])",0,1000);
+   functionEndcapGammaHcal = new TF1("functionEndcapGammaHcal","[0]+[1]*exp(-x/[2])+[3]*[3]*exp(-x*x/([4]*[4]))",0,1000);
+    }
+
+    else if (use_run3_DLPHIN_Func) {
+   functionBarrelAlphaEcalHcal = new TF1("functionBarrelAlphaEcalHcal","[0]+[1]*exp(-x*[3]/[2])", 0, 1000);
+   functionBarrelBetaEcalHcal = new TF1("functionBarrelBetaEcalHcal","[0]+[1]*exp(-[2]*x^[5])*cos([3]*x)*x^[4]+[6]/x^[7]+[8]*exp(-[9]*x)*x^[10]", 0, 1000);          
+   functionBarrelAlphaHcal = new TF1("functionBarrelAlphaHcal","[0]+[1]*exp(-[2]*x^[5])*sin([3]*x)*x^[4]+[6]/x^[7]+[8]*exp(-[9]*x)", 0, 1000);
+   functionBarrelBetaHcal = new TF1("functionBarrelBetaHcal","[0]+[1]*x^[3]*exp(-x^[4]/[2])+[5]*exp(-x^[7]/[6])", 0, 1000);
+ 
+   //faEtaEndCapEH
+   //UL2018
+   functionEndcapAlphaEcalHcal = new TF1("functionEndcapAlphaEcalHcal","[0]+[1]/sqrt(x)*exp([2]*x)*x^[3]+[4]/sqrt(x)*exp(-sqrt(x))+[5]/x^[6]*exp([7]*x)", 0, 1000); 
+   functionEndcapBetaEcalHcal = new TF1("functionEndcapBetaEcalHcal","[0]+[1]*x^[2]*exp(-[3]*x^[4])+[5]/x**2",0,1000);
+   functionEndcapAlphaHcal = new TF1("functionEndcapAlphaHcal","[0]+[1]*exp(-[2]*x^[5])*sin([3]*x)*x^[4]+[6]/x^[7]+[8]*exp(-[9]*x)", 0, 1000);
+   functionEndcapBetaHcal = new TF1("functionEndcapBetaHcal","[0]+[1]*x^[3]*exp(-x^[4]/[2])",0,1000);
+   functionEndcapGammaHcal = new TF1("functionEndcapGammaHcal","[0]+[1]*exp(-x/[2])+[3]*[3]*exp(-x*x/([4]*[4]))",0,1000);
+    }
+
     else {
    functionBarrelAlphaEcalHcal = new TF1("functionBarrelAlphaEcalHcal","[0]+[1]*exp(-x*[3]/[2])", 0, 1000);//exp(-x*[2])/(x^[2]
    functionBarrelBetaEcalHcal = new TF1("functionBarrelBetaEcalHcal","[0]+((([1]+([2]/(x^[5])))*exp(-(x^[4]/[3]))))", 0, 1000);          
@@ -2022,6 +2103,40 @@ int main()
    functionEndcapBetaHcal->SetParameter(0,-0.0001);
    functionEndcapBetaHcal->SetParameter(1,0.0);
    functionEndcapBetaHcal->SetParameter(2,0.0);
+    }
+
+    else if(use_run3_DLPHIN_etaFunc) {
+     functionBarrelAlphaEcalHcal->SetParameters(0.0284687, -0.0581309, 305.271, 0.380625, 0.317659, 2.5732, 0.000646747);
+     functionBarrelBetaEcalHcal->SetParameters(-0.0367367, 0.501435, 9.35707e-06, -0.836295, 0.269278, -2.59243);
+
+     functionBarrelAlphaHcal->SetParameters(-0.0513408, 17835.6, 4.64531, 0.000115842, -0.170385, 0.0997976, -5.43229, 1.64701, 1.06231, 0.211387);
+     functionBarrelBetaHcal->SetParameters(-0.0619336, 0.732127, 9.97091e-05, -0.610047, -5.30604, 0.10892, 1.66352e+14, 18.7678);
+
+   //faEtaEndcapEH
+   functionEndcapAlphaEcalHcal->SetParameters(-0.00433139, -3.95269, 4.41355e+08, 16001.3, 0.0264201, 5.11628e+07, 0.334928);
+   //fbEtaEndcapEH
+   functionEndcapBetaEcalHcal->SetParameters(-0.00723908, -4.85366e-07, 2.04927, 0.00011442, 1.52857, -18.7142);
+   //faEtaEndcapH
+   functionEndcapAlphaHcal->SetParameters(-0.0498465, 19656.7, 4.73207, 0.000126985, -0.230786, 0.110193, -3.81067, 2.31362, 0.109495, 0.0451561);
+   //fbEtaEndcapH
+   functionEndcapBetaHcal->SetParameters(-0.0715504, 112.085, 0.0428149, -1.64868, -0.79851);
+    }
+
+    else if(use_run3_DLPHIN_Func) {
+     functionBarrelAlphaEcalHcal->SetParameters(0.0277788, -0.0574385, 302.672, 0.382934);
+     functionBarrelBetaEcalHcal->SetParameters(2.86452, 1755.02, 5.19328, -8.21431e-14, -0.461099, -0.0702372, -13.1229, 0.118161, -1.17436e-63, 0.724393, 45.0556);
+
+     functionBarrelAlphaHcal->SetParameters(-0.0513408, 17835.6, 4.64531, 0.000115842, -0.170385, 0.0997976, -5.43229, 1.64701, 1.06231, 0.211387);
+     functionBarrelBetaHcal->SetParameters(-0.0619336, 0.732127, 9.97091e-05, -0.610047, -5.30604, 0.10892, 1.66352e+14, 18.7678);
+
+   //faEtaEndcapEH
+   functionEndcapAlphaEcalHcal->SetParameters(-0.0153081, 1.53149, -0.000145049, -0.339345, -147.768, 56.6027, 1.00007, -0.113669);
+   //fbEtaEndcapEH
+   functionEndcapBetaEcalHcal->SetParameters(-0.00723908, -4.85366e-07, 2.04927, 0.00011442, 1.52857, -18.7142);
+   //faEtaEndcapH
+   functionEndcapAlphaHcal->SetParameters(-0.0498465, 19656.7, 4.73207, 0.000126985, -0.230786, 0.110193, -3.81067, 2.31362, 0.109495, 0.0451561);
+   //fbEtaEndcapH
+   functionEndcapBetaHcal->SetParameters(-0.0715504, 112.085, 0.0428149, -1.64868, -0.79851);
     }
 
     else {
@@ -2432,22 +2547,22 @@ int main()
 
    //// raw endcap response for EH-hdarons 
    //rawEndcapEcalHcal->Draw("colz");
-   ///drawGausFit(rawEndcapEcalHcal,responseRaw,resolutionRaw);
+   drawGausFit(rawEndcapEcalHcal,responseRaw,resolutionRaw);
    //// E-corrected endcap response for EH-hdarons
-   //   drawGausFit(corrEndcapEcalHcal,responseCor,resolutionCor);
+   drawGausFit(corrEndcapEcalHcal,responseCor,resolutionCor);
    //// Eta-corrected endcap response for EH-hdarons
-   //  drawGausFit(corrEtaEndcapEcalHcal,responseCor,resolutionCor);
+   drawGausFit(corrEtaEndcapEcalHcal,responseCor,resolutionCor);
       //   corrEtaEndcapEcalHcal->Draw("colz");
 
    
    //// raw endcap response for H-hdarons
    // rawEndcapHcal->Draw("colz");
-   //drawGausFit(rawEndcapHcal,responseRaw,resolutionRaw);
+   drawGausFit(rawEndcapHcal,responseRaw,resolutionRaw);
    ///// E-corrected endcap response for H-hdarons
-   //  drawGausFit(corrEndcapHcal,responseCor,resolutionCor);
+   drawGausFit(corrEndcapHcal,responseCor,resolutionCor);
    //// Eta-corrected endcap response for H-hdarons
    //corrEtaEndcapHcal->Draw("colz");
-   //   drawGausFit(corrEtaEndcapHcal, responseEta, resolutionEta);   
+   drawGausFit(corrEtaEndcapHcal, responseEta, resolutionEta);   
 
 
    // something for overall
@@ -2471,26 +2586,26 @@ int main()
 
 
    // barrel H calibration coefficient
-    barrelWithHcalCalib->drawCoeffGraph("C", "H_barrel");
-    barrelWithHcalCalib->drawCoeffGraph("Alpha","H_barrel");
-    barrelWithHcalCalib->drawCoeffGraph("Beta", "H_barrel");
+    barrelWithHcalCalib->drawCoeffGraph("C", "fcBarrel");
+    barrelWithHcalCalib->drawCoeffGraph("Alpha","faEtaBarrelH");
+    barrelWithHcalCalib->drawCoeffGraph("Beta", "fbEtaBarrelH");
 
    // endcap H calibration coefficient
-   endcapWithHcalCalib->drawCoeffGraph("C", "H_endcap");
-   endcapWithHcalCalib->drawCoeffGraph("Alpha","H_endcap");
-   endcapWithHcalCalib->drawCoeffGraph("Beta", "H_endcap");
+   endcapWithHcalCalib->drawCoeffGraph("C", "fcEndcap");
+   endcapWithHcalCalib->drawCoeffGraph("Alpha","faEtaEndcapH");
+   endcapWithHcalCalib->drawCoeffGraph("Beta", "fbEtaEndcapH");
 
    // barrel EH calibration coefficient
-   barrelWithEcalHcalCalib->drawCoeffGraph("A","EH_barrel");
-   barrelWithEcalHcalCalib->drawCoeffGraph("B", "EH_barrel");
-   barrelWithEcalHcalCalib->drawCoeffGraph("Alpha","EH_barrel");
-   barrelWithEcalHcalCalib->drawCoeffGraph("Beta", "EH_barrel");
+   barrelWithEcalHcalCalib->drawCoeffGraph("A","faBarrel");
+   barrelWithEcalHcalCalib->drawCoeffGraph("B", "fbBarrel");
+   barrelWithEcalHcalCalib->drawCoeffGraph("Alpha","faEtaBarrelEH");
+   barrelWithEcalHcalCalib->drawCoeffGraph("Beta", "fbEtaBarrelEH");
 
    // endcap EH calibration coefficient
-     endcapWithEcalHcalCalib->drawCoeffGraph("A","EH_endcap");
-     endcapWithEcalHcalCalib->drawCoeffGraph("B", "EH_endcap");
-     endcapWithEcalHcalCalib->drawCoeffGraph("Alpha","EH_endcap");
-     endcapWithEcalHcalCalib->drawCoeffGraph("Beta", "EH_endcap");
+     endcapWithEcalHcalCalib->drawCoeffGraph("A","faEndcap");
+     endcapWithEcalHcalCalib->drawCoeffGraph("B", "fbEndcap");
+     endcapWithEcalHcalCalib->drawCoeffGraph("Alpha","faEtaEndcapEH");
+     endcapWithEcalHcalCalib->drawCoeffGraph("Beta", "fbEtaEndcapEH");
 
 
 

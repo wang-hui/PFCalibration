@@ -1677,7 +1677,7 @@ void Calibration::drawCoeffGraph(string graph, string tag)
 
   cout<<" Tag = "<<tag<<endl;
   cout<<" Graph = "<<graph<<endl;
-  TString fileName="results_temp/resp_reso_"+graph+"_"+tag+".root";
+  TString fileName="results_temp/"+tag+".root";
   //char* fileName = new char[1000];
    string saveString = "plots_temp/";
    TString chi2 = "chi2/NDF ="; 
@@ -1818,7 +1818,7 @@ void Calibration::drawCoeffGraph(string graph, string tag)
       graphAlpha_->SetFillColor(0);
 
       graphAlpha_->Draw("P");
-      faEtaBarrel->Draw("Lsame+");
+      //faEtaBarrel->Draw("Lsame+");
       //   faEtaBarrel52x->Draw("Lsame+");
      auto myList = graphAlpha_->GetListOfFunctions();
      auto myFunc = (TF1*)myList->First(); 
@@ -1848,7 +1848,7 @@ void Calibration::drawCoeffGraph(string graph, string tag)
       graphBeta_->SetFillColor(0);
       
       graphBeta_->Draw("P");
-      fbEtaBarrel->Draw("Lsame+");
+      //fbEtaBarrel->Draw("Lsame+");
       //    fbEtaBarrel52x->Draw("Lsame+");
      auto myList = graphBeta_->GetListOfFunctions();
      auto myFunc = (TF1*)myList->First(); 
@@ -1897,8 +1897,8 @@ void Calibration::drawCoeffGraph(string graph, string tag)
 
  
   // leg->AddEntry(line,"coef 52X (new PF Ecal cluster calib)","l");
-   file3->cd();
-   file3->Write();
+  // file3->cd();
+  // file3->Write();
    file3->Close();
 
 }
